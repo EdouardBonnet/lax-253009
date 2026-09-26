@@ -1,2 +1,12 @@
 import Lax253009.Graphs
 import Lax253009.Approximation
+import Lax253009.LocalTests
+import Lax253009.ConsistencyGraph
+import Lax253009.CliqueCorrespondence
+import Lax253009.LongCode
+import Lax253009.LongCodeCorrectness
+import Lax253009.LongCodePatterns
+import Lax253009.GraphEncoding
+import Lax253009.SmallSupport
+import Lax253009.CNASoundness
+import Lax253009.EncodedReduction

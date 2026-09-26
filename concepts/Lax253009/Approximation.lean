@@ -1,5 +1,5 @@
 import Lax253009.Graphs
-import Mathlib.Computability.TuringMachine.Computable
+import Lax434930.PolynomialTime
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
@@ -24,9 +24,10 @@ choosing the algorithm.
 namespace Lax253009.Approximation
 
 open Graphs
+open Lax434930.PolynomialTime
 
 def Approximable (ε : ℝ) : Prop :=
-  ∃ estimate : List Bool → ℕ,
+  ∃ estimate : Word → ℕ,
     Nonempty (Turing.TM2ComputableInPolyTime id Computability.encodeNat estimate) ∧
     ∀ (n : ℕ), 0 < n → ∀ G : Graph n,
       estimate G.encode ≤ G.cliqueNumber ∧

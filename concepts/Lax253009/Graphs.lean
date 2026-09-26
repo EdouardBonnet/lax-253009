@@ -24,7 +24,7 @@ structure Graph (n : ℕ) where
 
 def Graph.simpleGraph {n : ℕ} (G : Graph n) : SimpleGraph (Fin n) where
   Adj u v := G.adjacent u v = true
-  symm u v h := by rw [← G.symmetric]; exact h
+  symm := ⟨fun u v h ↦ by rw [← G.symmetric]; exact h⟩
   loopless := ⟨fun v ↦ by simp [G.loopless]⟩
 
 def Graph.encode {n : ℕ} (G : Graph n) : List Bool :=

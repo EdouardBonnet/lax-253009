@@ -55,10 +55,10 @@ axiom finite_extraction {U Ω W : Type}
 
 /-- Apply the proved asymptotic CNA theorem uniformly to the entire family
 of first-prover tables. No decoding or soundness hypothesis is required. -/
-axiom uniform_extraction {U Ω W : Type}
-    [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
-    [Fintype W] [DecidableEq W] (K : ℕ) (hK : 0 < K) :
+axiom uniform_extraction (K : ℕ) (hK : 0 < K) :
     ∃ s₀ : ℕ, ∀ s : ℕ, s₀ ≤ s → ∃ w₀ : ℕ, ∀ w : ℕ, w₀ ≤ w →
+      ∀ {U Ω W : Type} [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
+        [Fintype W] [DecidableEq W],
       ∀ u n q k : ℕ, ∀ (question : U → Ω → W)
         (ρ : U → Ω → Word w → Word u) (valid : U → Ω → Coordinate w)
         (R : U → Table u) (A : W → Table w) (p : ℝ),

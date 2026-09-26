@@ -77,10 +77,10 @@ Choose every decoding set from the proved CNA soundness theorem with
 epsilon one, then instantiate the finite extraction theorem. The thresholds
 are independent of all tables, reference answers, projections and constraints.
 -/
-theorem faf_uniform_strategy_extraction {U Ω W : Type}
-    [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
-    [Fintype W] [DecidableEq W] (K : ℕ) (hK : 0 < K) :
+theorem faf_uniform_strategy_extraction (K : ℕ) (hK : 0 < K) :
     ∃ s₀ : ℕ, ∀ s : ℕ, s₀ ≤ s → ∃ w₀ : ℕ, ∀ w : ℕ, w₀ ≤ w →
+      ∀ {U Ω W : Type} [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
+        [Fintype W] [DecidableEq W],
       ∀ u n q k : ℕ, ∀ (question : U → Ω → W)
         (ρ : U → Ω → Word w → Word u) (valid : U → Ω → Coordinate w)
         (R : U → Table u) (A : W → Table w) (p : ℝ),
@@ -92,7 +92,8 @@ theorem faf_uniform_strategy_extraction {U Ω W : Type}
   obtain ⟨s₀, hs₀⟩ := cna_soundness_with_side_conditions 1 (by norm_num) K hK
   refine ⟨s₀, fun s hs ↦ ?_⟩
   obtain ⟨w₀, hw₀⟩ := hs₀ s hs
-  refine ⟨w₀, fun w hw u n q k question ρ valid R A p hp hsmall ↦ ?_⟩
+  refine ⟨w₀, fun w hw ↦ ?_⟩
+  intro U Ω W _ _ _ _ _ _ u n q k question ρ valid R A p hp hsmall
   choose D hcard hdecode using fun a ↦ hw₀ w hw (A a)
   have hB (a : W) : (D a).card ≤ 2 ^ s := by
     have hc := hcard a

@@ -37,3 +37,11 @@ import Lax253009Proofs.FAFStrategyExtraction
 import Lax253009Proofs.FAFPatterns
 import Lax253009Proofs.FAFComposition
 import Lax253009Proofs.FAFParameters
+import Lax253009Proofs.BernoulliSampling
+import Lax253009Proofs.TestSampling
+import Lax253009Proofs.TestRepetition
+import Lax253009Proofs.SamplingParameters
+import Lax253009Proofs.RandomizedReduction
+import Lax253009Proofs.FAFLocalTests
+import Lax253009Proofs.GameToClique
+import Lax253009Proofs.FreshBitSampling

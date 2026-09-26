@@ -25,10 +25,10 @@ The explicit finite FAF error decays faster than 2^(-20*l*l*s).
 Acceptance above that target would therefore produce prover strategies
 exceeding the stated game threshold, contradicting game soundness.
 -/
-theorem faf_composition_soundness {U Ω W : Type}
-    [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
-    [Fintype W] [DecidableEq W] (l : ℕ) (hl : 0 < l) :
+theorem faf_composition_soundness (l : ℕ) (hl : 0 < l) :
     ∃ s₀ : ℕ, ∀ s : ℕ, s₀ ≤ s → ∃ w₀ : ℕ, ∀ w : ℕ, w₀ ≤ w →
+      ∀ {U Ω W : Type} [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
+        [Fintype W] [DecidableEq W],
       ∀ u : ℕ, ∀ (question : U → Ω → W)
         (ρ : U → Ω → Word w → Word u) (valid : U → Ω → Coordinate w)
         (R : U → Table u) (A : W → Table w),
@@ -36,13 +36,13 @@ theorem faf_composition_soundness {U Ω W : Type}
           probability (Lax253009.DecodedStrategies.Wins question (Relation ρ valid) P Q) < gameThreshold l s) →
         probability (Lax253009.FAFStrategyExtraction.Accepts (n := 10 * l) (s := s) (q := 10 * l * s)
           question ρ valid R A) < (1 / 2 : ℝ) ^ (20 * l * l * s) := by
-  obtain ⟨s₁, hs₁⟩ := faf_uniform_strategy_extraction (U := U) (Ω := Ω) (W := W)
-    (40 * l * l) (by positivity)
+  obtain ⟨s₁, hs₁⟩ := faf_uniform_strategy_extraction (40 * l * l) (by positivity)
   obtain ⟨s₂, hs₂⟩ := eventually_atTop.mp (faf_parameter_bounds l hl)
   refine ⟨max s₁ s₂, fun s hs ↦ ?_⟩
   obtain ⟨w₀, hw₀⟩ := hs₁ s ((le_max_left _ _).trans hs)
   obtain ⟨hsmall, herror⟩ := hs₂ s ((le_max_right _ _).trans hs)
-  refine ⟨w₀, fun w hw u question ρ valid R A hgame ↦ ?_⟩
+  refine ⟨w₀, fun w hw ↦ ?_⟩
+  intro U Ω W _ _ _ _ _ _ u question ρ valid R A hgame
   by_contra hacc
   have hacc' := le_of_not_gt hacc
   obtain ⟨P, Q, hPQ⟩ := hw₀ w hw u (10 * l) (10 * l * s) (5 * l)

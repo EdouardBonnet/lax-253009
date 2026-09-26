@@ -41,3 +41,11 @@ import Lax253009.DecodedStrategies
 import Lax253009.FAFStrategyExtraction
 import Lax253009.FAFPatterns
 import Lax253009.FAFComposition
+import Lax253009.BernoulliSampling
+import Lax253009.TestSampling
+import Lax253009.TestRepetition
+import Lax253009.SamplingParameters
+import Lax253009.RandomizedReduction
+import Lax253009.FAFLocalTests
+import Lax253009.GameToClique
+import Lax253009.FreshBitSampling

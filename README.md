@@ -6,8 +6,8 @@ Nothing has been submitted or registered remotely.
 
 ## Current proof status
 
-The submission contains 43 concepts and 98 proof entries. Of the proofs,
-95 use only Lean's background axioms; three are conditional deductions with
+The submission contains 51 concepts and 127 proof entries. Of the proofs,
+124 use only Lean's background axioms; three are conditional deductions with
 explicit archive statement dependencies. The full inapproximability theorem
 is **not yet proved**.
 
@@ -18,7 +18,10 @@ One statement has no proof entry:
 Theorems 4.17 and 4.2 are proved with no archive statement assumptions.
 Theorem 4.2 follows from the proved Theorem 4.17 by choosing the constant true
 side condition. The finite FAF composition, its free-bit count, and the
-strategy-extraction argument of Section 5 are also proved. The two
+strategy-extraction argument of Section 5 are also proved. The finite
+game-to-clique transfer is proved, including the exact local-view interface,
+repetition, sparsification, approximation exponent, polynomial vertex bound,
+and sampling from a fixed vector of fair bits. The two
 inapproximability formulations and the BPP implication remain conditional
 on Theorem 5.2. A proof entry for a consequence does not close its assumptions.
 
@@ -54,6 +57,14 @@ on Theorem 5.2. A proof entry for a consequence does not close its assumptions.
 | `FAFTest`, `FAFPatterns` | Explicit finite FAF verifier, perfect completeness, quantitative acceptance bound, inclusion of actual transcripts, and the `q + ns` free-bit bound (4) |
 | `DecodedStrategies`, `FAFStrategyExtraction` | Globally consistent prover strategies from decoded sets, finite extraction, and uniform extraction using the proved CNA theorem (3) |
 | `FAFComposition` | Soundness below `2^(-20*l*l*s)` with `20*l*s` free bits, given an explicit positive two-prover game threshold (2) |
+| `BernoulliSampling` | Multiplicative upper tail for independent samples and its simultaneous bound for at most `2^m` events (2) |
+| `TestRepetition` | Coherent merged views, exact fixed-proof acceptance probability, accepting-view count, completeness, and soundness after repetition (5) |
+| `TestSampling` | Vertex bound, perfect completeness, and simultaneous clique soundness after sampling (3) |
+| `SamplingParameters` | Logarithmic repetition count, explicit polynomial size bound, strict approximation gap, and a uniform multiplier (3) |
+| `RandomizedReduction` | Repeated sampled graph size, soundness, and a decision rule from the given polynomial-time estimator (3) |
+| `FAFLocalTests` | Exact conversion of FAF transcripts into local views, acceptance probability, free bits, completeness, soundness, proof length, and random-choice count (7) |
+| `FreshBitSampling` | Modulo bias, explicit fair-bit sampling with error at most `1/12`, resulting `1/3` error, flattening to one bit vector, and repeated-seed bit bound (5) |
+| `GameToClique` | Combined finite construction with parameters fixed before the game question spaces, perfect completeness, `1/3` false-positive probability, and polynomial graph size (1) |
 
 These results do not assume the open clique-hardness theorem. The three Fourier
 estimates apply to general finite label spaces and coefficient families and
@@ -71,6 +82,23 @@ prover strategies. The resulting explicit positive game threshold suffices
 for the same free-bit-to-soundness ratio. The strategies depend only on
 their respective questions, even when different extensions give the same
 first-prover question.
+
+The FAF parameter thresholds are uniform across all finite question spaces.
+The local-view construction filters incompatible transcripts before merging,
+so repeated queries and repeated table names remain consistent. With proof
+length `m`, base soundness `2^(-t)`, and at most `2^f` accepting views, the
+sampling construction chooses `k = c * (clog 2 (m+2) + 3)` repetitions and
+`(m+2) * 2^(t*k)` samples. The graph has at most
+`16^((t+f)*c) * (m+2)^((t+f)*c+1)` vertices. Its low-clique threshold is
+`4*(m+2)`, and the approximation gap holds when
+`c * (epsilon*t - (1-epsilon)*f) >= 1`.
+
+Sampling `N` elements from `r` choices uses exactly
+`N * clog 2 (12*N*r)` fair bits and binary remainder. The finite modulo-bias
+proof adds at most `1/12` to the uniform-sampling error of `1/4`. The
+`GameToClique` conclusion uses this explicit bit sampler. These finite
+constructions and size bounds do not certify a probabilistic Turing
+machine's running time.
 
 ## Complexity classes and theorem scope
 
@@ -113,14 +141,13 @@ The principal remaining tasks are:
    and a proof of parallel repetition. The finite FAF composition accepts
    such a game as input; it does not construct it from an NP instance.
 2. A uniform polynomial-time PCP verifier, with logarithmic random bits,
-   implementing the proved finite FAF test. In particular, finite uniform
-   sampling is not itself a proof of an efficient fresh-bit implementation.
-3. Randomized sparsification and uniform polynomial-time machine
-   implementations for the PCP-to-clique transfer in Theorem 2.8, and
-   the final NP = ZPP implication.
+   implementing the proved finite FAF test and its numbered local views.
+3. Uniform polynomial-time machine implementations of the proved graph
+   construction, repetition, and fair-bit sampler, followed by the final
+   NP = ZPP implication, including its zero-error witness-search step.
 
-The finite graph correspondence does not by itself certify the reduction's
-running time or the final approximation exponent. The imported NP and ZPP
+The finite transfer now proves the approximation exponent and polynomial
+graph-size bound. Its running-time certificate remains open. The imported NP and ZPP
 use distinct concrete machine representations; their required simulation
 and reduction implementations remain part of the final proof obligation.
 

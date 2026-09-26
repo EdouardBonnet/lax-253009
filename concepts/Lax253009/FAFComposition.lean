@@ -29,10 +29,10 @@ noncomputable def gameThreshold (l s : ℕ) : ℝ :=
 
 axiom threshold_positive (l s : ℕ) : 0 < gameThreshold l s
 
-axiom soundness {U Ω W : Type}
-    [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
-    [Fintype W] [DecidableEq W] (l : ℕ) (hl : 0 < l) :
+axiom soundness (l : ℕ) (hl : 0 < l) :
     ∃ s₀ : ℕ, ∀ s : ℕ, s₀ ≤ s → ∃ w₀ : ℕ, ∀ w : ℕ, w₀ ≤ w →
+      ∀ {U Ω W : Type} [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
+        [Fintype W] [DecidableEq W],
       ∀ u : ℕ, ∀ (question : U → Ω → W)
         (ρ : U → Ω → Word w → Word u) (valid : U → Ω → Coordinate w)
         (R : U → Table u) (A : W → Table w),

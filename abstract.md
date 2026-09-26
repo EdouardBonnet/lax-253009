@@ -30,7 +30,15 @@ strategies from its accepting runs. The resulting finite composition has
 $20\ell s$ free bits and soundness below $2^{-20\ell^2s}$ given an explicit
 sufficiently small two-prover soundness bound.
 
-There are 95 proofs with no archive statement assumptions and three explicit
-conditional deductions. The NP-to-game gap reduction, parallel repetition,
-uniform polynomial-time PCP construction, randomized sparsification, and
-computational transfer to clique inapproximability remain unfinished.
+We connect the FAF verifier exactly to finite local tests, prove repetition
+and randomized sparsification, and derive the strict approximation gap and
+an explicit polynomial vertex bound. The verifier and sampling parameters
+are chosen independently of the game question spaces. Binary interpretation
+and modular reduction give a fixed-length fair-bit sampler; its bias changes
+the decision error from at most $1/4$ to at most $1/3$. The combined finite
+game-to-clique construction preserves perfect completeness.
+
+There are 124 proofs with no archive statement assumptions and three explicit
+conditional deductions. The NP-to-game gap reduction, classical parallel
+repetition, uniform polynomial-time machine implementations, and the final
+NP = ZPP deduction remain unfinished.

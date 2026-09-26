@@ -38,7 +38,15 @@ and modular reduction give a fixed-length fair-bit sampler; its bias changes
 the decision error from at most $1/4$ to at most $1/3$. The combined finite
 game-to-clique construction preserves perfect completeness.
 
-There are 124 proofs with no archive statement assumptions and three explicit
-conditional deductions. The NP-to-game gap reduction, classical parallel
-repetition, uniform polynomial-time machine implementations, and the final
-NP = ZPP deduction remain unfinished.
+We port the finite Dinur gap theorem and prove a regular 3-SAT gap reduction
+with constant alphabet, degree, and gap and a polynomial vertex bound.
+We convert it to a projection game with perfect completeness and soundness
+at most one minus half the gap, and prove binary answer encoding and padding.
+For soundness amplification we prove dimension-independent tuple-averaging
+and sampler bounds and a squaring theorem for fortified projection tests.
+Their composition into arbitrarily small game soundness remains unfinished.
+
+There are 136 proofs with no archive statement assumptions and three explicit
+conditional deductions. The connection from the registered NP machines to
+3-SAT, completion of soundness amplification, uniform polynomial-time machine
+implementations, and the final NP = ZPP deduction remain unfinished.

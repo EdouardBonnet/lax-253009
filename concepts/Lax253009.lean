@@ -49,3 +49,9 @@ import Lax253009.RandomizedReduction
 import Lax253009.FAFLocalTests
 import Lax253009.GameToClique
 import Lax253009.FreshBitSampling
+import Lax253009.ProjectionGames
+import Lax253009.ProjectionEncoding
+import Lax253009.GapSatisfiability
+import Lax253009.TupleAveraging
+import Lax253009.FortifiedSquaring
+import Lax253009.TupleSampler

@@ -6,8 +6,8 @@ Nothing has been submitted or registered remotely.
 
 ## Current proof status
 
-The submission contains 51 concepts and 127 proof entries. Of the proofs,
-124 use only Lean's background axioms; three are conditional deductions with
+The submission contains 57 concepts and 139 proof entries. Of the proofs,
+136 use only Lean's background axioms; three are conditional deductions with
 explicit archive statement dependencies. The full inapproximability theorem
 is **not yet proved**.
 
@@ -64,6 +64,12 @@ on Theorem 5.2. A proof entry for a consequence does not close its assumptions.
 | `RandomizedReduction` | Repeated sampled graph size, soundness, and a decision rule from the given polynomial-time estimator (3) |
 | `FAFLocalTests` | Exact conversion of FAF transcripts into local views, acceptance probability, free bits, completeness, soundness, proof length, and random-choice count (7) |
 | `FreshBitSampling` | Modulo bias, explicit fair-bit sampling with error at most `1/12`, resulting `1/3` error, flattening to one bit vector, and repeated-seed bit bound (5) |
+| `GapSatisfiability` | Dinur's fixed-alphabet regular gap theorem, with positive gap and polynomial vertex bound (1) |
+| `ProjectionGames` | Perfect completeness and soundness at most `1 - gap/2`, allowing partial strategies (2) |
+| `ProjectionEncoding` | Binary encoding existence, completeness, and soundness, allowing arbitrary padding (3) |
+| `TupleAveraging` | Variance and restriction bounds independent of the alphabet size (2) |
+| `TupleSampler` | Planted-coordinate probabilities, exact mean, and squared mean absolute deviation at most `1/t` (3) |
+| `FortifiedSquaring` | Two-copy soundness from rectangular restriction bounds (1) |
 | `GameToClique` | Combined finite construction with parameters fixed before the game question spaces, perfect completeness, `1/3` false-positive probability, and polynomial graph size (1) |
 
 These results do not assume the open clique-hardness theorem. The three Fourier
@@ -99,6 +105,26 @@ proof adds at most `1/12` to the uniform-sampling error of `1/4`. The
 `GameToClique` conclusion uses this explicit bit sampler. These finite
 constructions and size bounds do not certify a probabilistic Turing
 machine's running time.
+
+## PCP foundation and soundness amplification
+
+The finite Dinur gap theorem is ported from 62 complexitylib modules,
+with original copyright notices and Apache-2.0 license retained. See
+[provenance](LICENSES/PCPFoundation-provenance.md). The regular gap reduction
+has a fixed alphabet and degree, a positive constant gap, and a polynomial
+vertex bound. It preserves satisfiability. A separate proof converts regular
+constraints to a projection game with soundness at most `1 - gap/2` and
+perfect completeness, including partial prover strategies. Finite alphabets
+can be encoded into arbitrarily padded Boolean words without increasing
+soundness.
+
+The soundness-amplification development includes a dimension-independent
+variance bound for tuple averages and its restriction estimate, a tuple
+sampler with squared mean absolute deviation at most `1/t`, and the
+squaring theorem for fortified projection tests. The latter bounds two-copy
+soundness by `v*s + |B|*eta`, where `B` is the common projection alphabet.
+Constructing the fortified games from the tuple sampler and iterating this
+bound remain to be done. No parallel-repetition result is assumed as an axiom.
 
 ## Complexity classes and theorem scope
 
@@ -137,9 +163,11 @@ under NP ≠ P in Theorem 5.3 is outside the agreed scope.
 
 The principal remaining tasks are:
 
-1. The NP-to-game construction from bounded-occurrence gap satisfiability
-   and a proof of parallel repetition. The finite FAF composition accepts
-   such a game as input; it does not construct it from an NP instance.
+1. Soundness amplification from the proved regular 3-SAT gap construction
+   to projection games of arbitrarily small value. The sampler and fortified
+   squaring estimates are proved; their composition and iteration remain.
+   The connection from the registered machine definition of NP to 3-SAT
+   also requires a computational reduction proof.
 2. A uniform polynomial-time PCP verifier, with logarithmic random bits,
    implementing the proved finite FAF test and its numbered local views.
 3. Uniform polynomial-time machine implementations of the proved graph

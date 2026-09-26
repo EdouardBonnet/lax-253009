@@ -33,3 +33,11 @@ import Lax253009.SmallUnionDoubleCovers
 import Lax253009.MixedPredicateMoments
 import Lax253009.SmallCoefficientSoundness
 import Lax253009.LargeCoefficientSoundness
+import Lax253009.CNAPointSoundness
+import Lax253009.CNAQuantitativeSoundness
+import Lax253009.ManyTableConsistency
+import Lax253009.FAFTest
+import Lax253009.DecodedStrategies
+import Lax253009.FAFStrategyExtraction
+import Lax253009.FAFPatterns
+import Lax253009.FAFComposition

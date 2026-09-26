@@ -27,3 +27,13 @@ import Lax253009Proofs.SmallUnionDoubleCovers
 import Lax253009Proofs.MixedPredicateMoments
 import Lax253009Proofs.SmallCoefficientSoundness
 import Lax253009Proofs.LargeCoefficientSoundness
+import Lax253009Proofs.CNAPointSoundness
+import Lax253009Proofs.CNAQuantitativeSoundness
+import Lax253009Proofs.CNAParameters
+import Lax253009Proofs.ManyTableConsistency
+import Lax253009Proofs.FAFTest
+import Lax253009Proofs.DecodedStrategies
+import Lax253009Proofs.FAFStrategyExtraction
+import Lax253009Proofs.FAFPatterns
+import Lax253009Proofs.FAFComposition
+import Lax253009Proofs.FAFParameters

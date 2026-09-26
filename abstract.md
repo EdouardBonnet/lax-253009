@@ -19,9 +19,18 @@ and connect projection to accepted side-condition queries. The second-moment
 identity, higher-moment cancellation, even-cover expansion, concentration,
 hypercontractive bounds, and weighted double-cover estimates are also proved.
 These yield explicit bounds for all three normalized Fourier terms, including
-the small-coefficient higher-moment and tail estimates.
+the small-coefficient higher-moment and tail estimates. We connect these
+bounds to the actual CNA failure event and prove all asymptotic parameter
+choices, completing soundness both with and without side conditions
+(Theorems 4.17 and 4.2).
 
-There are 79 proofs with no archive statement assumptions and four explicit
-conditional deductions. The connection of these estimates to the CNA failure
-event and its parameter choices, the full soundness theorem, PCP construction,
-and computational transfer to clique inapproximability remain unfinished.
+For Section 5, we prove the many-table agreement bounds, define the finite
+FAF test, count its free bits, and extract globally consistent prover
+strategies from its accepting runs. The resulting finite composition has
+$20\ell s$ free bits and soundness below $2^{-20\ell^2s}$ given an explicit
+sufficiently small two-prover soundness bound.
+
+There are 95 proofs with no archive statement assumptions and three explicit
+conditional deductions. The NP-to-game gap reduction, parallel repetition,
+uniform polynomial-time PCP construction, randomized sparsification, and
+computational transfer to clique inapproximability remain unfinished.

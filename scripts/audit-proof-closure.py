@@ -9,14 +9,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATABASE = Path(os.environ.get("LAX_HOME", Path.home() / ".lax")) / "lax-database"
 HARDNESS = "Lax253009.CliqueHardness.approximation_implies_np_eq_zpp"
-SOUNDNESS = "Lax253009.CNASoundness.with_side_conditions"
 ZPP_BPP = "Lax666725.ZPPSubsetBPP.ZPP_subset_BPP"
 BPP_CONSEQUENCE = "Lax253009.BPPConsequence.approximation_implies_np_subset_bpp"
 EXPECTED_CONDITIONAL = {
     "Lax253009Proofs.clique_approximation_implies_np_subset_bpp": {HARDNESS, ZPP_BPP},
     "Lax253009Proofs.clique_not_approximable_of_np_ne_zpp": {HARDNESS},
     "Lax253009Proofs.clique_not_approximable_of_np_not_subset_bpp": {BPP_CONSEQUENCE},
-    "Lax253009Proofs.cna_soundness_from_side_conditions": {SOUNDNESS},
 }
 
 
@@ -42,7 +40,7 @@ def main():
         for concept in local["concepts"] for statement in concept["statements"]
     }
     conclusions = {proof["conclusion"] for proof in local["proofs"]}
-    require(statements - conclusions == {HARDNESS, SOUNDNESS},
+    require(statements - conclusions == {HARDNESS},
             f"unexpected statements without proof entries: {statements - conclusions}")
 
     # Read the dependency closure from generated archive metadata. A proof is
@@ -66,7 +64,7 @@ def main():
         closed.update(new)
     require(ZPP_BPP in closed, "the imported ZPP ⊆ BPP proof is not closed")
     unresolved = statements - closed
-    expected_unresolved = {HARDNESS, SOUNDNESS} | {
+    expected_unresolved = {HARDNESS} | {
         proof["conclusion"] for proof in local["proofs"]
         if proof["id"] in EXPECTED_CONDITIONAL
     }
@@ -79,7 +77,7 @@ def main():
     print("Imported ZPP ⊆ BPP: proved with closed upstream dependencies")
     print(f"{len(statements & closed)} of {len(statements)} local statements proved")
     print("Open roots:")
-    for statement in sorted({HARDNESS, SOUNDNESS}):
+    for statement in sorted({HARDNESS}):
         print(f"  {statement}")
     print(f"These roots leave {len(unresolved)} statements unresolved including consequences.")
 

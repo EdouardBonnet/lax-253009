@@ -16,10 +16,12 @@ decoding, the free-bit bound, and normalization to odd tables, including
 the side-condition extension. We develop finite Boolean Fourier analysis,
 prove the small decoding-set bound and its behavior under projection,
 and connect projection to accepted side-condition queries. The second-moment
-identity, higher-moment cancellation, even-cover expansion, and finite
-moment tail inequality are also proved.
+identity, higher-moment cancellation, even-cover expansion, concentration,
+hypercontractive bounds, and weighted double-cover estimates are also proved.
+These yield explicit bounds for all three normalized Fourier terms, including
+the small-coefficient higher-moment and tail estimates.
 
-There are 49 proofs with no archive statement assumptions and four explicit
-conditional deductions. The concentration and hypercontractive estimates,
-full soundness theorem, PCP construction, and computational transfer to
-clique inapproximability remain unfinished.
+There are 79 proofs with no archive statement assumptions and four explicit
+conditional deductions. The connection of these estimates to the CNA failure
+event and its parameter choices, the full soundness theorem, PCP construction,
+and computational transfer to clique inapproximability remain unfinished.

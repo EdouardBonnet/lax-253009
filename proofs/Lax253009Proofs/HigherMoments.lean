@@ -77,4 +77,44 @@ theorem double_cover_card_bound {ι : Type} [DecidableEq ι] {m : ℕ}
       Finset.sum_le_sum fun i hi ↦ hS i hi
     _ = _ := hinc
 
+/--
+---
+conclusion: Lax253009.HigherMoments.double_subcover
+---
+Choose two distinct covering positions for each point, take their union,
+and enlarge this selection to the requested cardinality. This extracts
+the double subcover used in Lemma 4.16.
+-/
+theorem double_cover_subcover {ι : Type} [DecidableEq ι] {m : ℕ}
+    (S : Fin m → Finset ι) (hS : DoubleCover S) (r : ℕ)
+    (hr : 2 * (Finset.univ.biUnion S).card ≤ r) (hrm : r ≤ m) :
+    ∃ J : Finset (Fin m), J.card = r ∧
+      ∀ i ∈ Finset.univ.biUnion S, 2 ≤ (J.filter fun j ↦ i ∈ S j).card := by
+  classical
+  let U := Finset.univ.biUnion S
+  have hex (i : U) : ∃ a : Fin m, ∃ b : Fin m, i.val ∈ S a ∧ i.val ∈ S b ∧ a ≠ b := by
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (hS i.val i.property)
+    exact ⟨a, b, (Finset.mem_filter.mp ha).2, (Finset.mem_filter.mp hb).2, hab⟩
+  choose a b ha hb hab using hex
+  let J₀ := Finset.univ.biUnion fun i : U ↦ ({a i, b i} : Finset (Fin m))
+  have hJ₀ : J₀.card ≤ 2 * U.card := by
+    calc
+      _ ≤ ∑ i : U, ({a i, b i} : Finset (Fin m)).card := Finset.card_biUnion_le
+      _ = 2 * U.card := by simp [hab, Nat.mul_comm]
+  obtain ⟨J, hsub, _, hcard⟩ := Finset.exists_subsuperset_card_eq
+    (Finset.subset_univ J₀) (hJ₀.trans hr) (by simpa using hrm)
+  refine ⟨J, hcard, ?_⟩
+  intro i hi
+  let u : U := ⟨i, hi⟩
+  have hpair : ({a u, b u} : Finset (Fin m)) ⊆ J.filter (fun j ↦ i ∈ S j) := by
+    intro j hj
+    have hmem : j ∈ J := hsub (Finset.mem_biUnion.mpr ⟨u, Finset.mem_univ _, hj⟩)
+    refine Finset.mem_filter.mpr ⟨hmem, ?_⟩
+    rcases Finset.mem_insert.mp hj with rfl | hj
+    · exact ha u
+    · rw [Finset.mem_singleton] at hj
+      subst j
+      exact hb u
+  simpa [hab] using Finset.card_le_card hpair
+
 end Lax253009Proofs

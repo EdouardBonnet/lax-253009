@@ -49,7 +49,7 @@ theorem balanced_mixed_moment {ι κ : Type} [Fintype ι] [DecidableEq ι]
     apply Finset.prod_eq_zero (Finset.mem_univ i)
     by_cases hs : i ∈ S <;> by_cases ht : i ∈ T <;> simp_all
 
-private theorem weighted_sum_second_moment {α X : Type} [Fintype X]
+theorem weighted_sum_second_moment {α X : Type} [Fintype X]
     (s : Finset α) (c : α → ℝ) (φ : α → X → ℝ) :
     (𝔼 x, (∑ i ∈ s, c i * φ i x) ^ 2) =
       ∑ i ∈ s, ∑ j ∈ s, c i * c j * (𝔼 x, φ i x * φ j x) := by

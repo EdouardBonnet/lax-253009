@@ -16,3 +16,14 @@ import Lax253009Proofs.ComplexityConsequences
 import Lax253009Proofs.OddNormalization
 import Lax253009Proofs.EvenCovers
 import Lax253009Proofs.CNASoundness
+import Lax253009Proofs.ExponentialBounds
+import Lax253009Proofs.BalancedPredicates
+import Lax253009Proofs.RandomFibers
+import Lax253009Proofs.Hypercontractivity
+import Lax253009Proofs.DoubleCoverBounds
+import Lax253009Proofs.BalancedCancellation
+import Lax253009Proofs.HighDegreeSoundness
+import Lax253009Proofs.SmallUnionDoubleCovers
+import Lax253009Proofs.MixedPredicateMoments
+import Lax253009Proofs.SmallCoefficientSoundness
+import Lax253009Proofs.LargeCoefficientSoundness

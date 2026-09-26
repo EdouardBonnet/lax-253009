@@ -62,4 +62,92 @@ theorem finite_even_moment_bound {α : Type} [Fintype α] [Nonempty α]
   rw [Fintype.expect_eq_sum_div_card, le_div_iff₀ (pow_pos ht m), div_mul_eq_mul_div]
   exact (div_le_div_iff_of_pos_right hN).mpr hsum
 
+/--
+---
+conclusion: Lax253009.FiniteProbability.restriction_bound
+---
+Restricting to a subset of mass at least 1/K inflates any event by at most K.
+-/
+theorem finite_probability_restriction {α : Type} [Fintype α] (s : Finset α)
+    (hs : s.Nonempty) (K : ℝ) (hcard : (Fintype.card α : ℝ) ≤ K * s.card)
+    (P : α → Prop) : probability (fun x : s ↦ P x.val) ≤ K * probability P := by
+  classical
+  have : Nonempty α := ⟨hs.choose⟩
+  let bad := Finset.univ.filter P
+  let restricted := Finset.univ.filter (fun x : s ↦ P x.val)
+  have hc : restricted.card ≤ bad.card := by
+    have hsub : restricted.image Subtype.val ⊆ bad := by
+      intro x hx
+      obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hx
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, (Finset.mem_filter.mp hy).2⟩
+    simpa only [Finset.card_image_of_injective _ Subtype.val_injective] using
+      Finset.card_le_card hsub
+  have hD : (0 : ℝ) < s.card := by exact_mod_cast hs.card_pos
+  have hN : (0 : ℝ) < Fintype.card α := by exact_mod_cast Fintype.card_pos
+  have hratio : 1 / (s.card : ℝ) ≤ K / (Fintype.card α : ℝ) :=
+    (div_le_div_iff₀ hD hN).mpr (by simpa using hcard)
+  change (restricted.card : ℝ) / (Fintype.card s : ℝ) ≤ K * ((bad.card : ℝ) / _)
+  rw [Fintype.card_coe]
+  calc
+    _ ≤ (bad.card : ℝ) / s.card := div_le_div_of_nonneg_right (by exact_mod_cast hc) hD.le
+    _ = (bad.card : ℝ) * (1 / s.card) := by ring
+    _ ≤ (bad.card : ℝ) * (K / (Fintype.card α : ℝ)) :=
+      mul_le_mul_of_nonneg_left hratio (Nat.cast_nonneg _)
+    _ = _ := by ring
+
+theorem finite_probability_indicator {α : Type} [Fintype α] (P : α → Prop)
+    [DecidablePred P] : probability P = (𝔼 x, if P x then (1 : ℝ) else 0) := by
+  classical
+  unfold probability
+  rw [Fintype.expect_eq_sum_div_card]
+  congr 1
+  rw [← Finset.sum_filter]
+  simp
+  congr 1
+  ext x
+  simp
+
+/--
+---
+conclusion: Lax253009.FiniteProbability.finite_union_bound
+---
+The indicator of a union is bounded by the sum of its member indicators.
+-/
+theorem finite_probability_finite_union {α ι : Type} [Fintype α] [Fintype ι]
+    (P : ι → α → Prop) : probability (fun x ↦ ∃ i, P i x) ≤ ∑ i, probability (P i) := by
+  classical
+  simp_rw [finite_probability_indicator]
+  rw [← Finset.expect_sum_comm]
+  apply Finset.expect_le_expect
+  intro x _
+  by_cases h : ∃ i, P i x
+  · obtain ⟨i, hi⟩ := h
+    rw [if_pos ⟨i, hi⟩]
+    simpa [hi] using (Finset.single_le_sum
+      (f := fun j ↦ if P j x then (1 : ℝ) else 0)
+      (fun j _ ↦ by positivity) (Finset.mem_univ i))
+  · rw [if_neg h]
+    exact Finset.sum_nonneg fun j _ ↦ by positivity
+
+/--
+---
+conclusion: Lax253009.FiniteProbability.bounded_power_mean
+---
+Split a bounded moment into the part below q and the exceptional upper tail.
+-/
+theorem finite_bounded_power_mean {α : Type} [Fintype α] [Nonempty α]
+    (X : α → ℝ) (hX : ∀ x, 0 ≤ X x ∧ X x ≤ 1) (q : ℝ) (hq : 0 ≤ q) (l : ℕ) :
+    (𝔼 x, X x ^ l) ≤ q ^ l + probability (fun x ↦ q < X x) := by
+  classical
+  rw [finite_probability_indicator]
+  calc
+    _ ≤ 𝔼 x, (q ^ l + if q < X x then (1 : ℝ) else 0) := by
+      apply Finset.expect_le_expect
+      intro x _
+      split_ifs with h
+      · have hx : X x ^ l ≤ 1 := pow_le_one₀ (hX x).1 (hX x).2
+        linarith [pow_nonneg hq l]
+      · simpa using pow_le_pow_left₀ (hX x).1 (le_of_not_gt h) l
+    _ = _ := by rw [Finset.expect_add_distrib, Fintype.expect_const]
+
 end Lax253009Proofs

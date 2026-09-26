@@ -6,8 +6,8 @@ Nothing has been submitted or registered remotely.
 
 ## Current proof status
 
-The submission contains 24 concepts and 53 proof entries. Of the proofs,
-49 use only Lean's background axioms; four are conditional deductions with
+The submission contains 35 concepts and 83 proof entries. Of the proofs,
+79 use only Lean's background axioms; four are conditional deductions with
 explicit archive statement dependencies. The full inapproximability theorem
 is **not yet proved**.
 
@@ -35,16 +35,27 @@ on Theorem 5.2. A proof entry for a consequence does not close its assumptions.
 | `FourierDecoding` | The actual Fourier decoding set has size at most `2^t`; projection can only shrink it into the satisfying set (2) |
 | `FourierIdentities` | Character shift, vanishing even coefficients of odd functions, and the disagreement-indicator identities (4) |
 | `ProductMoments` | Balanced mixed-moment cancellation, the exact second-moment identity in equation (7), and reduction of the high-degree bound to correlations (3) |
-| `HigherMoments` | Coordinate factorization, singleton cancellation, and the double-cover union-size bound (3) |
+| `HigherMoments` | Coordinate factorization, singleton cancellation, the double-cover union-size bound, and extraction of a double subcover (4) |
 | `EvenCovers` | Character moments, the exact even-cover expansion of polynomial moments, and even covers are double covers (3) |
-| `FiniteProbability` | Event monotonicity, union bound, and the even-moment tail inequality (3) |
+| `FiniteProbability` | Event monotonicity, binary and finite union bounds, restriction to a subset, bounded power means, and the even-moment tail inequality (6) |
+| `ExponentialBounds` | Exponential Markov, the bounded-variable moment-generating-function estimate, independent bounded sums, and weighted Rademacher tails (6) |
+| `BalancedPredicates`, `RandomFibers` | Central-binomial counting and mass, balanced correlation tails, and lower tails for single and arbitrary random fibers (5) |
+| `Hypercontractivity` | Fourth moments, multiplication of Fourier degrees, dyadic moments, and a bound for every moment (5) |
+| `DoubleCoverBounds`, `SmallUnionDoubleCovers` | Dimension-independent bounds for total double-cover weight and small-union weight, corresponding to Lemmas 4.15 and 4.16 (2) |
+| `BalancedCancellation` | Cancellation against characters and arbitrary bounded functions depending on a fixed support (2) |
+| `MixedPredicateMoments` | The mixed-predicate estimate used in Lemma 4.12 (1) |
+| `HighDegreeSoundness`, `SmallCoefficientSoundness`, `LargeCoefficientSoundness` | Explicit estimates for all three normalized Fourier terms: two moment bounds, their tails, and deterministic cancellation (5) |
 | `SideConditionAveraging` | Averaging over a side-condition fiber preserves each accepted query (1) |
 | `OddNormalization` | Repair of arbitrary tables to odd tables, preserving accepted queries and both acceptance tests (4) |
 
-These results do not assume either open theorem. In particular, the
-second-moment formula and the even-cover expansion are proved identities;
-the subsequent concentration and hypercontractive bounds remain unfinished.
-The normalization justifies the odd-table assumption in footnote (4).
+These results do not assume either open theorem. The three Fourier estimates
+are stated for general finite label spaces and coefficient families; connecting
+them to the CNA failure event remains to be proved. Their constants are
+explicit and nonoptimal. Conditioning independent signs on balance introduces
+an extra factor N+1 in concentration, and the moment estimates use larger
+constants than the paper. The required parameter and asymptotic deductions
+have not yet been formalized. The normalization justifies the odd-table
+assumption in footnote (4).
 
 ## Complexity classes and theorem scope
 
@@ -63,8 +74,8 @@ The final machine construction must establish this exact definition.
 The concepts and proofs pin randomized-complexity at
 `31864d7e719d388b3d682a807fa2e56c8f9e0ae6` (`lax-666725`); classical-complexity
 is pinned at `0c0840319318215fd7b36a9a822b81ce55cf6941` (`lax-434930`).
-On the latest archive refresh, lax-666725 is a draft. Local builds allow
-this; archive submission requires its registration.
+The latest archive refresh confirms that lax-666725 is registered. Its
+ZPP ⊆ BPP proof has closed upstream dependencies, as checked by the audit.
 
 For every fixed real ε > 0, `CliqueHardness` states that a deterministic
 polynomial-time `n^(1−ε)` approximation implies NP = ZPP, and records its
@@ -83,14 +94,14 @@ under NP ≠ P in Theorem 5.3 is outside the agreed scope.
 
 The principal remaining tasks are:
 
-1. Concentration of random fibers and balanced-predicate correlations
-   (Lemmas 4.3, 4.7, 4.9), the hypercontractive bound, and the weighted
-   double-cover estimates (Lemmas 4.13–4.16).
-2. Decomposition of the CNA failure event into the three Fourier terms,
-   their tail bounds, and the parameter estimates proving Theorem 4.17.
-3. The two-prover construction from bounded-occurrence satisfiability and
+1. Decomposition of the actual CNA failure event into the three Fourier
+   terms, the averaging argument over potential evaluation points, and
+   the parameter estimates proving Theorem 4.17. The required analytic
+   bounds are proved separately, including the small-coefficient moment
+   estimate underlying Lemma 4.10.
+2. The two-prover construction from bounded-occurrence satisfiability and
    parallel repetition, followed by the PCP construction in Theorem 5.1.
-4. Randomized sparsification and uniform polynomial-time machine
+3. Randomized sparsification and uniform polynomial-time machine
    implementations for the PCP-to-clique transfer in Theorem 2.8, and
    the final NP = ZPP implication.
 

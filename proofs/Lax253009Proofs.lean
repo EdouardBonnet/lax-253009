@@ -4,3 +4,15 @@ import Lax253009Proofs.LongCodePatterns
 import Lax253009Proofs.GraphEncoding
 import Lax253009Proofs.SmallSupport
 import Lax253009Proofs.EncodedReduction
+import Lax253009Proofs.BooleanFourier
+import Lax253009Proofs.FourierProjection
+import Lax253009Proofs.FourierDecoding
+import Lax253009Proofs.FourierIdentities
+import Lax253009Proofs.ProductMoments
+import Lax253009Proofs.HigherMoments
+import Lax253009Proofs.FiniteProbability
+import Lax253009Proofs.SideConditionAveraging
+import Lax253009Proofs.ComplexityConsequences
+import Lax253009Proofs.OddNormalization
+import Lax253009Proofs.EvenCovers
+import Lax253009Proofs.CNASoundness

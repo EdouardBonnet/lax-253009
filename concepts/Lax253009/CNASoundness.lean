@@ -1,4 +1,5 @@
 import Lax253009.LongCode
+import Lax253009.FiniteProbability
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Fintype.Pi
 
@@ -26,11 +27,7 @@ arbitrary tables, without assuming they are genuine long codes.
 
 namespace Lax253009.CNASoundness
 
-open LongCode
-
-noncomputable def probability {α : Type} [Fintype α] (P : α → Prop) : ℝ := by
-  classical
-  exact ((Finset.univ.filter P).card : ℝ) / (Fintype.card α : ℝ)
+open LongCode FiniteProbability
 
 def Bad {w s : ℕ} (A : Table w) (S : Finset (Word w))
     (f : Fin s → Coordinate w) : Prop :=

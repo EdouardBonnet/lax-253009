@@ -17,3 +17,9 @@ subDir = "concepts"
 
 [[lean_lib]]
 name = "Lax253009"
+
+[[require]]
+name = "Lax666725"
+git = "https://github.com/EdouardBonnet/randomized-complexity"
+rev = "31864d7e719d388b3d682a807fa2e56c8f9e0ae6"
+subDir = "concepts"

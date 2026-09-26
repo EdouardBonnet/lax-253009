@@ -21,16 +21,16 @@ explicit hypothesis, not an assumed Fourier identity.
 
 namespace Lax253009.SmallSupport
 
-noncomputable def largeSets {n : ℕ} (c : Finset (Fin n) → ℝ) (l : ℕ)
-    (δ : ℝ) : Finset (Finset (Fin n)) := by
+noncomputable def largeSets {ι : Type} [Fintype ι] [DecidableEq ι] (c : Finset ι → ℝ) (l : ℕ)
+    (δ : ℝ) : Finset (Finset ι) := by
   classical
   exact Finset.univ.filter fun a ↦ a.card ≤ l ∧ (l : ℝ) * δ ≤ c a ^ 2
 
-noncomputable def decodingSet {n : ℕ} (c : Finset (Fin n) → ℝ) (l : ℕ)
-    (δ : ℝ) : Finset (Fin n) :=
+noncomputable def decodingSet {ι : Type} [Fintype ι] [DecidableEq ι] (c : Finset ι → ℝ) (l : ℕ)
+    (δ : ℝ) : Finset ι :=
   (largeSets c l δ).biUnion id
 
-axiom decodingSet_bound {n : ℕ} (c : Finset (Fin n) → ℝ) (l : ℕ)
+axiom decodingSet_bound {ι : Type} [Fintype ι] [DecidableEq ι] (c : Finset ι → ℝ) (l : ℕ)
     (δ : ℝ) (hδ : 0 < δ) (henergy : ∑ a, c a ^ 2 ≤ 1) :
   ((decodingSet c l δ).card : ℝ) ≤ 1 / δ
 

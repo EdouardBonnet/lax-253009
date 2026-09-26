@@ -4,131 +4,112 @@ Local submission: `lax-253009`, Lean `v4.33.0`.
 Source: `../hastad.pdf`, Acta Mathematica 182 (1999), 105–142.
 Nothing has been submitted or registered remotely.
 
+## Current proof status
+
+The submission contains 24 concepts and 53 proof entries. Of the proofs,
+49 use only Lean's background axioms; four are conditional deductions with
+explicit archive statement dependencies. The full inapproximability theorem
+is **not yet proved**.
+
+Two statements have no proof entry:
+
+- `Lax253009.CNASoundness.with_side_conditions` — Theorem 4.17.
+- `Lax253009.CliqueHardness.approximation_implies_np_eq_zpp` — Theorem 5.2.
+
+Theorem 4.2 is proved relative to Theorem 4.17, by choosing the constant true
+side condition. Theorem 4.17 does not depend on Theorem 4.2. The two
+inapproximability formulations and the BPP implication remain conditional
+on Theorem 5.2. A proof entry for a consequence does not close its assumptions.
+
 ## Proved components
 
-- `Lax253009.Graphs`: Boolean adjacency matrices, their simple graphs,
-  explicit binary encodings, and the clique number.
-- `Lax253009.Approximation`: a uniform deterministic polynomial-time
-  integer estimator satisfying the paper's approximation guarantee.
-- `Lax253009.CliqueCorrespondence`: completeness and soundness of the
-  consistency graph, exact equality of its clique number with the optimum
-  acceptance count, and the vertex count and bound. Seven proved statements.
-- `Lax253009.LongCodeCorrectness`: perfect completeness and Lemma 4.1,
-  together with the local counterparts for the side-condition test.
-  Four proved statements.
-- `Lax253009.LongCodePatterns`: at most `2^s` accepting query patterns,
-  both without and with side conditions. Two proved statements.
-- `Lax253009.GraphEncoding`: invariance of the clique number under a
-  bijective vertex numbering and the exact binary encoding length.
-  Two proved statements.
-- `Lax253009.SmallSupport`: the decoding-set cardinality bound from
-  equation (2), with the squared-mass bound as an explicit hypothesis.
-  One proved statement.
-- `Lax253009.EncodedReduction`: the numbered consistency graph has the
-  expected clique number, and a polynomial-time approximation separates
-  any suitably spaced integer acceptance-count gap. Two proved statements.
+| Component | Result checked in Lean |
+| --- | --- |
+| `CliqueCorrespondence` | Consistency-graph completeness and soundness, exact clique number, vertex count and bound (7 statements) |
+| `LongCodeCorrectness` | Perfect completeness and local decoding, with and without a side condition (4) |
+| `LongCodePatterns` | At most `2^s` accepting query patterns for both tests (2) |
+| `GraphEncoding`, `EncodedReduction` | Numbering preserves clique number, encoding length, and approximation separates a suitable acceptance-count gap (4) |
+| `SmallSupport` | Decoding-set cardinality bound from bounded squared coefficient mass (1) |
+| `BooleanFourier` | Orthogonality, inversion, Parseval, sign-valued energy, and bounded-function energy (5) |
+| `FourierProjection` | Averaging deletes exactly the coefficients outside the retained coordinates, preserves the bound one, and preserves constant fibers (3) |
+| `FourierDecoding` | The actual Fourier decoding set has size at most `2^t`; projection can only shrink it into the satisfying set (2) |
+| `FourierIdentities` | Character shift, vanishing even coefficients of odd functions, and the disagreement-indicator identities (4) |
+| `ProductMoments` | Balanced mixed-moment cancellation, the exact second-moment identity in equation (7), and reduction of the high-degree bound to correlations (3) |
+| `HigherMoments` | Coordinate factorization, singleton cancellation, and the double-cover union-size bound (3) |
+| `EvenCovers` | Character moments, the exact even-cover expansion of polynomial moments, and even covers are double covers (3) |
+| `FiniteProbability` | Event monotonicity, union bound, and the even-moment tail inequality (3) |
+| `SideConditionAveraging` | Averaging over a side-condition fiber preserves each accepted query (1) |
+| `OddNormalization` | Repair of arbitrary tables to odd tables, preserving accepted queries and both acceptance tests (4) |
 
-There are eighteen proof entries. Their proofs do not assume any of the
-submission's open statements. Definitions and theorem statements are in
-`concepts/`, and their annotated proofs are in `proofs/`.
+These results do not assume either open theorem. In particular, the
+second-moment formula and the even-cover expansion are proved identities;
+the subsequent concentration and hypercontractive bounds remain unfinished.
+The normalization justifies the odd-table assumption in footnote (4).
 
-`Lax253009.CNASoundness` states Theorems 4.2 and 4.17 with their full
-quantifier order and uniform finite probabilities. These two statements
-remain open. In particular, the decoding set in Theorem 4.17 is chosen
-before the side condition. Neither theorem is proved by assuming the other.
+## Complexity classes and theorem scope
 
-Build with `lax build . --replay` from this directory. This checks both
-packages, replays the kernel proofs, and checks the archive annotations.
+All three classes are reused without local substitutes:
 
-## Agreed theorem scope
+| Class | Imported definition |
+| --- | --- |
+| NP | `Lax434930.NondeterministicPolynomialTime.NP` |
+| BPP | `Lax666725.RandomizedPolynomialTime.BPP` |
+| ZPP | `Lax666725.ZeroError.ZPP` |
 
-Include both statements, for every fixed real ε > 0:
+They share `Lax434930.PolynomialTime.Language`, the set of binary words.
+ZPP uses the bounded-time definition with an explicit failure answer.
+The final machine construction must establish this exact definition.
 
-1. **Original Theorem 5.2:** existence of the above approximation implies
-   NP = ZPP. Equivalently, under NP ≠ ZPP no such approximation exists.
-2. **BPP consequence:** existence of the same approximation implies
-   NP ⊆ BPP. Equivalently, under NP ⊈ BPP no such approximation exists.
+The concepts and proofs pin randomized-complexity at
+`31864d7e719d388b3d682a807fa2e56c8f9e0ae6` (`lax-666725`); classical-complexity
+is pinned at `0c0840319318215fd7b36a9a822b81ce55cf6941` (`lax-434930`).
+On the latest archive refresh, lax-666725 is a draft. Local builds allow
+this; archive submission requires its registration.
 
-The algorithm may depend on ε, but must be a single algorithm for all input
-sizes. The guarantee is required on nonempty graphs. The algorithm outputs
-a number, as in the paper's introduction, rather than a vertex set.
+For every fixed real ε > 0, `CliqueHardness` states that a deterministic
+polynomial-time `n^(1−ε)` approximation implies NP = ZPP, and records its
+NP ≠ ZPP contrapositive. `BPPConsequence` states the implication NP ⊆ BPP
+and its contrapositive under NP ⊈ BPP. The BPP deduction uses the imported
+`Lax666725.ZPPSubsetBPP.ZPP_subset_BPP` theorem, with that dependency
+recorded in the proof network.
 
-The second statement follows from the first and ZPP ⊆ BPP. The paper's
-separate Theorem 5.3 gives the exponent 1/2 − ε under NP ≠ P; it is outside
-the agreed scope.
-
-## Existing complexity concepts and the unresolved dependency
-
-An archive refresh on 2026-09-26 found:
-
-| Concept | Submission | State | Environment |
-| --- | --- | --- | --- |
-| `Lax434930.NondeterministicPolynomialTime.NP` | lax-434930 | registered | v4.33.0 |
-| `Lax47.Machine.InNP` | lax-47 | draft | v4.30.0 |
-| `Lax47.Machine.InBPP` | lax-47 | draft | v4.30.0 |
-| `Lax47.Machine.NPSubsetBPP` | lax-47 | draft | v4.30.0 |
-
-Registered NP source:
-`https://github.com/EdouardBonnet/classical-complexity`, commit
-`0c0840319318215fd7b36a9a822b81ce55cf6941`, subdirectory `concepts`.
-
-Archived BPP source:
-`https://github.com/EdouardBonnet/mis-inapproximability`, commit
-`e8e3010e3aae3531db7677c4acb8b0561cc21022`, subdirectory `concepts`.
-It also depends on the draft lax-51, on the older environment.
-
-The NP definitions use different input representations: binary strings in
-lax-434930 and finite words of natural numbers encoded as binary strings in
-lax-47. A port or extraction must address this representation boundary.
-
-The archive requires dependencies to be registered in the same environment;
-v4.30.0 is closed to new submissions. Adding lax-47 to this submission's
-lakefile would therefore be invalid. No substitute BPP definition has been
-introduced here.
-
-The user will supply a separate Lax submission defining BPP and ZPP.
-Use those concepts, together with the registered NP above, once the new
-submission is available. It must use v4.33.0 and the same binary-language
-type as `Lax434930.PolynomialTime.Language`, or provide explicit translations.
-It should also expose ZPP ⊆ BPP for the consequence. Local review may use a
-draft dependency, but archive submission requires it to be registered.
-
-The concepts lakefile already pins lax-434930; the approximation definition
-uses its binary-word type and the same underlying polynomial-time machine
-model. The NP theorem and both randomized classes are intentionally deferred
-until the forthcoming dependency can be imported. No local NP, BPP, or ZPP
-definition is introduced.
-
-Once that dependency is available, add a `CliqueHardness` concept with
-the original statement and a `BPPConsequence` concept with the second
-statement. Record a proof of the second relative to the original and
-the imported ZPP ⊆ BPP statement, so the proof network exposes the exact
-dependency. The substantial proof of Theorem 5.2 remains an open obligation.
+The algorithm may depend on ε but is uniform across all input sizes. It
+returns an integer estimate `a(G)` with
+`a(G) ≤ ω(G) ≤ n^(1−ε) a(G)` on every nonempty graph. This matches the
+paper's numerical-estimation convention. The separate exponent `1/2−ε`
+under NP ≠ P in Theorem 5.3 is outside the agreed scope.
 
 ## Remaining proof development
 
-The dependency chain in the source is:
+The principal remaining tasks are:
 
-1. The bounded-occurrence satisfiability gap (Theorem 2.13) and parallel
-   repetition (Theorem 2.14), giving the two-prover test (Theorem 3.2).
-2. Long-code tests and their soundness analysis, including the version with
-   side conditions (Theorem 4.17).
-3. The PCP with logarithmic randomness and arbitrarily small amortized
-   free-bit complexity (Theorem 5.1).
-4. The PCP-to-clique transfer (Theorem 2.8), combined with Theorem 5.1 to
-   obtain Theorem 5.2.
-5. The implication from NP = ZPP to NP ⊆ BPP.
+1. Concentration of random fibers and balanced-predicate correlations
+   (Lemmas 4.3, 4.7, 4.9), the hypercontractive bound, and the weighted
+   double-cover estimates (Lemmas 4.13–4.16).
+2. Decomposition of the CNA failure event into the three Fourier terms,
+   their tail bounds, and the parameter estimates proving Theorem 4.17.
+3. The two-prover construction from bounded-occurrence satisfiability and
+   parallel repetition, followed by the PCP construction in Theorem 5.1.
+4. Randomized sparsification and uniform polynomial-time machine
+   implementations for the PCP-to-clique transfer in Theorem 2.8, and
+   the final NP = ZPP implication.
 
-The finite consistency-graph and elementary long-code components above are
-complete. Major remaining work includes the Fourier identities and moment
-bounds in Section 4, the probability estimates for Theorems 4.2 and 4.17,
-the two-prover and PCP constructions, and the randomized sparsification
-and uniform machine implementation needed for the exponent in Theorem 2.8.
-The present finite graph construction does not certify its own polynomial
-running time or establish that exponent by itself.
+The finite graph correspondence does not by itself certify the reduction's
+running time or the final approximation exponent. The imported NP and ZPP
+use distinct concrete machine representations; their required simulation
+and reduction implementations remain part of the final proof obligation.
 
-The BPP/ZPP dependency only blocks the final complexity-class interfaces;
-it does not block any of those independent mathematical developments.
-The rational promise-gap interface in `Lax47.Hastad` additionally requires
-a randomized gap statement and the graph-complement translation; the
-deterministic approximation theorem alone does not discharge that interface.
+## Validation
+
+From this directory:
+
+```sh
+lax build . --replay
+python3 scripts/audit-proof-closure.py
+```
+
+The build compiles both packages, replays their kernel proofs, and checks
+all concept/proof annotations and axiom hygiene. The audit checks that the
+only statement assumptions are the four documented deductions, verifies
+the upstream ZPP ⊆ BPP proof closure, and reports the remaining local roots.
+The generated build output and Lake artifacts are ignored by Git.

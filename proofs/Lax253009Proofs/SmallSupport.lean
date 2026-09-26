@@ -12,7 +12,7 @@ conclusion: Lax253009.SmallSupport.decodingSet_bound
 Bound the union by the sum of support sizes, charge each support at least
 ℓδ squared mass, and use the total squared-mass bound.
 -/
-theorem small_support_bound {n : ℕ} (c : Finset (Fin n) → ℝ) (l : ℕ)
+theorem small_support_bound {ι : Type} [Fintype ι] [DecidableEq ι] (c : Finset ι → ℝ) (l : ℕ)
     (δ : ℝ) (hδ : 0 < δ) (henergy : ∑ a, c a ^ 2 ≤ 1) :
     ((decodingSet c l δ).card : ℝ) ≤ 1 / δ := by
   classical

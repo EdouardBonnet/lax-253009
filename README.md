@@ -188,27 +188,26 @@ certificate-pair decoder prove RP ⊆ NP and ZPP ⊆ NP for the registered class
 
 ## Remaining proof development
 
+The uniform FAF transcript and compatibility queries, logarithmic repetition,
+fair-bit sampling, and full adjacency-matrix construction are now proved
+polynomial-time. `RegisteredBridge.approximation_random_test` assembles them:
+an assumed clique approximation gives every registered NP language a
+polynomial-time predicate on the input and an explicitly bounded fair-bit
+tape. Members pass on every tape; nonmembers pass with probability at most
+1/3. This algorithm theorem has passed the full Lax kernel replay.
+
 The principal remaining tasks are:
 
-1. Complete the uniform polynomial-time FAF transcript and compatibility
-   queries, and their composition with logarithmic repetition. Computing
-   the sampled relation tables and selecting a candidate transcript from
-   fixed finite data are proved polynomial-time.
-2. Assemble the full sampled graph algorithm. A fixed array of transcript
-   slots has proved clique bounds; unused slots are isolated. Adjacency-matrix
-   construction is proved polynomial-time given transcript queries. Sampling
-   each base seed separately has proved error at most 1/3, and its concrete
-   bit-list algorithm and all sampling parameters are polynomial-time.
-3. Compile the randomized reduction into the registered probabilistic model
-   and combine complementary one-sided algorithms into ZPP. RP ⊆ NP and
-   ZPP ⊆ NP are proved. The final NP = ZPP implication still needs these
-   constructions and their probability-preservation proofs.
+1. Compile this fair-bit test into the registered probabilistic model,
+   preserving its probability distribution and worst-case polynomial clock.
+2. Combine complementary one-sided algorithms into ZPP. RP ⊆ NP and
+   ZPP ⊆ NP are proved. The final NP = ZPP implication still needs this
+   construction and its probability-preservation proof.
 
-The finite transfer proves the approximation exponent and polynomial
-graph-size bound. Its complete running-time certificate remains open. Deterministic
-model equivalence and randomized certificate verification are proved. A
-probabilistic-machine implementation of the complete reduction and the
-zero-error combination still belong to the final proof obligation.
+The approximation exponent, polynomial graph-size bound, deterministic
+running time, and finite-coin error estimate are proved. The registered
+probabilistic-machine implementation and zero-error combination still
+belong to the final proof obligation.
 
 ## Validation
 

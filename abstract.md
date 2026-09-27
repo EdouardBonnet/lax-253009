@@ -58,6 +58,7 @@ random-tape verification proves RP ⊆ NP and ZPP ⊆ NP in the registered model
 The small-value game reduction now has uniform polynomial-time queries and
 explicit numbering throughout amplification. Fixed transcript arrays preserve
 the clique gap, and the concrete fair-bit sampler is polynomial-time with
-proved error at most 1/3. The FAF and repeated-transcript queries must still
-be fully assembled into the sampled graph algorithm. Its registered
-probabilistic implementation and the final NP = ZPP deduction remain unfinished.
+proved error at most 1/3. The FAF and repeated-transcript queries and the
+sampled graph algorithm are now assembled into a polynomial-time fair-bit
+test for every registered NP language. Its registered probabilistic
+implementation and the final NP = ZPP deduction remain unfinished.

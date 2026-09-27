@@ -1,8 +1,8 @@
 # Håstad clique inapproximability
 
-Local submission: `lax-253009`, Lean `v4.33.0`.
-Source: `../hastad.pdf`, Acta Mathematica 182 (1999), 105–142.
-Nothing has been submitted or registered remotely.
+Lax submission: `lax-253009`, Lean `v4.33.0`.
+Archive discussion: [lax-archive/lax#143](https://github.com/lax-archive/lax/issues/143).
+Source: [Håstad, Acta Mathematica 182 (1999), 105–142](https://doi.org/10.1007/BF02392825).
 
 ## Current proof status
 

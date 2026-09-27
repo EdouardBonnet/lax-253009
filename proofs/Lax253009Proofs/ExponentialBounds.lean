@@ -78,7 +78,7 @@ theorem independent_bounded_mgf {ι κ : Type} [Fintype ι] [DecidableEq ι]
       exact independent_product_average (fun i z ↦ Real.exp (u * F i z))
     _ ≤ ∏ _i : ι, Real.exp (u ^ 2 / 2) := Finset.prod_le_prod
       (fun i _ ↦ Finset.expect_nonneg fun z _ ↦ (Real.exp_pos _).le)
-      (fun i _ ↦ finite_bounded_mgf (F i) (hF i) (hmean i) u)
+      (fun i _ ↦ Lax253009.ExponentialBounds.bounded_mgf (F i) (hF i) (hmean i) u)
     _ = _ := by rw [← Real.exp_sum]; simp [mul_comm]
 
 /--
@@ -98,7 +98,7 @@ theorem independent_bounded_upper_tail {ι κ : Type} [Fintype ι] [DecidableEq 
   calc
     _ ≤ Real.exp (-(t / Fintype.card ι) * t) *
         (𝔼 x : ι → κ, Real.exp ((t / Fintype.card ι) * ∑ i, F i (x i))) :=
-      finite_exponential_markov _ _ _ (div_nonneg ht hv.le)
+      Lax253009.ExponentialBounds.exponential_markov _ _ _ (div_nonneg ht hv.le)
     _ ≤ Real.exp (-(t / Fintype.card ι) * t) *
         Real.exp ((t / Fintype.card ι) ^ 2 / 2 * Fintype.card ι) :=
       mul_le_mul_of_nonneg_left (independent_bounded_mgf F hF hmean _)
@@ -152,10 +152,10 @@ theorem finite_rademacher_upper_tail {ι : Type} [Fintype ι] [DecidableEq ι]
   calc
     _ ≤ Real.exp (-(t / v) * t) *
         (𝔼 x : Cube ι, Real.exp ((t / v) * ∑ i, a i * sign (x i))) :=
-      finite_exponential_markov _ t (t / v) (div_nonneg ht hv.le)
+      Lax253009.ExponentialBounds.exponential_markov _ t (t / v) (div_nonneg ht hv.le)
     _ ≤ Real.exp (-(t / v) * t) * Real.exp ((t / v) ^ 2 / 2 * v) := by
       apply mul_le_mul_of_nonneg_left _ (Real.exp_pos _).le
-      exact (finite_rademacher_mgf a _).trans (Real.exp_le_exp.mpr
+      exact (Lax253009.ExponentialBounds.rademacher_mgf a _).trans (Real.exp_le_exp.mpr
         (mul_le_mul_of_nonneg_left hvar (by positivity)))
     _ = _ := by
       rw [← Real.exp_add]
@@ -181,10 +181,10 @@ theorem finite_rademacher_abs_tail {ι : Type} [Fintype ι] [DecidableEq ι]
     simp [le_abs, neg_mul, Finset.sum_neg_distrib]
   rw [heq]
   calc
-    _ ≤ _ := finite_probability_union _ _
+    _ ≤ _ := Lax253009.FiniteProbability.union_bound _ _
     _ ≤ Real.exp (-t ^ 2 / (2 * v)) + Real.exp (-t ^ 2 / (2 * v)) :=
-      add_le_add (finite_rademacher_upper_tail a v hv hvar t ht)
-        (finite_rademacher_upper_tail (fun i ↦ -a i) v hv hneg t ht)
+      add_le_add (Lax253009.ExponentialBounds.rademacher_upper_tail a v hv hvar t ht)
+        (Lax253009.ExponentialBounds.rademacher_upper_tail (fun i ↦ -a i) v hv hneg t ht)
     _ = _ := by ring
 
 end Lax253009Proofs

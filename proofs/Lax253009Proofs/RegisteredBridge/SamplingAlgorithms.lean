@@ -23,7 +23,7 @@ theorem repetition_power_poly {m : List Bool → ℕ} (hm : UnaryFn m) (c d : �
   apply UnaryFn.pow_of_le (UnaryFn.const 2) ((UnaryFn.const d).mul (repetitions_poly hm c))
     ((UnaryFn.const (16 ^ (d * c))).mul (fixed_power (hm.add (UnaryFn.const 2)) (d * c + 1)))
   intro z
-  have hb := sampling_polynomial_bound 0 d c (m z)
+  have hb := Lax253009.SamplingParameters.polynomial_bound 0 d c (m z)
   dsimp only [vertexBound] at hb
   simp only [Nat.add_zero] at hb
   have hmul : 2 ^ (d * repetitions c (m z)) ≤

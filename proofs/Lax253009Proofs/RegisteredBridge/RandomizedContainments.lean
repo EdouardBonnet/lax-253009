@@ -65,44 +65,4 @@ theorem registered_RP_subset_NP :
     apply (hA x).1 r
     simpa only [Procedure.eval, hr] using hyout
 
-def procedureRelabel {α β : Type} (A : Procedure α) (f : α → β) : Procedure β where
-  machine := A.machine
-  time := A.time
-  output := f ∘ A.output
-  halts := A.halts
-
-theorem procedure_probability_mono {α : Type} (A : Procedure α) (x : List Bool)
-    (E F : α → Prop) (h : ∀ r, E (A.eval x r) → F (A.eval x r)) :
-    A.probability x E ≤ A.probability x F := by
-  classical
-  apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
-  exact_mod_cast Finset.card_le_card (show
-    Finset.univ.filter (fun r : A.Coins x ↦ E (A.eval x r)) ⊆
-      Finset.univ.filter (fun r : A.Coins x ↦ F (A.eval x r)) from by
-        intro r hr
-        exact Finset.mem_filter.mpr ⟨Finset.mem_univ r, h r (Finset.mem_filter.mp hr).2⟩)
-
-theorem registered_ZPP_subset_RP : Lax666725.ZeroError.ZPP ⊆ Lax666725.OneSidedError.RP := by
-  rintro L ⟨A, hA⟩
-  refine ⟨procedureRelabel A (fun a ↦ a.getD false), fun x ↦ ?_⟩
-  constructor
-  · intro r hr
-    change (A.eval x r).getD false = true at hr
-    cases h : A.eval x r with
-    | none => simp [h] at hr
-    | some b =>
-      have hb : b = true := by simpa only [h, Option.getD_some] using hr
-      exact ((hA x).1 r b h).mp hb
-  · intro hx
-    change (2 / 3 : ℚ) ≤ A.probability x (fun a ↦ a.getD false = true)
-    refine (hA x).2.trans (procedure_probability_mono A x _ _ ?_)
-    intro r hr
-    cases h : A.eval x r with
-    | none => simp [h] at hr
-    | some b => simpa only [h, Option.getD_some] using ((hA x).1 r b h).mpr hx
-
-theorem registered_ZPP_subset_NP :
-    Lax666725.ZeroError.ZPP ⊆ Lax434930.NondeterministicPolynomialTime.NP :=
-  fun _ hL ↦ registered_RP_subset_NP (registered_ZPP_subset_RP hL)
-
 end Lax253009Proofs.RegisteredBridge

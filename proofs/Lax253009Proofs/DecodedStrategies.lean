@@ -58,7 +58,7 @@ theorem decoded_prover_strategies {U Ω W X Y : Type}
         rw [finite_probability_evaluation (question z.1 z.2) (fun j ↦ j = i), finite_singleton_probability]
         simp
       rw [if_pos ⟨y, x, hy, hx, hV⟩, ← he]
-      apply finite_probability_mono
+      apply Lax253009.FiniteProbability.monotone
       intro a ha
       exact ⟨y, x, (congrArg (reply (question z.1 z.2)) ha).trans hi, hx, hV⟩
     · rw [if_neg hz]
@@ -68,7 +68,7 @@ theorem decoded_prover_strategies {U Ω W X Y : Type}
     by_cases hu : Common question V D p u
     · rw [if_pos hu]
       apply le_trans hu.choose_spec
-      apply finite_probability_mono
+      apply Lax253009.FiniteProbability.monotone
       rintro ω ⟨y, hy, hV⟩
       exact ⟨y, hu.choose, hy, by simp [Q, hu], hV⟩
     · rw [if_neg hu]

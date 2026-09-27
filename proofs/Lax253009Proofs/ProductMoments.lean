@@ -91,7 +91,7 @@ theorem balanced_second_moment {ι κ : Type} [Fintype ι] [DecidableEq ι]
         intro B hB
         apply Finset.sum_congr rfl
         intro C hC
-        exact balanced_mixed_moment B C (hbalanced B hB) (hbalanced C hC) S T
+        exact Lax253009.ProductMoments.mixed_moment B C (hbalanced B hB) (hbalanced C hC) S T
       _ = _ := by split_ifs <;> simp
   unfold weightedSum
   rw [weighted_sum_second_moment]
@@ -140,7 +140,7 @@ theorem balanced_high_degree_bound {ι κ : Type} [Fintype ι] [DecidableEq ι]
         (le_abs_self _).trans_eq (abs_pow _ _)
       _ ≤ _ := pow_le_pow_of_le_one (abs_nonneg _)
         (correlation_abs_le_one B C (hbounded B hB) (hbounded C hC)) (hdegree S hS)
-  rw [balanced_second_moment supports c predicates hbalanced]
+  rw [Lax253009.ProductMoments.second_moment supports c predicates hbalanced]
   calc
     _ ≤ ∑ S ∈ supports, c S ^ 2 * K :=
       Finset.sum_le_sum fun S hS ↦ mul_le_mul_of_nonneg_left (hterm S hS) (sq_nonneg _)

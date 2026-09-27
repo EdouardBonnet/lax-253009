@@ -25,8 +25,8 @@ theorem randomized_vertex_bound {r m : ℕ} (C : System r m) (f t k : ℕ)
     (hfree : ∀ seed, (C.accepting seed).card ≤ 2 ^ f)
     (z : Fin (sampleCount t k m) → Fin (r ^ k)) :
     Fintype.card (Vertex (tests C t k z)) ≤ vertexBound f t k m := by
-  have h := sampled_vertex_bound (repeated C k) z ((2 ^ f) ^ k)
-    (repeated_free_bits C k (2 ^ f) hfree)
+  have h := Lax253009.TestSampling.vertex_bound (repeated C k) z ((2 ^ f) ^ k)
+    (Lax253009.TestRepetition.free_bits C k (2 ^ f) hfree)
   apply h.trans_eq
   simp only [sampleCount, vertexBound, ← pow_mul, mul_assoc, ← pow_add]
   congr 2
@@ -43,13 +43,13 @@ theorem randomized_soundness {r m : ℕ} (hr : 0 < r) (C : System r m) (t k : �
     (hsound : Sound C ((1 / 2 : ℝ) ^ t)) :
     probability (fun z : Fin (sampleCount t k m) → Fin (r ^ k) ↦
       threshold m ≤ (output (tests C t k z)).cliqueNumber) ≤ 1 / 4 := by
-  have hs := repeated_soundness C k ((1 / 2 : ℝ) ^ t) (by positivity) hsound
+  have hs := Lax253009.TestRepetition.soundness C k ((1 / 2 : ℝ) ^ t) (by positivity) hsound
   rw [← pow_mul] at hs
-  have h := sampled_soundness (pow_pos hr k) (repeated C k)
+  have h := Lax253009.TestSampling.soundness (pow_pos hr k) (repeated C k)
     ((1 / 2 : ℝ) ^ (t * k)) (by positivity) hs
     (show (m : ℝ) + 2 ≤ (sampleCount t k m : ℝ) * (1 / 2 : ℝ) ^ (t * k) by
       rw [sampling_expected_count])
-  apply le_trans (finite_probability_mono _ _ ?_) h
+  apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) h
   intro z hz
   rw [mul_assoc, sampling_expected_count]
   exact_mod_cast hz
@@ -59,8 +59,8 @@ theorem randomized_perfect_completeness {r m : ℕ} (C : System r m) (t k : ℕ)
     0 < Fintype.card (Vertex (tests C t k z)) ∧
       (output (tests C t k z)).cliqueNumber = sampleCount t k m := by
   have hN : 0 < sampleCount t k m := by unfold sampleCount; positivity
-  have hcomp := repeated_perfect_completeness C k hC
-  refine ⟨?_, sampled_perfect_completeness (repeated C k) hcomp z⟩
+  have hcomp := Lax253009.TestRepetition.perfect_completeness C k hC
+  refine ⟨?_, Lax253009.TestSampling.perfect_completeness (repeated C k) hcomp z⟩
   obtain ⟨π, hπ⟩ := hcomp
   obtain ⟨a, ha, _⟩ := hπ (z ⟨0, hN⟩)
   have : Nonempty (Vertex (tests C t k z)) := ⟨⟨⟨0, hN⟩, a, ha⟩⟩
@@ -90,8 +90,8 @@ theorem randomized_approximation_decision (ε : ℝ) (hε : 0 < ε) (hε1 : ε �
   · intro hcomp z
     obtain ⟨hN, hclique⟩ := randomized_perfect_completeness C t (repetitions c m) hcomp z
     refine ⟨hN, ?_⟩
-    have hg := sampling_approximation_gap ε hε hε1 f t c hmargin m
-    have hsize := randomized_vertex_bound C f t (repetitions c m) hfree z
+    have hg := Lax253009.SamplingParameters.approximation_gap ε hε hε1 f t c hmargin m
+    have hsize := Lax253009.RandomizedReduction.vertex_bound C f t (repetitions c m) hfree z
     obtain ⟨_, hupper⟩ := hestimate _ hN (output (tests C t (repetitions c m) z))
     rw [hclique] at hupper
     by_contra hnot
@@ -105,7 +105,7 @@ theorem randomized_approximation_decision (ε : ℝ) (hε : 0 < ε) (hε1 : ε �
       (Real.rpow_nonneg (Nat.cast_nonneg _) _)
     exact (not_lt_of_ge (hupper.trans hprod)) hg
   · intro hs
-    apply le_trans (finite_probability_mono _ _ ?_) (randomized_soundness hr C t _ hs)
+    apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) (Lax253009.RandomizedReduction.soundness hr C t _ hs)
     intro z hz
     have hlo := (hestimate _ hz.1 (output (tests C t (repetitions c m) z))).1
     exact (Nat.le_of_lt hz.2).trans hlo

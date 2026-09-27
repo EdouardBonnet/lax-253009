@@ -40,7 +40,7 @@ theorem higher_moment_singleton {ι κ : Type} [Fintype ι] [DecidableEq ι]
     (hij : i ∈ S j) (hunique : ∀ j', i ∈ S j' → j' = j) :
     (𝔼 f : ι → κ, ∏ j, ∏ i ∈ S j, B j (f i)) = 0 := by
   classical
-  rw [higher_moment_factorization]
+  rw [Lax253009.HigherMoments.factorization]
   apply Finset.prod_eq_zero (Finset.mem_univ i)
   have hfilter : (Finset.univ.filter fun j' ↦ i ∈ S j') = {j} := by
     ext j'

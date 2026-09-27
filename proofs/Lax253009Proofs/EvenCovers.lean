@@ -27,7 +27,7 @@ theorem even_cover_character_moment {ι : Type} [Fintype ι] [DecidableEq ι]
       if EvenCover S then 1 else 0 := by
   classical
   unfold character
-  rw [higher_moment_factorization S (fun _ ↦ sign)]
+  rw [Lax253009.HigherMoments.factorization S (fun _ ↦ sign)]
   simp_rw [Finset.prod_const, mean_sign_pow]
   by_cases h : EvenCover S
   · rw [if_pos h]
@@ -49,7 +49,7 @@ theorem even_cover_polynomial_moment {ι α : Type} [Fintype ι] [DecidableEq ι
       ∑ a : Fin m → α, if EvenCover (fun j ↦ S (a j)) then ∏ j, c (a j) else 0 := by
   classical
   simp_rw [Fintype.sum_pow, Finset.prod_mul_distrib, Finset.expect_sum_comm,
-    ← Finset.mul_expect, even_cover_character_moment]
+    ← Finset.mul_expect, Lax253009.EvenCovers.character_moment]
   apply Finset.sum_congr rfl
   intro a _
   split_ifs <;> simp

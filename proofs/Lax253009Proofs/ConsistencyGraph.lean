@@ -99,12 +99,12 @@ theorem consistency_cliqueNumber (C : System r m) :
   classical
   apply le_antisymm
   · obtain ⟨s, hs, hcard⟩ := (graph C).exists_isNClique_cliqueNum
-    obtain ⟨π, hπ⟩ := consistency_soundness C s hs
+    obtain ⟨π, hπ⟩ := Lax253009.CliqueCorrespondence.soundness C s hs
     exact hcard ▸ hπ.trans (Finset.le_sup (f := fun π ↦ (C.acceptedSeeds π).card)
       (Finset.mem_univ π))
   · apply Finset.sup_le
     intro π _
-    obtain ⟨s, hs, hcard⟩ := consistency_completeness C π
+    obtain ⟨s, hs, hcard⟩ := Lax253009.CliqueCorrespondence.completeness C π
     exact hcard ▸ hs.card_le_cliqueNum
 
 /--
@@ -127,7 +127,7 @@ Sum the per-choice bound on accepting local views.
 theorem consistency_vertex_bound (C : System r m) (A : ℕ)
     (hA : ∀ seed, (C.accepting seed).card ≤ A) :
     Fintype.card (Vertex C) ≤ r * A := by
-  rw [consistency_vertex_count]
+  rw [Lax253009.CliqueCorrespondence.vertex_count]
   calc
     ∑ seed, (C.accepting seed).card ≤ ∑ _ : Fin r, A := Finset.sum_le_sum fun i _ ↦ hA i
     _ = r * A := by simp
@@ -142,7 +142,7 @@ theorem consistency_perfect_completeness (C : System r m)
     (h : ∃ π : Oracle m, ∀ seed, seed ∈ C.acceptedSeeds π) :
     (graph C).cliqueNum = r := by
   classical
-  rw [consistency_cliqueNumber, System.optimum]
+  rw [Lax253009.CliqueCorrespondence.cliqueNumber_eq_optimum, System.optimum]
   apply le_antisymm
   · exact Finset.sup_le fun π _ ↦ by simpa using (C.acceptedSeeds π).card_le_univ
   · obtain ⟨π, hπ⟩ := h
@@ -159,7 +159,7 @@ The universal acceptance bound also bounds its maximum.
 theorem consistency_soundness_bound (C : System r m) (s : ℕ)
     (h : ∀ π : Oracle m, (C.acceptedSeeds π).card ≤ s) :
     (graph C).cliqueNum ≤ s := by
-  rw [consistency_cliqueNumber]
+  rw [Lax253009.CliqueCorrespondence.cliqueNumber_eq_optimum]
   exact Finset.sup_le fun π _ ↦ h π
 
 end Lax253009Proofs

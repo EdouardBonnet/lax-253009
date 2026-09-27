@@ -40,7 +40,7 @@ private theorem normalized_second_moment {ι κ : Type} [Fintype ι] [DecidableE
       rw [Finset.expect_comm]
       apply Finset.expect_congr rfl
       intro C _
-      exact balanced_mixed_moment _ _ (balanced_mean_zero n hN B) (balanced_mean_zero n hN C) S T
+      exact Lax253009.ProductMoments.mixed_moment _ _ (balanced_mean_zero n hN B) (balanced_mean_zero n hN C) S T
     simp_rw [hi]
     split_ifs <;> simp
   unfold normalizedSum
@@ -59,13 +59,13 @@ private theorem normalized_correlation_tail {κ : Type} [Fintype κ] [DecidableE
   calc
     _ ≤ probability (fun C : predicates κ n ↦
         (Fintype.card κ : ℝ) * q ≤ |∑ z, sign (B.val z) * sign (C.val z)|) := by
-      apply finite_probability_mono
+      apply Lax253009.FiniteProbability.monotone
       intro C hC
       rw [Fintype.expect_eq_sum_div_card, abs_div, abs_of_pos hM] at hC
       simpa only [mul_comm q] using ((lt_div_iff₀ hM).mp hC).le
     _ ≤ 2 * (Fintype.card κ + 1 : ℝ) *
         Real.exp (-((Fintype.card κ : ℝ) * q) ^ 2 / (2 * Fintype.card κ)) :=
-      balanced_correlation_tail n hn hN B.val _ (mul_nonneg hM.le hq)
+      Lax253009.BalancedPredicates.absolute_correlation_tail n hn hN B.val _ (mul_nonneg hM.le hq)
     _ = _ := by
       congr 2
       field_simp
@@ -87,7 +87,7 @@ theorem high_degree_second_moment {ι κ : Type} [Fintype ι] [DecidableEq ι]
       q ^ l + 2 * (Fintype.card κ + 1 : ℝ) * Real.exp (-(Fintype.card κ : ℝ) * q ^ 2 / 2) := by
   classical
   have hp : (predicates κ n).Nonempty := by
-    rw [← Finset.card_pos, balanced_predicate_count, hN]
+    rw [← Finset.card_pos, Lax253009.BalancedPredicates.count, hN]
     exact Nat.choose_pos (by omega)
   have : Nonempty (predicates κ n) := ⟨⟨hp.choose, hp.choose_spec⟩⟩
   let K := q ^ l + 2 * (Fintype.card κ + 1 : ℝ) * Real.exp (-(Fintype.card κ : ℝ) * q ^ 2 / 2)
@@ -107,7 +107,7 @@ theorem high_degree_second_moment {ι κ : Type} [Fintype ι] [DecidableEq ι]
         calc
           _ ≤ X C ^ S.card := (le_abs_self _).trans_eq (abs_pow _ _)
           _ ≤ X C ^ l := pow_le_pow_of_le_one (hX C).1 (hX C).2 (hdegree S hS)
-      _ ≤ q ^ l + probability (fun C ↦ q < X C) := finite_bounded_power_mean X hX q hq l
+      _ ≤ q ^ l + probability (fun C ↦ q < X C) := Lax253009.FiniteProbability.bounded_power_mean X hX q hq l
       _ ≤ K := add_le_add (le_refl _) (normalized_correlation_tail n hn hN B q hq)
   rw [normalized_second_moment n hN]
   calc
@@ -132,8 +132,8 @@ theorem high_degree_tail {ι κ : Type} [Fintype ι] [DecidableEq ι]
     probability (fun f : ι → κ ↦ a ≤ normalizedSum supports c n f) ≤
       (q ^ l + 2 * (Fintype.card κ + 1 : ℝ) *
         Real.exp (-(Fintype.card κ : ℝ) * q ^ 2 / 2)) / a ^ 2 := by
-  apply (finite_even_moment_bound _ a ha 2 (by decide)).trans
+  apply (Lax253009.FiniteProbability.even_moment_bound _ a ha 2 (by decide)).trans
   exact div_le_div_of_nonneg_right
-    (high_degree_second_moment n hn hN supports c l hdegree henergy q hq) (sq_nonneg a)
+    (Lax253009.HighDegreeSoundness.second_moment_bound n hn hN supports c l hdegree henergy q hq) (sq_nonneg a)
 
 end Lax253009Proofs

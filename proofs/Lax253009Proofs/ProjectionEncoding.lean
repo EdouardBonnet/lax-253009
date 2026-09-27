@@ -64,7 +64,7 @@ theorem projection_encoding_sound {U Ω W X Y : Type} [Fintype U] [Fintype Ω]
   classical
   let P' := fun a ↦ ((P a).bind (decode ey)).getD (Classical.arbitrary Y)
   let Q' := fun a ↦ ((Q a).bind (decode ex)).getD (Classical.arbitrary X)
-  apply le_trans (finite_probability_mono _ _ ?_) (h P' Q')
+  apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) (h P' Q')
   rintro z ⟨by', bx, hP, hQ, hv, hρ⟩
   obtain ⟨y, hy⟩ : ∃ y, decode ey by' = some y := by
     cases hd : decode ey by' with

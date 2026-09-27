@@ -37,7 +37,7 @@ theorem computable_small_value (F : FinBase) (hd : 1 < F.deg) (δ : ℝ) (hδ : 
     dsimp only [s]
     have h := lt_min hγ (by norm_num : (0 : ℝ) < 1)
     linarith
-  obtain ⟨S, hS⟩ := Lax253009Proofs.Amplification.exists_small_value_scheme DinurAlpha (DinurAlpha × DinurAlpha)
+  obtain ⟨S, hS⟩ := Lax253009.Amplification.exists_small_value_scheme DinurAlpha (DinurAlpha × DinurAlpha)
     s (δ ^ 2) hs hs1 (sq_pos_of_pos hδ)
   refine ⟨S, ?_⟩
   intro L hL
@@ -68,8 +68,8 @@ theorem computable_small_value (F : FinBase) (hd : 1 < F.deg) (δ : ℝ) (hδ : 
       Fin.pos_iff_nonempty.mpr ⟨qw.equiv z (Classical.arbitrary _)⟩⟩
   · intro z hz
     apply ProjectionRelabel.complete
-    apply Lax253009Proofs.Amplification.Scheme.transform_complete
-    apply Lax253009Proofs.CenteredProjection.from_constraints_complete
+    apply Lax253009.Amplification.Scheme.transform_complete
+    apply Lax253009.CenteredProjection.from_constraints_complete
     apply GapBridge.system_complete
     exact ConstraintGraph.satisfiable_preprocess_of_satisfiable _ _ (hyes z hz)
   · intro z hz
@@ -77,17 +77,17 @@ theorem computable_small_value (F : FinBase) (hd : 1 < F.deg) (δ : ℝ) (hδ : 
     letI : Nonempty ((C z).preprocess E).graph.V :=
       inferInstanceAs (Nonempty (C z).HalfEdge)
     apply ProjectionRelabel.sound
-    apply Lax253009Proofs.CenteredProjection.center_sound_of_sym _ δ hδ.le
+    apply Lax253009.CenteredProjection.center_sound_of_sym _ δ hδ.le
     apply hS (C z).HalfEdge (ConstraintGraph.PreDart E × Bool)
       ((C z).HalfEdge × ConstraintGraph.PreDart E) (B z)
-      (Lax253009Proofs.CenteredProjection.from_constraints_uniform (R z))
-    apply Lax253009Proofs.CenteredProjection.symmetrize_sound
+      (Lax253009.CenteredProjection.from_constraints_uniform (R z))
+    apply Lax253009.CenteredProjection.symmetrize_sound
     intro P Q
     have hgap : γ ≤ (((C z).preprocess E).unsatVal : ℝ) := by
       apply le_trans _ ((C z).le_unsatVal_preprocess E)
       apply mul_le_mul_of_nonneg_left _ (Dinur.preprocessConst_pos E).le
       exact_mod_cast hno z hz
-    have hg := Lax253009Proofs.CenteredProjection.from_constraints_sound (R z) γ
+    have hg := Lax253009.CenteredProjection.from_constraints_sound (R z) γ
       (GapBridge.system_sound _ γ hgap) P Q
     apply hg.trans
     dsimp only [s]

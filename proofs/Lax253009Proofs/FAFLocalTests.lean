@@ -111,7 +111,7 @@ theorem faf_local_passes {U Ω W : Type} [Fintype U] [Fintype Ω] [Fintype W]
     let A := fun ω ↦ larger π (question z.1 ω)
     let p := FAFPatterns.transcript (ρ z.1) (valid z.1) R A z.2.1.1 z.2.1.2 z.2.2
     have hp : p ∈ FAFPatterns.patterns (ρ z.1) (valid z.1) z.2.1.1 z.2.1.2 z.2.2 :=
-      faf_transcript_mem _ _ R A _ _ _ h
+      Lax253009.FAFPatterns.transcript_mem _ _ R A _ _ _ h
     have hext : ∀ j, Extends π (parts question z p j) := by
       apply (parts_extend_iff question z p π).mpr
       refine ⟨fun _ ↦ rfl, ?_⟩
@@ -137,7 +137,7 @@ theorem faf_local_free_bits {U Ω W : Type} [Fintype U] [Fintype Ω] [Fintype W]
     ∀ seed, ((system (n := n) (s := s) (q := q) question ρ valid).accepting seed).card ≤
       2 ^ (q + n * s) := by
   intro seed
-  exact Finset.card_image_le.trans ((Finset.card_filter_le _ _).trans (faf_free_bits _ _ _ _ _))
+  exact Finset.card_image_le.trans ((Finset.card_filter_le _ _).trans (Lax253009.FAFPatterns.free_bits _ _ _ _ _))
 
 /--
 ---
@@ -154,7 +154,7 @@ theorem faf_local_probability {U Ω W : Type} [Fintype U] [Fintype Ω] [Fintype 
         question ρ valid (reference π) (larger π)) := by
   symm
   exact finite_probability_equiv (randomEquiv U Ω u w n s q) _ _
-    (fun z ↦ (faf_local_passes question ρ valid π z).symm)
+    (fun z ↦ (Lax253009.FAFLocalTests.passes_iff question ρ valid π z).symm)
 
 /--
 ---
@@ -176,7 +176,7 @@ theorem faf_local_perfect_completeness {U Ω W : Type} [Fintype U] [Fintype Ω] 
   refine ⟨π, ?_⟩
   intro seed
   obtain ⟨z, rfl⟩ := (randomEquiv U Ω u w n s q).surjective seed
-  apply (faf_local_passes question ρ valid π z).mpr
+  apply (Lax253009.FAFLocalTests.passes_iff question ρ valid π z).mpr
   have hR : reference π = fun v ↦ evaluation (Q v) := by
     funext v g
     simp [reference, π, evaluation]
@@ -184,7 +184,7 @@ theorem faf_local_perfect_completeness {U Ω W : Type} [Fintype U] [Fintype Ω] 
     funext v g
     simp [larger, π, evaluation]
   rw [hR, hA]
-  exact faf_perfect_completeness _ _ (Q z.1) (fun ω ↦ P (question z.1 ω))
+  exact Lax253009.FAFTest.perfect_completeness _ _ (Q z.1) (fun ω ↦ P (question z.1 ω))
     (hvalid z.1) (hproject z.1) _ _ _
 
 /--
@@ -205,12 +205,12 @@ theorem faf_local_soundness (l : ℕ) (hl : 0 < l) :
             FAFComposition.gameThreshold l s) →
         Sound (system (n := 10 * l) (s := s) (q := 10 * l * s) question ρ valid)
           ((1 / 2 : ℝ) ^ (20 * l * l * s)) := by
-  obtain ⟨s₀, hs₀⟩ := faf_composition_soundness l hl
+  obtain ⟨s₀, hs₀⟩ := Lax253009.FAFComposition.soundness l hl
   refine ⟨s₀, fun s hs ↦ ?_⟩
   obtain ⟨w₀, hw₀⟩ := hs₀ s hs
   refine ⟨w₀, fun w hw ↦ ?_⟩
   intro U Ω W _ _ _ _ _ _ u question ρ valid hgame π
-  rw [faf_local_probability]
+  rw [Lax253009.FAFLocalTests.acceptance_probability]
   exact (hw₀ w hw u question ρ valid (reference π) (larger π) hgame).le
 
 /--

@@ -101,9 +101,9 @@ theorem many_tables_low_diversity {ι Ω X : Type} [Fintype ι] [DecidableEq ι]
   have hb : 0 ≤ b := by dsimp [b]; positivity
   calc
     _ ≤ probability (fun w ↦ ∃ J : Finset ι, J.card ≤ k ∧ Covered S J w) :=
-      finite_probability_mono _ _ (low_diversity_representatives S k)
+      Lax253009.FiniteProbability.monotone _ _ (low_diversity_representatives S k)
     _ ≤ ∑ J : Finset ι, probability (fun w ↦ J.card ≤ k ∧ Covered S J w) :=
-      finite_probability_finite_union _
+      Lax253009.FiniteProbability.finite_union_bound _
     _ ≤ ∑ _J : Finset ι, b ^ (Fintype.card ι - k) := by
       apply Finset.sum_le_sum
       intro J _
@@ -139,7 +139,7 @@ private theorem random_functions_monochromatic {X : Type} [Fintype X] [Decidable
       2 * (1 / 2 : ℝ) ^ K.card := by
     calc
       _ ≤ ∑ b : Bool, probability (fun g : X → Bool ↦ ∀ x ∈ K, g x = b) :=
-        finite_probability_finite_union _
+        Lax253009.FiniteProbability.finite_union_bound _
       _ = _ := by simp_rw [random_function_fixed_on]; simp
   calc
     _ ≤ ∏ _j : Fin q, (2 * (1 / 2 : ℝ) ^ K.card) :=
@@ -215,15 +215,15 @@ theorem many_tables_agreement {ι Ω X : Type} [Fintype ι] [DecidableEq ι]
   calc
     _ ≤ probability (fun z : (ι → Ω) × (Fin q → X → Bool) ↦
         LowDiversity S k z.1 ∨ HighAgreement S k q z.1 z.2) := by
-      apply finite_probability_mono
+      apply Lax253009.FiniteProbability.monotone
       rintro ⟨w, g⟩ ⟨y, hy, hg⟩
       by_cases hk : (Finset.univ.image y).card ≤ k
       · exact Or.inl ⟨y, hy, hk⟩
       · exact Or.inr ⟨y, hy, Nat.lt_of_not_ge hk, hg⟩
     _ ≤ probability (fun z : (ι → Ω) × (Fin q → X → Bool) ↦ LowDiversity S k z.1) +
         probability (fun z : (ι → Ω) × (Fin q → X → Bool) ↦ HighAgreement S k q z.1 z.2) :=
-      finite_probability_union _ _
-    _ ≤ _ := add_le_add (hlow ▸ many_tables_low_diversity S B k p hp hB hpoint hsmall)
+      Lax253009.FiniteProbability.union_bound _ _
+    _ ≤ _ := add_le_add (hlow ▸ Lax253009.ManyTableConsistency.low_diversity_bound S B k p hp hB hpoint hsmall)
       (finite_probability_product_bound _ _ (high_agreement_probability S B k q hB))
 
 end Lax253009Proofs

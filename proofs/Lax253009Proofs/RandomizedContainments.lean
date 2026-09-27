@@ -1,5 +1,6 @@
 import Lax253009.RandomizedContainments
 import Lax253009Proofs.RegisteredBridge.RandomizedContainments
+import Lax666725.ZPPSubsetOneSided
 
 namespace Lax253009Proofs
 
@@ -23,6 +24,7 @@ verifier then supplies an NP certificate.
 -/
 theorem zpp_subset_np :
     Lax666725.ZeroError.ZPP ⊆ Lax434930.NondeterministicPolynomialTime.NP :=
-  RegisteredBridge.registered_ZPP_subset_NP
+  fun _ hL ↦ Lax253009.RandomizedContainments.RP_subset_NP
+    (Lax666725.ZPPSubsetOneSided.ZPP_subset_RP_inter_coRP hL).1
 
 end Lax253009Proofs

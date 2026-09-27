@@ -156,8 +156,8 @@ Apply the polynomial estimate to the Fourier expansion and use Parseval.
 theorem fourier_low_degree_fourth_moment {ι : Type} [Fintype ι] [DecidableEq ι]
     (F : Cube ι → ℝ) (l : ℕ) (hdegree : ∀ S, l < S.card → coefficient F S = 0) :
     (𝔼 x, F x ^ 4) ≤ ((3 : ℝ) ^ l * (𝔼 x, F x ^ 2)) ^ 2 := by
-  have h := low_degree_fourth_moment (coefficient F) l hdegree
-  simp_rw [← fourier_inversion, fourier_parseval, fourier_average_expect] at h
+  have h := Lax253009.Hypercontractivity.fourth_moment (coefficient F) l hdegree
+  simp_rw [← Lax253009.BooleanFourier.inversion, Lax253009.BooleanFourier.parseval, fourier_average_expect] at h
   exact h
 
 theorem fourier_product_coefficient {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -166,7 +166,7 @@ theorem fourier_product_coefficient {ι : Type} [Fintype ι] [DecidableEq ι]
       ∑ S, coefficient F S * coefficient G (S ∆ U) := by
   classical
   change average (fun x ↦ F x * G x * character U x) = _
-  conv_lhs => enter [1, x]; rw [fourier_inversion F]
+  conv_lhs => enter [1, x]; rw [Lax253009.BooleanFourier.inversion F]
   simp only [Finset.sum_mul]
   rw [average_sum]
   apply Finset.sum_congr rfl
@@ -210,10 +210,10 @@ theorem fourier_power_degree {ι : Type} [Fintype ι] [DecidableEq ι]
   | zero =>
     intro S hS
     have hne : S ≠ ∅ := by intro he; simp [he] at hS
-    simpa [coefficient, character, eq_comm, hne] using fourier_orthogonality ∅ S
+    simpa [coefficient, character, eq_comm, hne] using Lax253009.BooleanFourier.orthogonality ∅ S
   | succ k ih =>
     simpa only [pow_succ, Nat.mul_succ] using
-      fourier_product_degree (fun x ↦ F x ^ k) F (l * k) l ih hF
+      Lax253009.Hypercontractivity.product_degree (fun x ↦ F x ^ k) F (l * k) l ih hF
 
 /--
 ---
@@ -229,7 +229,7 @@ theorem fourier_dyadic_moment {ι : Type} [Fintype ι] [DecidableEq ι]
   induction k with
   | zero => simp
   | succ k ih =>
-    have h := fourier_low_degree_fourth_moment (fun x ↦ F x ^ (2 ^ k)) (l * 2 ^ k)
+    have h := Lax253009.Hypercontractivity.fourier_fourth_moment (fun x ↦ F x ^ (2 ^ k)) (l * 2 ^ k)
       (fourier_power_degree F l hdegree (2 ^ k))
     have h4 : 2 ^ k * 4 = 2 ^ (k + 1 + 1) := by ring
     have h2 : 2 ^ k * 2 = 2 ^ (k + 1) := by ring
@@ -282,7 +282,7 @@ theorem fourier_bounded_moment {ι : Type} [Fintype ι] [DecidableEq ι]
     _ = 1 + (𝔼 x, F x ^ (2 ^ (m + 1))) := by
       rw [Finset.expect_add_distrib, Fintype.expect_const]
     _ ≤ 1 + (3 : ℝ) ^ (l * m * 2 ^ m) * (𝔼 x, F x ^ 2) ^ (2 ^ m) :=
-      add_le_add (le_refl 1) (fourier_dyadic_moment F l m hdegree)
+      add_le_add (le_refl 1) (Lax253009.Hypercontractivity.dyadic_moment F l m hdegree)
     _ ≤ _ := add_le_add (le_refl 1) (mul_le_mul_of_nonneg_left
       (pow_le_pow_left₀ hE0 hvariance (2 ^ m))
       (show 0 ≤ (3 : ℝ) ^ (l * m * 2 ^ m) by positivity))
@@ -308,7 +308,7 @@ theorem fourier_character_degree {ι : Type} [Fintype ι] [DecidableEq ι]
     ∀ U, l < U.card → coefficient (character S) U = 0 := by
   intro U hU
   have hne : S ≠ U := by rintro rfl; omega
-  exact (fourier_orthogonality S U).trans (if_neg hne)
+  exact (Lax253009.BooleanFourier.orthogonality S U).trans (if_neg hne)
 
 theorem fourier_const_degree {ι : Type} [Fintype ι] [DecidableEq ι] (c : ℝ) :
     ∀ S : Finset ι, 0 < S.card → coefficient (fun _ ↦ c) S = 0 := by
@@ -329,7 +329,7 @@ theorem fourier_finset_product_degree {ι α : Type} [Fintype ι] [DecidableEq �
   | empty => simpa using fourier_const_degree (ι := ι) 1
   | @insert a s ha ih =>
     simp only [Finset.sum_insert ha, Finset.prod_insert ha]
-    exact fourier_product_degree (F a) (fun x ↦ ∏ b ∈ s, F b x) (d a) (∑ b ∈ s, d b)
+    exact Lax253009.Hypercontractivity.product_degree (F a) (fun x ↦ ∏ b ∈ s, F b x) (d a) (∑ b ∈ s, d b)
       (h a (Finset.mem_insert_self _ _)) (ih (fun b hb ↦ h b (Finset.mem_insert_of_mem hb)))
 
 end Lax253009Proofs

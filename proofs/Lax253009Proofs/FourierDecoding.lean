@@ -16,8 +16,8 @@ theorem fourier_decoding_bound {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : Cube ι → Bool) (l : ℕ) (t : ℝ) :
     ((decodingSet (coefficient (fun x ↦ sign (A x))) l (Real.rpow 2 (-t))).card : ℝ) ≤
       Real.rpow 2 t := by
-  have h := small_support_bound (coefficient (fun x ↦ sign (A x))) l (Real.rpow 2 (-t))
-    (Real.rpow_pos_of_pos (by norm_num) _) (fourier_boolean_energy A).le
+  have h := Lax253009.SmallSupport.decodingSet_bound (coefficient (fun x ↦ sign (A x))) l (Real.rpow 2 (-t))
+    (Real.rpow_pos_of_pos (by norm_num) _) (Lax253009.BooleanFourier.boolean_energy A).le
   simpa [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2), one_div] using h
 
 /--
@@ -38,7 +38,7 @@ theorem fourier_decoding_projection {ι : Type} [Fintype ι] [DecidableEq ι]
   have hpos : 0 < l := (Finset.card_pos.mpr ⟨i, hiS⟩).trans_le hcard
   have hsub : S ⊆ U := by
     by_contra hn
-    rw [fourier_projection, if_neg hn] at hlarge
+    rw [Lax253009.FourierProjection.coefficient_project, if_neg hn] at hlarge
     have hmass : (0 : ℝ) < (l : ℝ) * δ := mul_pos (by exact_mod_cast hpos) hδ
     norm_num at hlarge
     linarith
@@ -47,6 +47,6 @@ theorem fourier_decoding_projection {ι : Type} [Fintype ι] [DecidableEq ι]
   refine ⟨S, ?_, hiS⟩
   apply Finset.mem_filter.mpr
   refine ⟨Finset.mem_univ _, hcard, ?_⟩
-  simpa [fourier_projection, hsub] using hlarge
+  simpa [Lax253009.FourierProjection.coefficient_project, hsub] using hlarge
 
 end Lax253009Proofs

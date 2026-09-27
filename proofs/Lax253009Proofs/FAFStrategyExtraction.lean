@@ -53,7 +53,7 @@ theorem faf_strategy_extraction {U Ω W : Type}
         funext ω
         simp only [Lax253009.FAFTest.projected, Finset.mem_image, Finset.mem_filter, Relation]
         aesop
-      exact faf_acceptance_bound u w n s q (ρ v) (valid v) (R v)
+      exact Lax253009.FAFTest.acceptance_bound u w n s q (ρ v) (valid v) (R v)
         (fun ω ↦ A (question v ω)) (fun ω ↦ D (question v ω)) B k p δ hp
         (fun ω ↦ hB _) (fun ω h ↦ hdecode _ h) hpoint hsmall
   have hmass : probability (Lax253009.FAFStrategyExtraction.Accepts
@@ -64,7 +64,7 @@ theorem faf_strategy_extraction {U Ω W : Type}
       _ ≤ 𝔼 v : U, ((if C v then (1 : ℝ) else 0) + E) :=
         Finset.expect_le_expect (fun v _ ↦ hcond v)
       _ = _ := by rw [Finset.expect_add_distrib, Fintype.expect_const, ← finite_probability_indicator]
-  obtain ⟨P, Q, hPQ⟩ := decoded_prover_strategies question (Relation ρ valid) D B hB p hp
+  obtain ⟨P, Q, hPQ⟩ := Lax253009.DecodedStrategies.extract_strategies question (Relation ρ valid) D B hB p hp
   refine ⟨P, Q, le_trans ?_ hPQ⟩
   apply div_le_div_of_nonneg_right _ (by positivity)
   exact mul_le_mul_of_nonneg_right (by linarith) hp
@@ -89,7 +89,7 @@ theorem faf_uniform_strategy_extraction (K : ℕ) (hK : 0 < K) :
           (probability (Lax253009.FAFStrategyExtraction.Accepts (n := n) (s := s) (q := q) question ρ valid R A) -
             errorBound n (2 ^ s) k q p (Real.rpow 2 (-(K : ℝ) * (s : ℝ)))) * p / ((2 : ℝ) ^ s + 1) ≤
           probability (Wins question (Relation ρ valid) P Q) := by
-  obtain ⟨s₀, hs₀⟩ := cna_soundness_with_side_conditions 1 (by norm_num) K hK
+  obtain ⟨s₀, hs₀⟩ := Lax253009.CNASoundness.with_side_conditions 1 (by norm_num) K hK
   refine ⟨s₀, fun s hs ↦ ?_⟩
   obtain ⟨w₀, hw₀⟩ := hs₀ s hs
   refine ⟨w₀, fun w hw ↦ ?_⟩
@@ -100,7 +100,7 @@ theorem faf_uniform_strategy_extraction (K : ℕ) (hK : 0 < K) :
     change ((D a).card : ℝ) ≤ (2 : ℝ) ^ ((1 : ℝ) * (s : ℝ)) at hc
     simp only [one_mul, Real.rpow_natCast] at hc
     exact_mod_cast hc
-  have hres := faf_strategy_extraction u w n s q question ρ valid R A D (2 ^ s) k p
+  have hres := Lax253009.FAFStrategyExtraction.finite_extraction u w n s q question ρ valid R A D (2 ^ s) k p
     (Real.rpow 2 (-(K : ℝ) * (s : ℝ))) hp (Real.rpow_pos_of_pos (by norm_num) _).le
     hB hdecode (by simpa only [Nat.cast_pow, Nat.cast_ofNat] using hsmall)
   simpa only [Nat.cast_pow, Nat.cast_ofNat] using hres

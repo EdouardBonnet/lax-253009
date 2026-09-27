@@ -30,9 +30,9 @@ theorem perfect (E : ∀ x, SlotGraph.Enumeration (C x) (2 ^ f)) (hr : ∀ x, 0 
   let seed : Fin N → Fin k → Fin (r x) := fun i j ↦
     ⟨SamplingAlgorithms.draw (N * k) (r x) coins (i.val * k + j.val), Nat.mod_lt _ (hr x)⟩
   have h := (SlotGraph.optimum_bounds (RepeatedSlotViews.repeatedEnumeration (E x) k N seed)).1
-  have hcomp := sampled_perfect_completeness (repeated (C x) k)
-    (repeated_perfect_completeness (C x) k hC) (fun i ↦ seedEquiv (r x) k (seed i))
-  rw [reduction_cliqueNumber] at hcomp
+  have hcomp := Lax253009.TestSampling.perfect_completeness (repeated (C x) k)
+    (Lax253009.TestRepetition.perfect_completeness (C x) k hC) (fun i ↦ seedEquiv (r x) k (seed i))
+  rw [Lax253009.EncodedReduction.cliqueNumber_output] at hcomp
   rw [hcomp] at h
   exact h
 
@@ -42,8 +42,8 @@ theorem sound (E : ∀ x, SlotGraph.Enumeration (C x) (2 ^ f)) (hr : ∀ x, 0 < 
       threshold (m x) ≤ (graph E hr t c x (List.ofFn coins)).cliqueNumber) ≤ 1 / 3 := by
   have hk : 0 < repetitions c (m x) := Nat.mul_pos hc (by omega)
   have hN : 0 < sampleCount t (repetitions c (m x)) (m x) := by unfold sampleCount; positivity
-  have hh := MatrixSampling.one_third hN hk (hr x) _ (randomized_soundness (hr x) (C x) t _ hC)
-  apply le_trans (finite_probability_mono _ _ ?_) hh
+  have hh := MatrixSampling.one_third hN hk (hr x) _ (Lax253009.RandomizedReduction.soundness (hr x) (C x) t _ hC)
+  apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) hh
   intro coins hg
   rw [graph_of_coins] at hg
   have hu := (SlotGraph.optimum_bounds
@@ -52,7 +52,7 @@ theorem sound (E : ∀ x, SlotGraph.Enumeration (C x) (2 ^ f)) (hr : ∀ x, 0 < 
   change threshold (m x) ≤
     (EncodedReduction.output (sampled (repeated (C x) (repetitions c (m x)))
       (fun i ↦ seedEquiv (r x) _ (MatrixSampling.sample (hr x) coins i)))).cliqueNumber
-  rw [reduction_cliqueNumber]
+  rw [Lax253009.EncodedReduction.cliqueNumber_output]
   have ht : 1 < threshold (m x) := by unfold threshold; omega
   omega
 
@@ -87,7 +87,7 @@ theorem approximation_decision (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
   · intro hC coins
     have hlarge := perfect E hr t c x coins hC
     have hhi := (he _ (size_pos f t c (m x)) (graph E hr t c x coins)).2
-    have hgap := sampling_approximation_gap ε hε hε1 f t c hmargin (m x)
+    have hgap := Lax253009.SamplingParameters.approximation_gap ε hε hε1 f t c hmargin (m x)
     rw [← size_eq] at hgap
     by_contra hn
     have hn' : (estimate (graph E hr t c x coins).encode : ℝ) ≤ threshold (m x) := by
@@ -98,7 +98,7 @@ theorem approximation_decision (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
         (graph E hr t c x coins).cliqueNumber := by exact_mod_cast hlarge
     exact (not_lt_of_ge (hlarge'.trans (hhi.trans hprod))) hgap
   · intro hC
-    apply le_trans (finite_probability_mono _ _ ?_) (sound E hr t c hc x hC)
+    apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) (sound E hr t c hc x hC)
     intro coins hcoin
     exact (Nat.le_of_lt hcoin).trans (he _ (size_pos f t c (m x))
       (graph E hr t c x (List.ofFn coins))).1

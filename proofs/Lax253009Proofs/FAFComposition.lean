@@ -36,7 +36,7 @@ theorem faf_composition_soundness (l : ℕ) (hl : 0 < l) :
           probability (Lax253009.DecodedStrategies.Wins question (Relation ρ valid) P Q) < gameThreshold l s) →
         probability (Lax253009.FAFStrategyExtraction.Accepts (n := 10 * l) (s := s) (q := 10 * l * s)
           question ρ valid R A) < (1 / 2 : ℝ) ^ (20 * l * l * s) := by
-  obtain ⟨s₁, hs₁⟩ := faf_uniform_strategy_extraction (40 * l * l) (by positivity)
+  obtain ⟨s₁, hs₁⟩ := Lax253009.FAFStrategyExtraction.uniform_extraction (40 * l * l) (by positivity)
   obtain ⟨s₂, hs₂⟩ := eventually_atTop.mp (faf_parameter_bounds l hl)
   refine ⟨max s₁ s₂, fun s hs ↦ ?_⟩
   obtain ⟨w₀, hw₀⟩ := hs₁ s ((le_max_left _ _).trans hs)

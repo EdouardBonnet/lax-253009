@@ -50,13 +50,13 @@ theorem random_small_fiber {ι κ : Type} [Fintype ι] [DecidableEq ι]
     ring
   calc
     _ ≤ probability (fun f : ι → κ ↦ t ≤ ∑ i, X (f i)) := by
-      apply finite_probability_mono
+      apply Lax253009.FiniteProbability.monotone
       intro f hf
       rw [hs, htwice]
       change (fiber f z).card < t at hf
       linarith
     _ ≤ Real.exp (-t ^ 2 / (2 * Fintype.card ι)) :=
-      independent_bounded_upper_tail (fun _ ↦ X) (fun _ ↦ hX) (fun _ ↦ hm) hN t ht
+      Lax253009.ExponentialBounds.independent_bounded_upper_tail (fun _ ↦ X) (fun _ ↦ hX) (fun _ ↦ hm) hN t ht
     _ = _ := by
       congr 1
       dsimp [t]
@@ -77,9 +77,9 @@ theorem random_any_small_fiber {ι κ : Type} [Fintype ι] [DecidableEq ι]
         Real.exp (-(Fintype.card ι : ℝ) / (8 * (Fintype.card κ : ℝ) ^ 2)) := by
   calc
     _ ≤ ∑ z, probability (fun f : ι → κ ↦ (fiber f z).card <
-        (Fintype.card ι : ℝ) / (2 * Fintype.card κ)) := finite_probability_finite_union _
+        (Fintype.card ι : ℝ) / (2 * Fintype.card κ)) := Lax253009.FiniteProbability.finite_union_bound _
     _ ≤ ∑ _z : κ, Real.exp (-(Fintype.card ι : ℝ) / (8 * (Fintype.card κ : ℝ) ^ 2)) :=
-      Finset.sum_le_sum fun z _ ↦ random_small_fiber hN z
+      Finset.sum_le_sum fun z _ ↦ Lax253009.RandomFibers.small_fiber hN z
     _ = _ := by simp
 
 end Lax253009Proofs

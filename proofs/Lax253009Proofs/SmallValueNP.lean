@@ -38,7 +38,7 @@ theorem small_value_np (δ : ℝ) (hδ : 0 < δ) :
           ∃ u o w : ℕ, 0 < u ∧ 0 < o ∧ 0 < w ∧ u + o + w ≤ K * (z.length + 1) ^ e ∧
             ∃ G : System (Fin u) (Fin o) (Fin w) (Fin x) (Fin y),
               (z ∈ L → G.Complete) ∧ (z ∉ L → G.Sound δ) := by
-  obtain ⟨x, y, K, e, hx, hy, hred⟩ := small_value_satisfiability δ hδ
+  obtain ⟨x, y, K, e, hx, hy, hred⟩ := Lax253009.SmallValueSatisfiability.reduction δ hδ
   refine ⟨x, y, hx, hy, ?_⟩
   intro L hL
   obtain ⟨E, Φ, hEfp, hE, h3, hchar⟩ := RegisteredBridge.registered_exists_reduction_cnf hL

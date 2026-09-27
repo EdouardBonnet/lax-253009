@@ -29,7 +29,7 @@ private theorem isolated_label_correlation {ι κ : Type} [DecidableEq ι]
     intro h
     obtain ⟨i, hi, he⟩ := Finset.mem_image.mp h
     exact hisolated i (Finset.mem_erase.mp hi).2 (Finset.mem_erase.mp hi).1 he
-  have hb := balanced_bounded_support_correlation n hN U F hF hdepends (f y) hyU
+  have hb := Lax253009.BalancedCancellation.bounded_support_correlation n hN U F hF hdepends (f y) hyU
   have he (B : predicates κ n) : (∏ i ∈ S, sign (B.val (f i))) = sign (B.val (f y)) * F B.val :=
     (Finset.mul_prod_erase S (fun i ↦ sign (B.val (f i))) hy).symm
   simp_rw [he]

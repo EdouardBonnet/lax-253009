@@ -16,7 +16,7 @@ theorem side_query_projection {w s : ℕ} (A : Table w) (f : Fin s → Coordinat
     (h : Coordinate w) (hpass : AcceptsWithCondition A f h)
     (g : Coordinate w) (hg : Queried f g) :
     project (fun q ↦ sign (A q)) (satisfying h) g = sign (A g) := by
-  apply fourier_projection_constant
+  apply Lax253009.FourierProjection.constant_fiber
   intro q hq
   apply congrArg sign
   symm

@@ -106,7 +106,7 @@ theorem tuple_sampler_mixing {A : Type} [Fintype A] [Nonempty A]
     unfold indicator
     split_ifs <;> simp
   rw [hp]
-  have h := tuple_restriction_correlation t ht f hf S
+  have h := Lax253009.TupleAveraging.restriction_correlation t ht f hf S
   simpa only [sq_abs] using h
 
 end Lax253009Proofs

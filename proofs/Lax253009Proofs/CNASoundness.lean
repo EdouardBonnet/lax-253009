@@ -34,8 +34,8 @@ theorem cna_soundness_with_side_conditions (ε : ℝ) (hε : 0 < ε)
   refine ⟨w₀, fun w hw A ↦ ?_⟩
   have hF (g : Cube (Word w)) : |sign (A g)| ≤ 1 := by cases A g <;> norm_num [sign]
   refine ⟨decoding (fun g ↦ sign (A g)) l (α ^ s),
-    (cna_decoding_card _ hF l hl _ (pow_pos hα s)).trans hcard, fun h ↦ ?_⟩
-  have hb := cna_quantitative_soundness w s l m r hspos hl hlN
+    (Lax253009.CNAPointSoundness.decoding_card _ hF l hl _ (pow_pos hα s)).trans hcard, fun h ↦ ?_⟩
+  have hb := Lax253009.CNAQuantitativeSoundness.quantitative_soundness w s l m r hspos hl hlN
     (α ^ s) (((3 : ℝ) / 4) ^ s) (pow_pos hα s) (by positivity)
     (pow_le_one₀ (by norm_num) (by norm_num)) hr hm hlarge A h
   have he : Real.rpow 2 (-(k : ℝ) * (s : ℝ)) = ((2 : ℝ) ^ (k * s))⁻¹ := by
@@ -54,8 +54,6 @@ conclusion: Lax253009.CNASoundness.without_side_conditions
 ---
 Use the side-condition theorem with the constant true condition. Agreement
 on that condition is equality of functions, so its extra checks are automatic.
-Use the proved side-condition theorem directly, with no archive statement
-assumption.
 -/
 theorem cna_soundness_from_side_conditions (ε : ℝ) (hε : 0 < ε)
     (k : ℕ) (hk : 0 < k) :
@@ -63,13 +61,13 @@ theorem cna_soundness_from_side_conditions (ε : ℝ) (hε : 0 < ε)
       ∀ A : Table w, ∃ S : Finset (Word w),
         (S.card : ℝ) ≤ Real.rpow 2 (ε * (s : ℝ)) ∧
         probability (Bad (s := s) A S) ≤ Real.rpow 2 (-(k : ℝ) * (s : ℝ)) := by
-  obtain ⟨s₀, hs₀⟩ := cna_soundness_with_side_conditions ε hε k hk
+  obtain ⟨s₀, hs₀⟩ := Lax253009.CNASoundness.with_side_conditions ε hε k hk
   refine ⟨s₀, fun s hs ↦ ?_⟩
   obtain ⟨w₀, hw₀⟩ := hs₀ s hs
   refine ⟨w₀, fun w hw A ↦ ?_⟩
   obtain ⟨S, hcard, hsound⟩ := hw₀ w hw A
   refine ⟨S, hcard, ?_⟩
-  apply le_trans (finite_probability_mono _ (BadWithCondition A S (fun _ ↦ true)) ?_)
+  apply le_trans (Lax253009.FiniteProbability.monotone _ (BadWithCondition A S (fun _ ↦ true)) ?_)
     (hsound (fun _ ↦ true))
   intro f hf
   refine ⟨⟨hf.1, ?_⟩, ?_⟩

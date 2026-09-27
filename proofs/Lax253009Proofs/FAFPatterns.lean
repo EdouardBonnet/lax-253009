@@ -46,7 +46,7 @@ theorem faf_free_bits {Ω : Type} {u w n s q : ℕ}
       rw [Fintype.card_piFinset]
       calc
         _ ≤ ∏ _i : Fin n, 2 ^ s :=
-          Finset.prod_le_prod (fun _ _ ↦ Nat.zero_le _) (fun i _ ↦ longCode_side_free_bits _ _)
+          Finset.prod_le_prod (fun _ _ ↦ Nat.zero_le _) (fun i _ ↦ Lax253009.LongCodePatterns.side_free_bits _ _)
         _ = _ := by simp
     _ = _ := by simp [Word, ← pow_mul, pow_add, Nat.mul_comm]
 

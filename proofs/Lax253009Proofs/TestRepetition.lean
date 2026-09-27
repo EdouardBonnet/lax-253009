@@ -73,7 +73,7 @@ theorem repeated_probability {r m : ℕ} (C : System r m) (k : ℕ) (π : Oracle
     probability (Passes (repeated C k) π) = probability (Passes C π) ^ k := by
   calc
     _ = probability (fun z : Fin k → Fin r ↦ ∀ i, Passes C π (z i)) :=
-      finite_probability_equiv (seedEquiv r k).symm _ _ (repeated_passes C k π)
+      finite_probability_equiv (seedEquiv r k).symm _ _ (Lax253009.TestRepetition.passes_iff C k π)
     _ = ∏ _i : Fin k, probability (Passes C π) :=
       finite_probability_pi (fun (_ : Fin k) z ↦ Passes C π z)
     _ = _ := by simp
@@ -104,7 +104,7 @@ The same perfect proof works in every repetition.
 theorem repeated_perfect_completeness {r m : ℕ} (C : System r m) (k : ℕ) (hC : Complete C) :
     Complete (repeated C k) := by
   obtain ⟨π, hπ⟩ := hC
-  exact ⟨π, fun z ↦ (repeated_passes C k π z).mpr (fun i ↦ hπ _)⟩
+  exact ⟨π, fun z ↦ (Lax253009.TestRepetition.passes_iff C k π z).mpr (fun i ↦ hπ _)⟩
 
 /--
 ---
@@ -115,7 +115,7 @@ Apply the exact probability identity to every fixed proof.
 theorem repeated_soundness {r m : ℕ} (C : System r m) (k : ℕ) (p : ℝ) (_hp : 0 ≤ p)
     (hC : Sound C p) : Sound (repeated C k) (p ^ k) := by
   intro π
-  rw [repeated_probability]
+  rw [Lax253009.TestRepetition.acceptance_probability]
   exact pow_le_pow_left₀ (finite_probability_nonneg _) (hC π) k
 
 end Lax253009Proofs

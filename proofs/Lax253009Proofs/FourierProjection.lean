@@ -43,7 +43,7 @@ private theorem character_splice (U S : Finset ι) (x y : Cube ι) :
 
 private theorem average_character (S : Finset ι) :
     average (character S) = if S = ∅ then 1 else 0 := by
-  convert fourier_orthogonality S ∅ using 1
+  convert Lax253009.BooleanFourier.orthogonality S ∅ using 1
   congr 1
   funext x
   simp [character]
@@ -62,7 +62,7 @@ private theorem project_expansion (F : Cube ι → ℝ) (U : Finset ι) (x : Cub
       (if S ⊆ U then coefficient F S else 0) * character S x := by
   classical
   unfold project
-  conv_lhs => enter [1, y]; rw [fourier_inversion F]
+  conv_lhs => enter [1, y]; rw [Lax253009.BooleanFourier.inversion F]
   rw [average_sum]
   apply Finset.sum_congr rfl
   intro S _
@@ -84,7 +84,7 @@ theorem fourier_projection (F : Cube ι → ℝ) (U S : Finset ι) :
   unfold coefficient
   simp_rw [project_expansion, Finset.sum_mul, mul_assoc]
   rw [average_sum]
-  simp_rw [average_mul, fourier_orthogonality]
+  simp_rw [average_mul, Lax253009.BooleanFourier.orthogonality]
   simp [coefficient]
 
 /--

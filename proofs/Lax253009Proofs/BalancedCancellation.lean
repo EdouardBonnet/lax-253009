@@ -84,7 +84,7 @@ theorem balanced_bounded_support_correlation {κ : Type} [Fintype κ] [Decidable
       (S.card : ℝ) / ((Fintype.card κ : ℝ) - S.card) := by
   classical
   have hp : (predicates κ n).Nonempty := by
-    rw [← Finset.card_pos, balanced_predicate_count, hN]
+    rw [← Finset.card_pos, Lax253009.BalancedPredicates.count, hN]
     exact Nat.choose_pos (by omega)
   have : Nonempty (predicates κ n) := ⟨⟨hp.choose, hp.choose_spec⟩⟩
   let R : κ → ℝ := fun z ↦ 𝔼 B : predicates κ n, sign (B.val z) * F B.val
@@ -139,7 +139,7 @@ theorem balanced_small_support_correlation {κ : Type} [Fintype κ] [DecidableEq
     (n : ℕ) (hN : Fintype.card κ = 2 * n) (S : Finset κ) (y : κ) (hy : y ∉ S) :
     |𝔼 B : predicates κ n, character (insert y S) B.val| ≤
       (S.card : ℝ) / ((Fintype.card κ : ℝ) - S.card) := by
-  have hb := balanced_bounded_support_correlation n hN S (character S)
+  have hb := Lax253009.BalancedCancellation.bounded_support_correlation n hN S (character S)
     (fun B ↦ (absolute_character S B).le)
     (fun B C h ↦ Finset.prod_congr rfl (fun z hz ↦ congrArg sign (h z hz))) y hy
   simpa only [character, Finset.prod_insert hy] using hb

@@ -19,6 +19,12 @@ subDir = "concepts"
 name = "Lax253009"
 
 [[require]]
+name = "Lax759944"
+git = "https://github.com/szymtor/RAM-TM"
+rev = "134e398cef46599371df99f10c9007bc34ba3868"
+subDir = "concepts"
+
+[[require]]
 name = "Lax666725"
 git = "https://github.com/EdouardBonnet/randomized-complexity"
 rev = "31864d7e719d388b3d682a807fa2e56c8f9e0ae6"

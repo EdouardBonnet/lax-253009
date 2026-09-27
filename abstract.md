@@ -3,7 +3,15 @@ $n^{1-\varepsilon}$-approximation of Max-Clique would imply
 $\mathrm{NP}=\mathrm{ZPP}$ [\[1\]](#ref-Hastad1999Clique).
 We prove this theorem using NP from lax-434930 and ZPP from lax-666725,
 and its consequence under $\mathrm{NP}\nsubseteq\mathrm{BPP}$ using the
-imported ZPP ⊆ BPP inclusion. All 166 local statements have closed proofs.
+imported ZPP ⊆ BPP inclusion. The 166 statements in this deterministic
+approximation development have closed proofs.
+
+We also state the randomized promise-gap form for Max Independent Set:
+for each integer $q\geq3$, a bounded-error polynomial-time algorithm
+distinguishing $\alpha(G)\leq n^{1/q}$ from
+$\alpha(G)\geq n^{1-1/q}$ on sufficiently large graphs would imply
+$\mathrm{NP}\subseteq\mathrm{BPP}$. This additional statement is an
+explicit unproven axiom.
 
 The approximation returns an integer estimate $a(G)$ satisfying
 $a(G)\leq\omega(G)\leq n^{1-\varepsilon}a(G)$ on every nonempty graph.

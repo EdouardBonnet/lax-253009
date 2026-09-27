@@ -11,6 +11,7 @@ DATABASE = Path(os.environ.get("LAX_HOME", Path.home() / ".lax")) / "lax-databas
 HARDNESS = "Lax253009.CliqueHardness.approximation_implies_np_eq_zpp"
 ZPP_BPP = "Lax666725.ZPPSubsetBPP.ZPP_subset_BPP"
 BPP_CONSEQUENCE = "Lax253009.BPPConsequence.approximation_implies_np_subset_bpp"
+ASSUMED_GAP = "Lax253009.IndependentSetGapHardness.gapSolver_implies_np_subset_bpp"
 EXPECTED_CONDITIONAL = {
     "Lax253009Proofs.clique_approximation_implies_np_subset_bpp": {HARDNESS, ZPP_BPP},
     "Lax253009Proofs.clique_not_approximable_of_np_ne_zpp": {HARDNESS},
@@ -40,7 +41,7 @@ def main():
         for concept in local["concepts"] for statement in concept["statements"]
     }
     conclusions = {proof["conclusion"] for proof in local["proofs"]}
-    require(statements <= conclusions,
+    require(statements - conclusions == {ASSUMED_GAP},
             f"unexpected statements without proof entries: {statements - conclusions}")
 
     # Read the dependency closure from generated archive metadata. A proof is
@@ -64,7 +65,7 @@ def main():
         closed.update(new)
     require(ZPP_BPP in closed, "the imported ZPP ⊆ BPP proof is not closed")
     unresolved = statements - closed
-    require(not unresolved,
+    require(unresolved == {ASSUMED_GAP},
             f"unexpected proof closure: {sorted(unresolved)}")
     independent = sum(not proof["assumptions"] for proof in local["proofs"])
     print(f"{len(local['concepts'])} concepts; {len(local['proofs'])} proof entries")
@@ -72,7 +73,8 @@ def main():
           f"{len(actual_conditional)} deductions with closed archive dependencies")
     print("Imported ZPP ⊆ BPP: proved with closed upstream dependencies")
     print(f"{len(statements & closed)} of {len(statements)} local statements proved")
-    print("No open roots or unresolved consequences.")
+    print(f"Explicit unproven randomized gap theorem: {ASSUMED_GAP}")
+    print("No other open roots or unresolved consequences.")
 
 
 if __name__ == "__main__":

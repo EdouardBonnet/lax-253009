@@ -6,11 +6,20 @@ Source: [Håstad, Acta Mathematica 182 (1999), 105–142](https://doi.org/10.100
 
 ## Current proof status
 
-The submission contains 63 concepts and 166 proof entries. Of the proofs,
+The submission contains 65 concepts and 166 proof entries. Of the proofs,
 163 use only Lean's background axioms; three deductions have explicit archive
-statement dependencies whose proofs are also closed. All 166 local statements
-are proved, including `Lax253009.CliqueHardness.approximation_implies_np_eq_zpp`
+statement dependencies whose proofs are also closed. The 166 statements in the
+deterministic approximation development are proved, including
+`Lax253009.CliqueHardness.approximation_implies_np_eq_zpp`
 (Theorem 5.2).
+
+The additional `IndependentSetGapHardness.gapSolver_implies_np_subset_bpp`
+statement is explicitly unproven. It states the randomized promise-gap
+form for Independent Set: for each integer `q ≥ 3`, a bounded-error
+polynomial-time solver distinguishing `α(G) ≤ n^(1/q)` from
+`α(G) ≥ n^(1−1/q)` for sufficiently large graphs implies `NP ⊆ BPP`.
+`IndependentSetGap` specifies its finite-Turing machine, graph encoding,
+polynomial random-tape bound, and two-sided error guarantee.
 
 Theorems 4.17 and 4.2 are proved with no archive statement assumptions.
 Theorem 4.2 follows from the proved Theorem 4.17 by choosing the constant true
@@ -212,7 +221,8 @@ produce the exact registered procedure. `FairTestCompiler.zeroTest_in_ZPP`
 proves its branchwise correctness and success probability.
 
 The main theorem combines this construction with registered ZPP ⊆ NP.
-No proof obligations remain.
+This completes the deterministic approximation theorem. The separate
+randomized promise-gap statement remains an explicit unproven axiom.
 
 ## Validation
 
@@ -227,5 +237,6 @@ The build compiles both packages, replays their kernel proofs, and checks
 all concept/proof annotations and axiom hygiene. The audit checks that the
 only statement assumptions are those of the three documented deductions,
 verifies the upstream ZPP ⊆ BPP proof closure, and requires every local
-statement to have a closed proof dependency chain.
+statement other than the explicitly assumed randomized gap theorem to have a
+closed proof dependency chain.
 The generated build output and Lake artifacts are ignored by Git.

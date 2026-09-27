@@ -61,3 +61,5 @@ import Lax253009.Amplification
 import Lax253009.SmallValueSatisfiability
 import Lax253009.SmallValueNP
 import Lax253009.RandomizedContainments
+import Lax253009.IndependentSetGap
+import Lax253009.IndependentSetGapHardness

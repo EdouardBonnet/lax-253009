@@ -6,8 +6,8 @@ Nothing has been submitted or registered remotely.
 
 ## Current proof status
 
-The submission contains 62 concepts and 163 proof entries. Of the proofs,
-160 use only Lean's background axioms; three are conditional deductions with
+The submission contains 63 concepts and 165 proof entries. Of the proofs,
+162 use only Lean's background axioms; three are conditional deductions with
 explicit archive statement dependencies. The full inapproximability theorem
 is **not yet proved**.
 
@@ -176,6 +176,10 @@ integer-estimator comparison is polynomial-time even for large outputs.
 The computational Dinur port supplies a nonempty encoded gap graph for
 every registered NP language. The finite small-value game reduction now
 applies to those languages with answer alphabets fixed before the language.
+The reverse multitape-to-stack simulation now proves equality with the
+registered deterministic class, including input conversion, output extraction,
+cleanup, and a polynomial clock. A finite-coin simulator and an explicit
+certificate-pair decoder prove RP ⊆ NP and ZPP ⊆ NP for the registered classes.
 
 ## Remaining proof development
 
@@ -189,12 +193,15 @@ The principal remaining tasks are:
    implementing the proved finite FAF test and its numbered local views.
 3. Uniform polynomial-time machine implementations of the proved graph
    construction, repetition, and fair-bit sampler, followed by the final
-   NP = ZPP implication, including its zero-error witness-search step.
+   NP = ZPP implication. RP ⊆ NP and ZPP ⊆ NP are proved; the converse
+   collapse needs a registered implementation of the randomized reduction
+   and the combination of complementary one-sided algorithms.
 
 The finite transfer now proves the approximation exponent and polynomial
-graph-size bound. Its running-time certificate remains open. The imported NP and ZPP
-use distinct concrete machine representations; their required simulation
-and reduction implementations remain part of the final proof obligation.
+graph-size bound. Its running-time certificate remains open. Deterministic
+model equivalence and randomized certificate verification are proved. A
+probabilistic-machine implementation of the complete reduction and the
+zero-error combination still belong to the final proof obligation.
 
 ## Validation
 

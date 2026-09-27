@@ -49,10 +49,12 @@ target soundness. The sequence is fixed before the question spaces, with
 constant answer alphabets, polynomial question-space growth, and perfect
 completeness. No parallel-repetition theorem is assumed.
 
-There are 160 proofs with no archive statement assumptions and three explicit
+There are 162 proofs with no archive statement assumptions and three explicit
 conditional deductions. An explicit simulation connects registered NP
 verifiers to the computational Cook–Levin and Dinur constructions. It also
 handles arbitrary binary outputs and the clique estimator's comparison.
+The reverse simulation proves deterministic model equivalence. Explicit
+random-tape verification proves RP ⊆ NP and ZPP ⊆ NP in the registered models.
 Uniform polynomial-time implementations of the complete amplification,
 FAF and sampled graph constructions, and the final NP = ZPP deduction
 remain unfinished.

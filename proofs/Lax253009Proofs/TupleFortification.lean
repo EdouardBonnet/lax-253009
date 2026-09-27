@@ -173,18 +173,18 @@ theorem lift_fortified {Z W A B : Type}
   rw [restricted_identity, rectangle_identity]
   have h := subdensity_soundness G hl hr s hs hG (density t P S) (density t Q T)
     (density_nonneg t P S) (density_nonneg t Q T)
-    (fun w ↦ by rw [density_mass]; exact (tuple_sampler_bounds t ht S w).2)
-    (fun w ↦ by rw [density_mass]; exact (tuple_sampler_bounds t ht T w).2)
+    (fun w ↦ by rw [density_mass]; exact (Lax253009.TupleSampler.bounds t ht S w).2)
+    (fun w ↦ by rw [density_mass]; exact (Lax253009.TupleSampler.bounds t ht T w).2)
     (probability S) (probability T)
     ⟨finite_probability_nonneg S, finite_probability_le_one S⟩
     ⟨finite_probability_nonneg T, finite_probability_le_one T⟩
   simp_rw [density_mass] at h
   have hS : (𝔼 w, |mass t S w - probability S|) ≤ r := by
-    have hb := (tuple_sampler_mixing t ht S).trans htr
+    have hb := (Lax253009.TupleSampler.mixing t ht S).trans htr
     nlinarith [Finset.expect_nonneg (fun w (_ : w ∈ Finset.univ) ↦
       abs_nonneg (mass t S w - probability S))]
   have hT : (𝔼 w, |mass t T w - probability T|) ≤ r := by
-    have hb := (tuple_sampler_mixing t ht T).trans htr
+    have hb := (Lax253009.TupleSampler.mixing t ht T).trans htr
     nlinarith [Finset.expect_nonneg (fun w (_ : w ∈ Finset.univ) ↦
       abs_nonneg (mass t T w - probability T))]
   have he : (s + 1) * ((𝔼 w, |mass t S w - probability S|) +

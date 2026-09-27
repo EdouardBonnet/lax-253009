@@ -33,7 +33,7 @@ theorem symmetrize_sound {U Ω W X Y : Type}
   apply finite_probability_product_bound (β := U × Ω)
     (fun ω z ↦ G.symmetrize.Wins P Q ((swapLast U Ω).symm (ω, z))) s
   intro ω
-  apply le_trans (finite_probability_mono _ _ ?_)
+  apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_)
     (h P (fun u ↦ G.project u ω (Q (G.question u ω))))
   intro z hz
   exact ⟨hz.1, hz.2.2⟩
@@ -139,7 +139,7 @@ theorem fortify_sym_sound {U Ω W X Y : Type}
   intro P Q
   rw [finite_probability_equiv (fortifyEquiv U Ω W t) ((G.fortify t).symmetrize.Wins P Q)
     ((lift G.symmetrize t).Wins P Q) (fun _ ↦ Iff.rfl)]
-  exact TupleLift.lift_soundness G.symmetrize t ht s h P Q
+  exact Lax253009.TupleFortification.soundness G.symmetrize t ht s h P Q
 
 theorem fortify_sym_fortified {U Ω W X Y : Type}
     [Fintype U] [Nonempty U] [Fintype Ω] [Nonempty Ω]
@@ -158,7 +158,7 @@ theorem fortify_sym_fortified {U Ω W X Y : Type}
     (fun z ↦ S ((G.fortify t).symmetrize.left z) ∧ T ((G.fortify t).symmetrize.right z))
     (fun z ↦ S ((lift G.symmetrize t).left z) ∧ T ((lift G.symmetrize t).right z))
     (fun _ ↦ Iff.rfl)]
-  exact TupleLift.lift_fortified G.symmetrize (symmetrize_uniform_left G hu)
+  exact Lax253009.TupleFortification.fortification G.symmetrize (symmetrize_uniform_left G hu)
     (symmetrize_uniform_right G hu) s hs hs1 h t ht r hr htr P Q S T
 
 def tensorEquiv (U Ω : Type) :
@@ -194,7 +194,7 @@ theorem fortify_square_sound {U Ω W X Y : Type}
   have : Nonempty (Fin t) := Fin.pos_iff_nonempty.mp ht
   intro P Q
   rw [tensor_sym_probability]
-  simpa only [pow_two] using fortified_squaring_sound (G.fortify t).symmetrize s s (4 * r) hs
+  simpa only [pow_two] using Lax253009.FortifiedSquaring.soundness (G.fortify t).symmetrize s s (4 * r) hs
     (fortify_sym_sound G t ht s h)
     (fortify_sym_fortified G hu t ht s hs hs1 h r hr htr) P Q
 
@@ -223,7 +223,7 @@ theorem center_sound_of_sym {U Ω W X Y : Type}
   have hle : (𝔼 u, probability (E u) ^ 2) ≤ probability (G.symmetrize.Wins P P) := by
     simp_rw [← hprod]
     rw [← finite_probability_product (fun (u : U) (z : Ω × Ω) ↦ E u z.1 ∧ E u z.2)]
-    exact finite_probability_mono _ _ (fun z hz ↦
+    exact Lax253009.FiniteProbability.monotone _ _ (fun z hz ↦
       ⟨hz.1.1, hz.2.1, hz.1.2.trans hz.2.2.symm⟩)
   have hc : (𝔼 u, probability (E u)) ^ 2 ≤ 𝔼 u, probability (E u) ^ 2 := by
     have hh := Finset.expect_mul_sq_le_sq_mul_sq (Finset.univ : Finset U)
@@ -243,7 +243,7 @@ conclusion: Lax253009.CenteredProjection.from_constraints_complete
 -/
 theorem from_constraints_complete {V D A : Type}
     (C : ProjectionGames.System V D A) (h : C.Satisfiable) : (fromConstraints C).Complete :=
-  projection_game_complete C h
+  Lax253009.ProjectionGames.completeness C h
 
 /--
 ---
@@ -255,8 +255,8 @@ theorem from_constraints_sound {V D A : Type} [Fintype V] [Nonempty V]
     (C : ProjectionGames.System V D A) (γ : ℝ) (h : C.Sound γ) :
     (fromConstraints C).Sound (1 - γ / 2) := by
   intro P Q
-  have hp := projection_game_sound C γ h (fun w ↦ some (P w)) (fun v ↦ some (Q v))
-  apply le_trans (finite_probability_mono _ _ ?_) hp
+  have hp := Lax253009.ProjectionGames.soundness C γ h (fun w ↦ some (P w)) (fun v ↦ some (Q v))
+  apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) hp
   intro z hz
   exact ⟨P (C.question z.1 z.2), Q z.1, rfl, rfl, hz⟩
 

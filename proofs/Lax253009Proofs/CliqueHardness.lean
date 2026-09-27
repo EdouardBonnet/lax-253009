@@ -1,4 +1,5 @@
 import Lax253009.CliqueHardness
+import Lax253009.RandomizedContainments
 import Lax253009Proofs.RegisteredBridge.FairTestCompiler
 
 set_option backward.isDefEq.respectTransparency false
@@ -27,6 +28,6 @@ theorem clique_approximation_implies_np_eq_zpp (ε : ℝ) (hε : 0 < ε)
   · intro L hL
     obtain ⟨A⟩ := approximation_zero_test algBase one_lt_algBase_deg ε hε happrox L hL
     exact FairTestCompiler.zeroTest_in_ZPP A
-  · exact registered_ZPP_subset_NP
+  · exact Lax253009.RandomizedContainments.ZPP_subset_NP
 
 end Lax253009Proofs

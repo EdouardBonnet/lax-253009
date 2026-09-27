@@ -50,7 +50,7 @@ theorem bernoulli_sampling_tail {Ω : Type} [Fintype Ω] [Nonempty Ω]
   calc
     _ ≤ Real.exp (-Real.log 2 * (4 * N * p)) *
         (𝔼 z : Fin N → Ω, Real.exp (Real.log 2 * (count N P z : ℝ))) :=
-      finite_exponential_markov _ _ _ (by linarith)
+      Lax253009.ExponentialBounds.exponential_markov _ _ _ (by linarith)
     _ ≤ Real.exp (-Real.log 2 * (4 * N * p)) * Real.exp ((N : ℝ) * p) :=
       mul_le_mul_of_nonneg_left hmoment (Real.exp_pos _).le
     _ ≤ _ := by
@@ -92,9 +92,9 @@ theorem bernoulli_sampling_uniform {Ω I : Type} [Fintype Ω] [Nonempty Ω] [Fin
     probability (fun z : Fin N → Ω ↦ ∃ i, 4 * N * p ≤ (count N (P i) z : ℝ)) ≤ 1 / 4 := by
   calc
     _ ≤ ∑ i : I, probability (fun z : Fin N → Ω ↦ 4 * N * p ≤ (count N (P i) z : ℝ)) :=
-      finite_probability_finite_union _
+      Lax253009.FiniteProbability.finite_union_bound _
     _ ≤ ∑ _i : I, Real.exp (-(N : ℝ) * p) :=
-      Finset.sum_le_sum (fun i _ ↦ bernoulli_sampling_tail N (P i) p hp (hP i))
+      Finset.sum_le_sum (fun i _ ↦ Lax253009.BernoulliSampling.upper_tail N (P i) p hp (hP i))
     _ = (Fintype.card I : ℝ) * Real.exp (-(N : ℝ) * p) := by simp
     _ ≤ (2 : ℝ) ^ m * Real.exp (-(N : ℝ) * p) :=
       mul_le_mul_of_nonneg_right (by exact_mod_cast hI) (Real.exp_pos _).le

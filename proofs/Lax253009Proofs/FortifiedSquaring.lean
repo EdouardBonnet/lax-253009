@@ -65,7 +65,7 @@ theorem fortified_squaring_sound {Z W A B : Type} [Fintype Z] [Nonempty Z] [Fint
       (fun w ↦ (Q (G.right z, w)).2) x ∧ S z b (G.left x) ∧ T z b (G.right x)
     have he : probability (fun x ↦ G.DoubleWins P Q (z, x)) ≤
         ∑ b : B, probability (E b) := by
-      apply le_trans (finite_probability_mono _ _ ?_) (finite_probability_finite_union E)
+      apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) (Lax253009.FiniteProbability.finite_union_bound E)
       rintro x ⟨hfirst, hsecond⟩
       refine ⟨G.projectLeft z (P (G.left z, G.left x)).1, hsecond,
         ⟨hfirst.1, rfl⟩, hfirst.2.1, hfirst.2.2.symm⟩

@@ -103,7 +103,7 @@ theorem projection_game_sound {V D A : Type} [Fintype V] [Nonempty V]
   let a : A := Classical.arbitrary A
   let P' := fun z ↦ (P z).getD (a, a)
   let Q' := fun v ↦ (Q v).getD a
-  apply le_trans (finite_probability_mono _ _ ?_) (total_projection_game_sound C γ h P' Q')
+  apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) (total_projection_game_sound C γ h P' Q')
   rintro z ⟨p, x, hp, hx, ht⟩
   simpa [P', Q', hp, hx] using ht
 

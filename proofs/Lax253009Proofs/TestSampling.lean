@@ -34,7 +34,7 @@ Each sample retains the base accepting-view bound.
 theorem sampled_vertex_bound {r m N : ℕ} (C : System r m) (z : Fin N → Fin r)
     (A : ℕ) (hA : ∀ seed, (C.accepting seed).card ≤ A) :
     Fintype.card (Vertex (sampled C z)) ≤ N * A :=
-  consistency_vertex_bound (sampled C z) A (fun i ↦ hA (z i))
+  Lax253009.CliqueCorrespondence.vertex_bound (sampled C z) A (fun i ↦ hA (z i))
 
 /--
 ---
@@ -44,7 +44,7 @@ A globally accepting proof accepts every sample, including repeated seeds.
 -/
 theorem sampled_perfect_completeness {r m N : ℕ} (C : System r m) (hC : Complete C)
     (z : Fin N → Fin r) : (output (sampled C z)).cliqueNumber = N := by
-  rw [reduction_cliqueNumber]
+  rw [Lax253009.EncodedReduction.cliqueNumber_output]
   obtain ⟨π, hπ⟩ := hC
   apply le_antisymm (local_test_optimum_le _)
   have hfull : (sampled C z).acceptedSeeds π = Finset.univ := by
@@ -67,11 +67,11 @@ theorem sampled_soundness {r m N : ℕ} (hr : 0 < r) (C : System r m) (p : ℝ) 
     probability (fun z : Fin N → Fin r ↦
       4 * N * p ≤ ((output (sampled C z)).cliqueNumber : ℝ)) ≤ 1 / 4 := by
   have : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩
-  apply le_trans (finite_probability_mono _
+  apply le_trans (Lax253009.FiniteProbability.monotone _
     (fun z : Fin N → Fin r ↦ ∃ π : Oracle m, 4 * N * p ≤ (count N (Passes C π) z : ℝ)) ?_)
-    (bernoulli_sampling_uniform N m (Passes C) p hp (by simp [Oracle]) hC hN)
+    (Lax253009.BernoulliSampling.uniform_upper_tail N m (Passes C) p hp (by simp [Oracle]) hC hN)
   intro z hz
-  rw [reduction_cliqueNumber] at hz
+  rw [Lax253009.EncodedReduction.cliqueNumber_output] at hz
   obtain ⟨π, hπ⟩ := local_test_optimum_attained (sampled C z)
   exact ⟨π, by simpa only [hπ, sampled_count] using hz⟩
 

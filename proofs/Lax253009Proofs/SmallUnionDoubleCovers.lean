@@ -43,7 +43,7 @@ private theorem double_cover_weight_fintype {ι α : Type} [Fintype ι] [Decidab
     · exact Fintype.prod_equiv e (fun j ↦ c (S j)) (fun j ↦ c (E S j)) (by intro j; simp [E])
     · rfl
   rw [he]
-  exact double_cover_weight_bound c l _ hc hdegree henergy
+  exact Lax253009.DoubleCoverBounds.bound c l _ hc hdegree henergy
 
 private theorem subset_coefficient_sum {ι : Type} [Fintype ι] [DecidableEq ι]
     (c : Finset ι → ℝ) (U : Finset ι) (δ : ℝ) (hsmall : ∀ S, c S ≤ δ) :
@@ -140,7 +140,7 @@ private theorem exists_good_selection {ι : Type} [DecidableEq ι] {m t : ℕ}
     (S : Fin m → Finset ι) (hS : DoubleCover S)
     (ht : (Finset.univ.biUnion S).card = t) (hmt : 2 * t ≤ m) :
     ∃ J : Finset (Fin m), J.card = 2 * t ∧ selectedGood J S t := by
-  obtain ⟨J, hJ, hcover⟩ := double_cover_subcover S hS (2 * t) (by omega) hmt
+  obtain ⟨J, hJ, hcover⟩ := Lax253009.HigherMoments.double_subcover S hS (2 * t) (by omega) hmt
   have hu : Finset.univ.biUnion (fun j : J ↦ S j) = Finset.univ.biUnion S := by
     apply Finset.Subset.antisymm
     · intro i hi

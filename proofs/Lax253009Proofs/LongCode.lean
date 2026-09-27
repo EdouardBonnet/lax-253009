@@ -60,7 +60,7 @@ Functions agreeing on the side condition have equal values at a satisfying word.
 theorem longCode_side_completeness {w s : ℕ} (x : Word w)
     (f : Fin s → Coordinate w) (h : Coordinate w) (hx : h x = true) :
     AcceptsWithCondition (evaluation x) f h := by
-  refine ⟨longCode_completeness x f, ?_⟩
+  refine ⟨Lax253009.LongCodeCorrectness.perfect_completeness x f, ?_⟩
   intro g _ g' hgg'
   exact hgg' x hx
 

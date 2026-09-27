@@ -50,7 +50,7 @@ private theorem mixed_moment_zero {ι κ : Type} [Fintype ι] [DecidableEq ι]
     exact Finset.mem_singleton.mp h
   have he (B : Fin m → predicates κ n) :
       (𝔼 f : ι → κ, ∏ j, ∏ i ∈ S j, sign ((B j).val (f i))) = 0 := by
-    apply higher_moment_singleton S (fun j z ↦ sign ((B j).val z)) _ i j hij huniq
+    apply Lax253009.HigherMoments.singleton_cancellation S (fun j z ↦ sign ((B j).val z)) _ i j hij huniq
     intro j
     rw [Fintype.expect_eq_sum_div_card, balanced_sign_sum n hN (B j), zero_div]
   unfold mixedMoment
@@ -124,7 +124,7 @@ theorem small_coefficient_moment_bound {ι κ : Type} [Fintype ι] [DecidableEq 
           simpa only [A, hdc, and_self, if_true] using hx
         exact hmom.trans (hs.trans (le_add_of_nonneg_right (mul_nonneg (hF S) hH)))
       · have hmom : |mixedMoment (κ := κ) n S| ≤ H := by
-          apply (mixed_predicate_moment_bound n hn hN m S q hq).trans
+          apply (Lax253009.MixedPredicateMoments.bound n hn hN m S q hq).trans
           exact add_le_add (pow_le_pow_of_le_one hq hq1 (by omega)) (le_refl _)
         exact (hbase.trans (mul_le_mul_of_nonneg_left hmom (hF S))).trans
           (le_add_of_nonneg_left (hA S))
@@ -152,10 +152,10 @@ theorem small_coefficient_moment_bound {ι κ : Type} [Fintype ι] [DecidableEq 
       apply add_le_add
       · apply Finset.sum_le_sum
         intro t ht
-        exact small_union_double_cover_bound d l m t δ (fun S ↦ abs_nonneg _)
+        exact Lax253009.SmallUnionDoubleCovers.bound d l m t δ (fun S ↦ abs_nonneg _)
           hsmall hδ hdeg henergy' (by have := Finset.mem_range.mp ht; omega)
       · exact mul_le_mul_of_nonneg_right
-          (double_cover_weight_bound d l m (fun S ↦ abs_nonneg _) hdeg henergy') hH
+          (Lax253009.DoubleCoverBounds.bound d l m (fun S ↦ abs_nonneg _) hdeg henergy') hH
 
 /--
 ---
@@ -172,9 +172,9 @@ theorem small_coefficient_tail {ι κ : Type} [Fintype ι] [DecidableEq ι]
     (hr : 2 * r ≤ m) (hm : Even m) (a : ℝ) (ha : 0 < a) :
     probability (fun f : ι → κ ↦ a ≤ normalizedSum Finset.univ c n f) ≤
       boundValue l m r (Fintype.card κ) δ q / a ^ m := by
-  apply (finite_even_moment_bound _ a ha m hm).trans
+  apply (Lax253009.FiniteProbability.even_moment_bound _ a ha m hm).trans
   exact div_le_div_of_nonneg_right
-    (small_coefficient_moment_bound n hn hN c l m r δ q hsmall hδ hq hq1 hdegree henergy hr)
+    (Lax253009.SmallCoefficientSoundness.moment_bound n hn hN c l m r δ q hsmall hδ hq hq1 hdegree henergy hr)
     (pow_nonneg ha.le m)
 
 end Lax253009Proofs

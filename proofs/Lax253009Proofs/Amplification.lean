@@ -26,7 +26,7 @@ theorem transform_complete {U Ω W X Y : Type} (S : Scheme) (G : System U Ω W X
     (h : G.Complete) : (S.transform G).Complete := by
   induction S with
   | base => exact h
-  | step t S ih => exact Lax253009Proofs.CenteredProjection.tensor_complete _ (Lax253009Proofs.CenteredProjection.fortify_complete _ ih t)
+  | step t S ih => exact Lax253009.CenteredProjection.tensor_complete _ (Lax253009.CenteredProjection.fortify_complete _ ih t)
 
 /--
 ---
@@ -38,7 +38,7 @@ theorem transform_uniform {U Ω W X Y : Type}
     (S : Scheme) (G : System U Ω W X Y) (h : G.Uniform) : (S.transform G).Uniform := by
   induction S with
   | base => exact h
-  | step t S ih => exact Lax253009Proofs.CenteredProjection.tensor_uniform _ (Lax253009Proofs.CenteredProjection.fortify_uniform _ ih t t.pos)
+  | step t S ih => exact Lax253009.CenteredProjection.tensor_uniform _ (Lax253009.CenteredProjection.fortify_uniform _ ih t t.pos)
 
 /--
 ---
@@ -87,7 +87,7 @@ theorem card_extensions {Ω W : Type} [Fintype Ω] [Fintype W] (S : Scheme) :
   | step t S ih =>
     change Fintype.card ((S.extensions Ω W × History t (S.questions W)) ×
       (S.extensions Ω W × History t (S.questions W))) = _
-    simp only [Fintype.card_prod, History, Fintype.card_fun, Fintype.card_fin, ih, card_questions,
+    simp only [Fintype.card_prod, History, Fintype.card_fun, Fintype.card_fin, ih, Lax253009.Amplification.Scheme.card_questions,
       extensionCoefficient, centerPower, extensionPower, pow_mul, pow_add, pow_two]
     ring
 
@@ -100,7 +100,7 @@ theorem size_polynomial {U Ω W : Type} [Fintype U] [Fintype Ω] [Fintype W] (S 
     Fintype.card (S.centers U) + Fintype.card (S.extensions Ω W) + Fintype.card (S.questions W) ≤
       (S.extensionCoefficient + 2) * (Fintype.card U + Fintype.card Ω + Fintype.card W + 1) ^
         (S.centerPower + S.questionPower + S.extensionPower) := by
-  rw [card_centers, card_questions, card_extensions]
+  rw [Lax253009.Amplification.Scheme.card_centers, Lax253009.Amplification.Scheme.card_questions, Lax253009.Amplification.Scheme.card_extensions]
   let N := Fintype.card U + Fintype.card Ω + Fintype.card W + 1
   let e := S.centerPower + S.questionPower + S.extensionPower
   have hN : 1 ≤ N := by dsimp [N]; omega
@@ -149,7 +149,7 @@ theorem exists_geometric_scheme (X Y : Type) [Fintype X] [Nonempty X]
     obtain ⟨t, ht, r, hr, htr, he⟩ := exists_square_parameter (S.centers X) η hη
     refine ⟨.step ⟨t, ht⟩ S, ?_⟩
     intro U Ω W _ _ _ _ _ _ G hu hG
-    have hh := Lax253009Proofs.CenteredProjection.fortify_square_sound (S.transform G) (Scheme.transform_uniform S G hu)
+    have hh := Lax253009.CenteredProjection.fortify_square_sound (S.transform G) (Lax253009.Amplification.Scheme.transform_uniform S G hu)
       t ht v hv.le (hvs.trans (hsq.trans hq).le) (hS U Ω W G hu hG) r hr htr
     rw [he] at hh
     have hvnext : v ^ 2 + η ≤ s * q ^ (n + 1) := by

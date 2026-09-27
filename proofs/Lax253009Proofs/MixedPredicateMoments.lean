@@ -11,7 +11,7 @@ open scoped BigOperators Classical
 theorem balanced_predicates_nonempty {κ : Type} [Fintype κ] [DecidableEq κ]
     (n : ℕ) (hN : Fintype.card κ = 2 * n) : Nonempty (predicates κ n) := by
   have hp : (predicates κ n).Nonempty := by
-    rw [← Finset.card_pos, balanced_predicate_count, hN]
+    rw [← Finset.card_pos, Lax253009.BalancedPredicates.count, hN]
     exact Nat.choose_pos (by omega)
   exact ⟨⟨hp.choose, hp.choose_spec⟩⟩
 
@@ -24,7 +24,7 @@ private theorem balanced_weighted_sum_tail {κ : Type} [Fintype κ] [DecidableEq
   have hs : (predicates κ n).Nonempty := ⟨(Classical.choice hp).val, (Classical.choice hp).property⟩
   have hM : (0 : ℝ) < Fintype.card κ := by exact_mod_cast Fintype.card_pos
   have hsize : (Fintype.card (Cube κ) : ℝ) ≤ (Fintype.card κ + 1 : ℝ) * (predicates κ n).card := by
-    exact_mod_cast balanced_predicate_mass n hN
+    exact_mod_cast Lax253009.BalancedPredicates.central_mass n hN
   have hvar : ∑ z, a z ^ 2 ≤ (Fintype.card κ : ℝ) := by
     calc
       _ ≤ ∑ _z : κ, (1 : ℝ) := Finset.sum_le_sum fun z _ ↦ (sq_le_one_iff_abs_le_one _).mpr (ha z)
@@ -32,9 +32,9 @@ private theorem balanced_weighted_sum_tail {κ : Type} [Fintype κ] [DecidableEq
   calc
     _ ≤ (Fintype.card κ + 1 : ℝ) * probability (fun B : Cube κ ↦
         t ≤ |∑ z, a z * sign (B z)|) :=
-      finite_probability_restriction (α := Cube κ) (predicates κ n) hs _ hsize _
+      Lax253009.FiniteProbability.restriction_bound (α := Cube κ) (predicates κ n) hs _ hsize _
     _ ≤ (Fintype.card κ + 1 : ℝ) * (2 * Real.exp (-t ^ 2 / (2 * Fintype.card κ))) :=
-      mul_le_mul_of_nonneg_left (finite_rademacher_abs_tail a _ hM hvar t ht) (by positivity)
+      mul_le_mul_of_nonneg_left (Lax253009.ExponentialBounds.rademacher_abs_tail a _ hM hvar t ht) (by positivity)
     _ = _ := by ring
 
 private theorem balanced_weighted_tail {κ : Type} [Fintype κ] [DecidableEq κ]
@@ -46,7 +46,7 @@ private theorem balanced_weighted_tail {κ : Type} [Fintype κ] [DecidableEq κ]
   calc
     _ ≤ probability (fun B : predicates κ n ↦
         (Fintype.card κ : ℝ) * q ≤ |∑ z, a z * sign (B.val z)|) := by
-      apply finite_probability_mono
+      apply Lax253009.FiniteProbability.monotone
       intro B hB
       rw [Fintype.expect_eq_sum_div_card, abs_div, abs_of_pos hM] at hB
       simpa only [mul_comm q] using ((lt_div_iff₀ hM).mp hB).le
@@ -143,7 +143,7 @@ theorem mixed_predicate_moment_bound {ι κ : Type} [Fintype ι] [DecidableEq ι
   have hprob : probability bad ≤ (2 : ℝ) ^ m * C := by
     calc
       _ ≤ ∑ T : Finset (Fin m), probability (fun B : Fin m → predicates κ n ↦
-          T.Nonempty ∧ q < |jointCorrelation (n := n) T B|) := finite_probability_finite_union _
+          T.Nonempty ∧ q < |jointCorrelation (n := n) T B|) := Lax253009.FiniteProbability.finite_union_bound _
       _ ≤ ∑ _T : Finset (Fin m), C := by
         apply Finset.sum_le_sum
         intro T _
@@ -153,7 +153,7 @@ theorem mixed_predicate_moment_bound {ι κ : Type} [Fintype ι] [DecidableEq ι
       _ = _ := by simp [Fintype.card_finset]
   have hfactor (B : Fin m → predicates κ n) : R B = ∏ i ∈ U, jointCorrelation (n := n) (J i) B := by
     dsimp only [R]
-    rw [higher_moment_factorization S (fun j z ↦ sign ((B j).val z))]
+    rw [Lax253009.HigherMoments.factorization S (fun j z ↦ sign ((B j).val z))]
     symm
     apply Finset.prod_subset (Finset.subset_univ _)
     intro i _ hi

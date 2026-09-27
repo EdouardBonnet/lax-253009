@@ -22,7 +22,7 @@ theorem faf_perfect_completeness {Ω : Type} {u w n s q : ℕ}
     (ω : Fin n → Ω) (g : Fin q → Coordinate u) (f : Fin n → Fin s → Coordinate w) :
     Lax253009.FAFTest.Accepts ρ valid (evaluation x) (fun ω ↦ evaluation (y ω)) ω g f := by
   intro i
-  apply longCode_side_completeness
+  apply Lax253009.LongCodeCorrectness.side_condition_completeness
   simp [condition, hvalid, hproject, evaluation]
 
 /--
@@ -56,7 +56,7 @@ theorem faf_acceptance_bound {Ω : Type} [Fintype Ω] [Nonempty Ω]
     calc
       _ ≤ ∑ i : Fin n, probability (fun f : F ↦ BadWithCondition
           (A (z.1 i)) (D (z.1 i)) (condition ρ valid R (z.1 i) z.2) (f i)) :=
-        finite_probability_finite_union _
+        Lax253009.FiniteProbability.finite_union_bound _
       _ ≤ ∑ _i : Fin n, δ := by
         apply Finset.sum_le_sum
         intro i _
@@ -84,13 +84,13 @@ theorem faf_acceptance_bound {Ω : Type} [Fintype Ω] [Nonempty Ω]
     exact Finset.mem_image.mpr ⟨y i, Finset.mem_filter.mpr ⟨hy i, (hc i).1⟩, rfl⟩
   have hsize (ω : Ω) : (projected ρ valid D ω).card ≤ B :=
     Finset.card_image_le.trans ((Finset.card_filter_le _ _).trans (hB ω))
-  have hagree := many_tables_agreement (ι := Fin n) (projected ρ valid D) B k q p hp
+  have hagree := Lax253009.ManyTableConsistency.agreement_bound (ι := Fin n) (projected ρ valid D) B k q p hp
     hsize hpoint (by simpa only [Fintype.card_fin] using hsmall)
   simp only [Fintype.card_fin] at hagree
   calc
-    _ ≤ probability (fun z : Z × F ↦ bad z.1 z.2 ∨ good z.1) := finite_probability_mono _ _ hcover
+    _ ≤ probability (fun z : Z × F ↦ bad z.1 z.2 ∨ good z.1) := Lax253009.FiniteProbability.monotone _ _ hcover
     _ ≤ probability (fun z : Z × F ↦ bad z.1 z.2) + probability (fun z : Z × F ↦ good z.1) :=
-      finite_probability_union _ _
+      Lax253009.FiniteProbability.union_bound _ _
     _ ≤ n * δ + probability good := add_le_add hbad hgood.le
     _ ≤ _ := by linarith
 

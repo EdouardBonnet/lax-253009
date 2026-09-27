@@ -133,7 +133,7 @@ theorem fresh_sampling_error {N r : ℕ} (_hN : 0 < N) (hr : 0 < r)
     (Equiv.piCongrRight (fun _ : Fin N ↦ binaryEquiv (bitsPerDraw N r)))
     (fun z ↦ P (sample hr z)) (fun z ↦ P (modulo hr z)) (fun _ ↦ Iff.rfl)
   rw [he]
-  apply (fresh_modulo_error hr (pow_pos (by norm_num) _) P).trans
+  apply (Lax253009.FreshBitSampling.modulo_error hr (pow_pos (by norm_num) _) P).trans
   apply add_le_add le_rfl
   apply (div_le_iff₀ (by positivity)).mpr
   have h := Nat.le_pow_clog (b := 2) (by norm_num) (12 * N * r)
@@ -150,7 +150,7 @@ Add the 1/12 sampling error to the graph construction's 1/4 bound.
 theorem fresh_one_third_error {N r : ℕ} (hN : 0 < N) (hr : 0 < r)
     (P : (Fin N → Fin r) → Prop) (hP : probability P ≤ 1 / 4) :
     probability (fun z : Fin N → Fin (bitsPerDraw N r) → Bool ↦ P (sample hr z)) ≤ 1 / 3 := by
-  have h := fresh_sampling_error hN hr P
+  have h := Lax253009.FreshBitSampling.sampling_error hN hr P
   linarith
 
 /--
@@ -166,7 +166,7 @@ theorem fresh_flat_one_third_error {N r : ℕ} (hN : 0 < N) (hr : 0 < r)
   unfold sampleFlat
   rw [finite_probability_equiv (coinEquiv N (bitsPerDraw N r)) _
     (fun z ↦ P (sample hr z)) (fun _ ↦ Iff.rfl)]
-  exact fresh_one_third_error hN hr P hP
+  exact Lax253009.FreshBitSampling.one_third_error hN hr P hP
 
 /--
 ---

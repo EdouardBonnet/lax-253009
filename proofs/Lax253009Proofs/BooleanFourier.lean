@@ -110,7 +110,7 @@ theorem fourier_inner (F G : Cube ι → ℝ) :
       apply Finset.sum_congr rfl
       intro S _
       ring
-    _ = _ := by simp_rw [← fourier_inversion]; rfl
+    _ = _ := by simp_rw [← Lax253009.BooleanFourier.inversion]; rfl
 
 /--
 ---
@@ -130,7 +130,7 @@ Apply Parseval and use that every sign has square one.
 -/
 theorem fourier_boolean_energy (A : Cube ι → Bool) :
     ∑ S, coefficient (fun x ↦ sign (A x)) S ^ 2 = 1 := by
-  rw [fourier_parseval]
+  rw [Lax253009.BooleanFourier.parseval]
   simp [average, pow_two, sign_sq]
 
 /--
@@ -142,7 +142,7 @@ for side conditions, since every pointwise square is at most one.
 -/
 theorem fourier_bounded_energy (F : Cube ι → ℝ) (hF : ∀ x, |F x| ≤ 1) :
     ∑ S, coefficient F S ^ 2 ≤ 1 := by
-  rw [fourier_parseval]
+  rw [Lax253009.BooleanFourier.parseval]
   unfold average
   rw [div_le_iff₀ (pow_pos (by norm_num : (0 : ℝ) < 2) _)]
   calc

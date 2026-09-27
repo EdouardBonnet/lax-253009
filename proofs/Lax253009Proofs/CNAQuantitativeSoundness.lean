@@ -43,13 +43,13 @@ theorem random_fiber_counting {ι κ : Type} [Fintype ι] [DecidableEq ι] [None
       _ = _ := by simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, T]; field_simp
   calc
     _ ≤ probability (fun f ↦ small f ∨ (Bad f ∧ ¬ small f)) := by
-      apply finite_probability_mono
+      apply Lax253009.FiniteProbability.monotone
       intro f hf
       by_cases hs : small f
       · exact Or.inl hs
       · exact Or.inr ⟨hf, hs⟩
-    _ ≤ probability small + probability (fun f ↦ Bad f ∧ ¬ small f) := finite_probability_union _ _
-    _ ≤ _ := add_le_add (random_any_small_fiber Fintype.card_pos) hgood
+    _ ≤ probability small + probability (fun f ↦ Bad f ∧ ¬ small f) := Lax253009.FiniteProbability.union_bound _ _
+    _ ≤ _ := add_le_add (Lax253009.RandomFibers.any_small_fiber Fintype.card_pos) hgood
 
 private theorem looks_like_same_label {w s : ℕ} (A : Table w)
     (f : Word w → Word s) (x y : Word w)
@@ -91,19 +91,19 @@ theorem cna_quantitative_soundness (w s l m r : ℕ) (hs : 0 < s)
   have hF₀ (g : Cube (Word w)) : |F₀ g| ≤ 1 := by
     dsimp only [F₀]
     cases A g <;> norm_num [sign]
-  have hF (g : Cube (Word w)) : |F g| ≤ 1 := fourier_projection_bounded F₀ hF₀ _ g
+  have hF (g : Cube (Word w)) : |F g| ≤ 1 := Lax253009.FourierProjection.bounded_project F₀ hF₀ _ g
   have hlr : (0 : ℝ) < l := by exact_mod_cast hl
   have hD : decoding F l τ ⊆ D ∩ satisfying h :=
-    fourier_decoding_projection F₀ _ l (τ ^ 2 / l) (div_pos (sq_pos_of_pos hτ) hlr)
+    Lax253009.FourierDecoding.projected_decoding_subset F₀ _ l (τ ^ 2 / l) (div_pos (sq_pos_of_pos hτ) hlr)
   let G := fun (f : Word w → Word s) (y : Word w) ↦
     Matches F n f y ∧ Avoids (decoding F l τ) f y
   have hfiber (f : Word w → Word s) (hf : Bad f) :
       ∃ z, ∀ y, f y = z → G f y := by
-    obtain ⟨x, hx⟩ := longCode_local_decoding A (E.symm f) hf.1.1
+    obtain ⟨x, hx⟩ := Lax253009.LongCodeCorrectness.local_decoding A (E.symm f) hf.1.1
     refine ⟨f x, fun y hy ↦ ?_⟩
     have hylook := looks_like_same_label A f x y hx hy
     refine ⟨fun B ↦ ?_, fun x' hx' heq ↦ ?_⟩
-    · have hp := side_query_projection A (E.symm f) h hf.1
+    · have hp := Lax253009.SideConditionAveraging.query_preserved A (E.symm f) h hf.1
         (compose (E.symm f) B.val) (Or.inr ⟨B.val, rfl⟩)
       exact hp.trans (congrArg sign (hylook.2 B.val))
     · obtain ⟨hxD, hxU⟩ := Finset.mem_inter.mp (hD hx')
@@ -111,7 +111,7 @@ theorem cna_quantitative_soundness (w s l m r : ℕ) (hs : 0 < s)
         looks_like_same_label A f y x' hylook heq⟩
   have hpoint (y : Word w) : probability (fun f : Word w → Word s ↦ G f y) ≤
       pointBound l m r (2 ^ s) τ q := by
-    have he := cna_point_soundness F hF n hn hN l m r hl
+    have he := Lax253009.CNAPointSoundness.point_soundness F hF n hn hN l m r hl
       (by simpa only [hcard] using hlN) τ q hτ hq hq1 hr hm
       (by simpa only [hcard, Nat.cast_pow, Nat.cast_ofNat] using hlarge) y
     simpa only [hcard] using he

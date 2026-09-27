@@ -90,7 +90,7 @@ private theorem colored_energy {ι : Type} [Fintype ι] [DecidableEq ι]
     (c : Finset ι → ℝ) :
     (𝔼 f, coloredPoly c f ^ 2) = ∑ S, c S ^ 2 * (3 : ℝ) ^ S.card := by
   classical
-  have h := balanced_second_moment (ι := ι) Finset.univ c {colored}
+  have h := Lax253009.ProductMoments.second_moment (ι := ι) Finset.univ c {colored}
     (by intro B hB; simpa using (Finset.mem_singleton.mp hB ▸ colored_mean))
   simpa only [weightedSum, Finset.sum_singleton, coloredPoly, ← pow_two, colored_second] using h
 
@@ -119,7 +119,7 @@ private theorem colored_moment_expansion {ι : Type} [Fintype ι] [DecidableEq �
   simp_rw [Fintype.sum_pow, Finset.prod_mul_distrib, Finset.expect_sum_comm, ← Finset.mul_expect]
   apply Finset.sum_congr rfl
   intro S _
-  rw [higher_moment_factorization S (fun _ ↦ colored)]
+  rw [Lax253009.HigherMoments.factorization S (fun _ ↦ colored)]
   simp only [Finset.prod_const]
 
 private theorem double_cover_le_colored_moment {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -163,7 +163,7 @@ theorem double_cover_weight_bound {ι : Type} [Fintype ι] [DecidableEq ι]
     _ ≤ (𝔼 f, coloredPoly c f ^ m) := double_cover_le_colored_moment c m hc
     _ = (𝔼 x, lifted c x ^ m) := (lifted_moment c m).symm
     _ ≤ 1 + (3 : ℝ) ^ (2 * l * m * 2 ^ m) * ((3 : ℝ) ^ l) ^ (2 ^ m) :=
-      fourier_bounded_moment (lifted c) (2 * l) m ((3 : ℝ) ^ l)
+      Lax253009.Hypercontractivity.bounded_moment (lifted c) (2 * l) m ((3 : ℝ) ^ l)
         (lifted_degree c l hdegree) (lifted_variance_bound c l hdegree henergy)
     _ = _ := by
       rw [← pow_mul, ← pow_add]

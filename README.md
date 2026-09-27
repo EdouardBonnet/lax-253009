@@ -6,15 +6,15 @@ Source: [Håstad, Acta Mathematica 182 (1999), 105–142](https://doi.org/10.100
 
 ## Current proof status
 
-The submission contains 63 concepts and 166 proof entries. Of the proofs,
-163 use only Lean's background axioms; three deductions have explicit archive
-statement dependencies whose proofs are also closed. All 166 local statements
-are proved, including `Lax253009.CliqueHardness.approximation_implies_np_eq_zpp`
-(Theorem 5.2).
+The submission contains 63 concepts and 166 proof entries. Proofs use the
+concept statements for previously established results, exposing these
+dependencies in the archive's proof network. All 166 local statements have
+closed proof dependency chains, including
+`Lax253009.CliqueHardness.approximation_implies_np_eq_zpp` (Theorem 5.2).
 
-Theorems 4.17 and 4.2 are proved with no archive statement assumptions.
-Theorem 4.2 follows from the proved Theorem 4.17 by choosing the constant true
-side condition. The finite FAF composition, its free-bit count, and the
+Theorems 4.17 and 4.2 are proved with closed archive dependencies.
+Theorem 4.2 follows from Theorem 4.17 by choosing the constant true side
+condition. The finite FAF composition, its free-bit count, and the
 strategy-extraction argument of Section 5 are also proved. The finite
 game-to-clique transfer is proved, including the exact local-view interface,
 repetition, sparsification, approximation exponent, polynomial vertex bound,
@@ -224,8 +224,9 @@ python3 scripts/audit-proof-closure.py
 ```
 
 The build compiles both packages, replays their kernel proofs, and checks
-all concept/proof annotations and axiom hygiene. The audit checks that the
-only statement assumptions are those of the three documented deductions,
-verifies the upstream ZPP ⊆ BPP proof closure, and requires every local
-statement to have a closed proof dependency chain.
+all concept/proof annotations and axiom hygiene. The audit checks that reused
+proof entries are referenced through their concept statements, verifies the
+upstream ZPP ⊆ BPP proof closure, and requires every local statement to have
+a closed proof dependency chain. It also checks the explicit dependencies
+of the complexity-class consequences.
 The generated build output and Lake artifacts are ignored by Git.

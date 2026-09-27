@@ -36,7 +36,7 @@ noncomputable def dataPatterns {u w n s q : ℕ} (d : Data u w n s q) :
   FAFPatterns.patterns d.1 d.2.1 id d.2.2.1 d.2.2.2
 
 theorem dataPatterns_bound {u w n s q : ℕ} (d : Data u w n s q) :
-    (dataPatterns d).card ≤ 2 ^ (q + n * s) := faf_free_bits _ _ _ _ _
+    (dataPatterns d).card ≤ 2 ^ (q + n * s) := Lax253009.FAFPatterns.free_bits _ _ _ _ _
 
 noncomputable def patternSlot {u w n s q : ℕ} (d : Data u w n s q)
     (j : Fin (2 ^ (q + n * s))) : Option (LongCode.Word q × (Fin n → Pattern w)) :=

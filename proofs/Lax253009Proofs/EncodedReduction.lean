@@ -15,7 +15,7 @@ Compose the consistency-graph correspondence with invariance under numbering.
 -/
 theorem reduction_cliqueNumber {r m : ℕ} (C : System r m) :
     (output C).cliqueNumber = C.optimum := by
-  rw [output, numbered_cliqueNumber, consistency_cliqueNumber]
+  rw [output, Lax253009.GraphEncoding.cliqueNumber_numbered, Lax253009.CliqueCorrespondence.cliqueNumber_eq_optimum]
 
 /--
 ---
@@ -35,7 +35,7 @@ theorem reduction_separates (ε : ℝ) (hε : Approximation.Approximable ε) :
   obtain ⟨estimate, hpoly, happrox⟩ := hε
   refine ⟨estimate, hpoly, fun r m C hN a b hgap ↦ ?_⟩
   obtain ⟨hlower, hupper⟩ := happrox _ hN (output C)
-  rw [reduction_cliqueNumber] at hlower hupper
+  rw [Lax253009.EncodedReduction.cliqueNumber_output] at hlower hupper
   refine ⟨fun hlow ↦ hlower.trans hlow, fun hhigh ↦ ?_⟩
   by_contra hnot
   have hle : estimate (output C).encode ≤ a := Nat.le_of_not_gt hnot

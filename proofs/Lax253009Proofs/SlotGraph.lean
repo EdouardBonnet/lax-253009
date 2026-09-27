@@ -29,7 +29,7 @@ noncomputable def output (E : Enumeration C A) : Graph (r * A) :=
   numbered (graph E) finProdFinEquiv.symm
 
 theorem output_cliqueNumber (E : Enumeration C A) :
-    (output E).cliqueNumber = (graph E).cliqueNum := numbered_cliqueNumber _ _
+    (output E).cliqueNumber = (graph E).cliqueNum := Lax253009.GraphEncoding.cliqueNumber_numbered _ _
 
 theorem completeness (E : Enumeration C A) (π : Oracle m) :
     (C.acceptedSeeds π).card ≤ (graph E).cliqueNum := by

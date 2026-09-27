@@ -33,7 +33,7 @@ theorem approximation_random_test (F : FinBase) (hd : 1 < F.deg)
   obtain ⟨l, hl⟩ := exists_nat_gt (1 / θ)
   have hlpos : 0 < l := by exact_mod_cast (div_pos zero_lt_one hθ).trans hl
   have hlθ : 1 < (l : ℝ) * θ := (div_lt_iff₀ hθ).mp hl
-  obtain ⟨s₀, hs₀⟩ := faf_local_soundness l hlpos
+  obtain ⟨s₀, hs₀⟩ := Lax253009.FAFLocalTests.soundness l hlpos
   let s := max s₀ 1
   have hspos : 0 < s := lt_of_lt_of_le Nat.zero_lt_one (le_max_right _ _)
   obtain ⟨w₀, hw₀⟩ := hs₀ s (le_max_left _ _)
@@ -42,17 +42,17 @@ theorem approximation_random_test (F : FinBase) (hd : 1 < F.deg)
     have hp : 0 < (20 : ℝ) * l * s := by positivity
     have hm : 0 < (l : ℝ) * θ - (1 - θ) := by linarith
     nlinarith [mul_pos hp hm]
-  obtain ⟨c, hc, hcmargin⟩ := sampling_choose_multiplier θ (20 * l * s) (20 * l * l * s) hmargin
+  obtain ⟨c, hc, hcmargin⟩ := Lax253009.SamplingParameters.choose_multiplier θ (20 * l * s) (20 * l * l * s) hmargin
   let δ := FAFComposition.gameThreshold l s / 2
-  have hδ : 0 < δ := half_pos (faf_game_threshold_pos l s)
-  have hδlt : δ < FAFComposition.gameThreshold l s := half_lt_self (faf_game_threshold_pos l s)
+  have hδ : 0 < δ := half_pos (Lax253009.FAFComposition.threshold_positive l s)
+  have hδlt : δ < FAFComposition.gameThreshold l s := half_lt_self (Lax253009.FAFComposition.threshold_positive l s)
   obtain ⟨S, hS⟩ := computable_small_value F hd δ hδ
   let X := S.centers DinurAlpha
   let Y := S.questions (DinurAlpha × DinurAlpha)
   let u := Fintype.card X
   let w := max w₀ (Fintype.card Y)
-  obtain ⟨ix⟩ := projection_encoding_exists (A := X) u le_rfl
-  obtain ⟨iy⟩ := projection_encoding_exists (A := Y) w (le_max_right _ _)
+  obtain ⟨ix⟩ := Lax253009.ProjectionEncoding.encoding_exists (A := X) u le_rfl
+  obtain ⟨iy⟩ := Lax253009.ProjectionEncoding.encoding_exists (A := Y) w (le_max_right _ _)
   intro L hL
   obtain ⟨U, O, W, hU, hO, hW, hpos, G, hG, hyes, hno⟩ := hS L hL
   let H := ComputableProjectionEncoding.encoded ix iy G
@@ -89,9 +89,9 @@ theorem approximation_random_test (F : FinBase) (hd : 1 < F.deg)
     have hcomplete : Complete (C x) := by
       apply hCyes
       obtain ⟨P, Q, hpq⟩ := hyes x hx
-      obtain ⟨hv, hp⟩ := projection_encoding_complete ix iy (G x).question (G x).valid (G x).project
+      obtain ⟨hv, hp⟩ := Lax253009.ProjectionEncoding.completeness ix iy (G x).question (G x).valid (G x).project
         P Q (fun v ω ↦ (hpq v ω).1) (fun v ω ↦ (hpq v ω).2)
-      exact faf_local_perfect_completeness _ _ _ (fun a ↦ iy (P a)) (fun a ↦ ix (Q a)) hv hp
+      exact Lax253009.FAFLocalTests.perfect_completeness _ _ _ (fun a ↦ iy (P a)) (fun a ↦ ix (Q a)) hv hp
     have hh := (hestimate f (20 * l * l * s) c hc hcm E hr x).1
       hcomplete (List.ofFn coins)
     exact (hD x (List.ofFn coins)).mpr hh
@@ -102,10 +102,10 @@ theorem approximation_random_test (F : FinBase) (hd : 1 < F.deg)
       letI : Nonempty (Fin (O x)) := Fin.pos_iff_nonempty.mp (hpos x).2.1
       apply hw₀ w (le_max_left _ _) u (H x).question (H x).project (H x).valid
       intro P Q
-      exact (projection_encoding_sound ix iy (G x).question (G x).valid (G x).project δ
+      exact (Lax253009.ProjectionEncoding.soundness ix iy (G x).question (G x).valid (G x).project δ
         (hno x hx) P Q).trans_lt hδlt
     have hh := (hestimate f (20 * l * l * s) c hc hcm E hr x).2 hsound
-    apply le_trans (finite_probability_mono _ _ ?_) hh
+    apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) hh
     intro coins hcoin
     exact (hD x (List.ofFn coins)).mp hcoin
 

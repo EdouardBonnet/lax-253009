@@ -82,7 +82,7 @@ theorem fourier_disagreement (A : Cube ι → Bool) (y : ι) (S : Finset ι) :
       ((if S = ∅ then 1 else 0) - coefficient (fun x ↦ sign (A x)) (S ∆ {y})) / 2 := by
   have hconst : coefficient (fun _ : Cube ι ↦ (1 : ℝ)) S =
       if S = ∅ then 1 else 0 := by
-    simpa [coefficient, character, eq_comm] using fourier_orthogonality ∅ S
+    simpa [coefficient, character, eq_comm] using Lax253009.BooleanFourier.orthogonality ∅ S
   have hlinear : coefficient (disagreement A y) S =
       (coefficient (fun _ : Cube ι ↦ (1 : ℝ)) S -
         coefficient (fun x ↦ sign (A x) * character {y} x) S) / 2 := by
@@ -90,6 +90,6 @@ theorem fourier_disagreement (A : Cube ι → Bool) (y : ι) (S : Finset ι) :
     rw [average_div, average_sub]
     simp [character]
     rfl
-  rw [hlinear, hconst, fourier_character_shift]
+  rw [hlinear, hconst, Lax253009.FourierIdentities.character_shift]
 
 end Lax253009Proofs

@@ -59,8 +59,8 @@ theorem normalized_acceptance {w s : ℕ} (x₀ : Word w) (A : Table w)
     (f : Fin s → Coordinate w) (hA : Accepts A f) :
     Accepts (oddify x₀ A) f := by
   intro B
-  rw [normalized_same_queries x₀ A f hA _ (Or.inr ⟨B, rfl⟩)]
-  have hi (i : Fin s) := normalized_same_queries x₀ A f hA _ (Or.inl ⟨i, rfl⟩)
+  rw [Lax253009.OddNormalization.same_queries x₀ A f hA _ (Or.inr ⟨B, rfl⟩)]
+  have hi (i : Fin s) := Lax253009.OddNormalization.same_queries x₀ A f hA _ (Or.inl ⟨i, rfl⟩)
   simp_rw [hi]
   exact hA B
 
@@ -74,7 +74,7 @@ queried functions. Such pairs are already consistent and are also kept.
 theorem normalized_side_acceptance {w s : ℕ} (x₀ : Word w) (A : Table w)
     (f : Fin s → Coordinate w) (h : Coordinate w) (hA : AcceptsWithCondition A f h) :
     AcceptsWithCondition (oddify x₀ A) f h := by
-  refine ⟨normalized_acceptance x₀ A f hA.1, ?_⟩
+  refine ⟨Lax253009.OddNormalization.preserves_acceptance x₀ A f hA.1, ?_⟩
   intro g hg g' hgg'
   have heq := hA.2 g hg g' hgg'
   have hneg := hA.2 (negate g) (queried_negate f g hg) (negate g')
@@ -82,7 +82,7 @@ theorem normalized_side_acceptance {w s : ℕ} (x₀ : Word w) (A : Table w)
   have hpair : A (negate g') = !(A g') := by
     rw [← hneg, ← heq]
     exact accepts_negate A f hA.1 g hg
-  rw [normalized_same_queries x₀ A f hA.1 g hg]
+  rw [Lax253009.OddNormalization.same_queries x₀ A f hA.1 g hg]
   simpa only [oddify, if_pos hpair] using heq
 
 end Lax253009Proofs

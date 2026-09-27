@@ -182,7 +182,7 @@ noncomputable def zeroTest {L : Language} (A : CoTest L) (B : CoTest Lᶜ) : Zer
       have hrej : (2 / 3 : ℝ) ≤ probability (fun r : Fin (B.bits x) → Bool ↦
           ¬ B.accepts (pair x (List.ofFn r))) := by rw [probability_not]; linarith
       rw [← probability_second (A.bits x) (B.bits x)] at hrej
-      refine hrej.trans (finite_probability_mono _ _ ?_)
+      refine hrej.trans (Lax253009.FiniteProbability.monotone _ _ ?_)
       intro r hr
       rw [combine_coins]
       by_cases ha : A.accepts (pair x (List.ofFn (blockFst (A.bits x) (B.bits x) r))) <;> simp [hr, ha]
@@ -190,7 +190,7 @@ noncomputable def zeroTest {L : Language} (A : CoTest L) (B : CoTest Lᶜ) : Zer
       have hrej : (2 / 3 : ℝ) ≤ probability (fun r : Fin (A.bits x) → Bool ↦
           ¬ A.accepts (pair x (List.ofFn r))) := by rw [probability_not]; linarith
       rw [← probability_first (A.bits x) (B.bits x)] at hrej
-      refine hrej.trans (finite_probability_mono _ _ ?_)
+      refine hrej.trans (Lax253009.FiniteProbability.monotone _ _ ?_)
       intro r hr
       rw [combine_coins]
       simp [hr]

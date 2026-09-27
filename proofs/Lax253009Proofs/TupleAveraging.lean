@@ -42,7 +42,7 @@ theorem tuple_variance_bound {A : Type} [Fintype A] [Nonempty A]
     nlinarith [sq_nonneg μ]
   have hmix (i j : Fin t) : (𝔼 z : Fin t → A, g (z i) * g (z j)) =
       if i = j then (𝔼 a, g a ^ 2) else 0 := by
-    have h := balanced_mixed_moment g g hg hg {i} {j}
+    have h := Lax253009.ProductMoments.mixed_moment g g hg hg {i} {j}
     simpa only [Finset.prod_singleton, Finset.singleton_inj, Finset.card_singleton,
       pow_one, ← pow_two] using h
   have hsum : (𝔼 z : Fin t → A, (∑ i, g (z i)) ^ 2) =
@@ -82,7 +82,7 @@ theorem tuple_restriction_correlation {A : Type} [Fintype A] [Nonempty A]
     (fun z ↦ if S z then (1 : ℝ) else 0) X
   have hi : (𝔼 z, (if S z then (1 : ℝ) else 0) ^ 2) ≤ 1 :=
     Finset.expect_le Finset.univ_nonempty fun z _ ↦ by split_ifs <;> norm_num
-  have hv := tuple_variance_bound t ht f hf
+  have hv := Lax253009.TupleAveraging.variance_bound t ht f hf
   calc
     _ = (𝔼 z, (if S z then (1 : ℝ) else 0) * X z) ^ 2 := by
       rw [sq_abs]

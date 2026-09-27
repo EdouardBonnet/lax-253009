@@ -187,7 +187,7 @@ theorem finite_probability_finset_union {α ι : Type} [Fintype α]
     (s : Finset ι) (P : ι → α → Prop) :
     probability (fun x ↦ ∃ i ∈ s, P i x) ≤ ∑ i ∈ s, probability (P i) := by
   classical
-  have h := finite_probability_finite_union (fun i : s ↦ P i.val)
+  have h := Lax253009.FiniteProbability.finite_union_bound (fun i : s ↦ P i.val)
   have he : (∑ i : s, probability (P i.val)) = ∑ i ∈ s, probability (P i) :=
     Finset.sum_coe_sort s (fun i ↦ probability (P i))
   rw [he] at h

@@ -176,6 +176,11 @@ integer-estimator comparison is polynomial-time even for large outputs.
 The computational Dinur port supplies a nonempty encoded gap graph for
 every registered NP language. The finite small-value game reduction now
 applies to those languages with answer alphabets fixed before the language.
+Explicit product, tuple, and sum encodings supply polynomial-time numbering
+in both directions. The regularized projection-game queries, every fixed
+fortification and squaring stage, and binary answer encoding are now proved
+polynomial-time. These combine into `computable_small_value`, a uniform
+small-value game reduction for each registered NP language.
 The reverse multitape-to-stack simulation now proves equality with the
 registered deterministic class, including input conversion, output extraction,
 cleanup, and a polynomial clock. A finite-coin simulator and an explicit
@@ -185,20 +190,22 @@ certificate-pair decoder prove RP ⊆ NP and ZPP ⊆ NP for the registered class
 
 The principal remaining tasks are:
 
-1. A polynomial-time implementation of the complete soundness-amplification
-   construction. The registered NP-to-3-SAT machine bridge, the algorithmic
-   Dinur gap construction, and the regularization subroutines are proved.
-   The full finite amplification has proved soundness and polynomial size.
-2. A uniform polynomial-time PCP verifier, with logarithmic random bits,
-   implementing the proved finite FAF test and its numbered local views.
-3. Uniform polynomial-time machine implementations of the proved graph
-   construction, repetition, and fair-bit sampler, followed by the final
-   NP = ZPP implication. RP ⊆ NP and ZPP ⊆ NP are proved; the converse
-   collapse needs a registered implementation of the randomized reduction
-   and the combination of complementary one-sided algorithms.
+1. Complete the uniform polynomial-time FAF transcript and compatibility
+   queries, and their composition with logarithmic repetition. Computing
+   the sampled relation tables and selecting a candidate transcript from
+   fixed finite data are proved polynomial-time.
+2. Assemble the full sampled graph algorithm. A fixed array of transcript
+   slots has proved clique bounds; unused slots are isolated. Adjacency-matrix
+   construction is proved polynomial-time given transcript queries. Sampling
+   each base seed separately has proved error at most 1/3, and its concrete
+   bit-list algorithm and all sampling parameters are polynomial-time.
+3. Compile the randomized reduction into the registered probabilistic model
+   and combine complementary one-sided algorithms into ZPP. RP ⊆ NP and
+   ZPP ⊆ NP are proved. The final NP = ZPP implication still needs these
+   constructions and their probability-preservation proofs.
 
-The finite transfer now proves the approximation exponent and polynomial
-graph-size bound. Its running-time certificate remains open. Deterministic
+The finite transfer proves the approximation exponent and polynomial
+graph-size bound. Its complete running-time certificate remains open. Deterministic
 model equivalence and randomized certificate verification are proved. A
 probabilistic-machine implementation of the complete reduction and the
 zero-error combination still belong to the final proof obligation.

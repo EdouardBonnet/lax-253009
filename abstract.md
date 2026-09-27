@@ -55,6 +55,9 @@ verifiers to the computational Cook–Levin and Dinur constructions. It also
 handles arbitrary binary outputs and the clique estimator's comparison.
 The reverse simulation proves deterministic model equivalence. Explicit
 random-tape verification proves RP ⊆ NP and ZPP ⊆ NP in the registered models.
-Uniform polynomial-time implementations of the complete amplification,
-FAF and sampled graph constructions, and the final NP = ZPP deduction
-remain unfinished.
+The small-value game reduction now has uniform polynomial-time queries and
+explicit numbering throughout amplification. Fixed transcript arrays preserve
+the clique gap, and the concrete fair-bit sampler is polynomial-time with
+proved error at most 1/3. The FAF and repeated-transcript queries must still
+be fully assembled into the sampled graph algorithm. Its registered
+probabilistic implementation and the final NP = ZPP deduction remain unfinished.

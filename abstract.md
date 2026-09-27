@@ -1,10 +1,9 @@
 Håstad proved that, for every fixed $\varepsilon>0$, a polynomial-time
 $n^{1-\varepsilon}$-approximation of Max-Clique would imply
 $\mathrm{NP}=\mathrm{ZPP}$ [\[1\]](#ref-Hastad1999Clique).
-We state this theorem using NP from lax-434930 and ZPP from lax-666725,
-and prove its conditional consequence under
-$\mathrm{NP}\nsubseteq\mathrm{BPP}$ using the imported ZPP ⊆ BPP inclusion.
-**The main inapproximability proof is not yet complete.**
+We prove this theorem using NP from lax-434930 and ZPP from lax-666725,
+and its consequence under $\mathrm{NP}\nsubseteq\mathrm{BPP}$ using the
+imported ZPP ⊆ BPP inclusion. All 166 local statements have closed proofs.
 
 The approximation returns an integer estimate $a(G)$ satisfying
 $a(G)\leq\omega(G)\leq n^{1-\varepsilon}a(G)$ on every nonempty graph.
@@ -49,8 +48,8 @@ target soundness. The sequence is fixed before the question spaces, with
 constant answer alphabets, polynomial question-space growth, and perfect
 completeness. No parallel-repetition theorem is assumed.
 
-There are 162 proofs with no archive statement assumptions and three explicit
-conditional deductions. An explicit simulation connects registered NP
+There are 163 proofs with no archive statement assumptions and three deductions
+with closed archive dependencies. An explicit simulation connects registered NP
 verifiers to the computational Cook–Levin and Dinur constructions. It also
 handles arbitrary binary outputs and the clique estimator's comparison.
 The reverse simulation proves deterministic model equivalence. Explicit
@@ -60,5 +59,9 @@ explicit numbering throughout amplification. Fixed transcript arrays preserve
 the clique gap, and the concrete fair-bit sampler is polynomial-time with
 proved error at most 1/3. The FAF and repeated-transcript queries and the
 sampled graph algorithm are now assembled into a polynomial-time fair-bit
-test for every registered NP language. Its registered probabilistic
-implementation and the final NP = ZPP deduction remain unfinished.
+test for every registered NP language. Complementary tests combine into a
+zero-error algorithm. Finite stack machines implement its preparation,
+sampling, checking, and answer decoding. The one-tape compiler preserves every
+output-event probability, proves a worst-case polynomial clock, and restricts
+the control to a finite set. This yields a procedure in the exact registered
+ZPP model and completes the NP = ZPP implication.

@@ -13,8 +13,8 @@ $\mathrm{NP}\subseteq\mathrm{BPP}$. Consequently, the assumption
 $\mathrm{NP}\nsubseteq\mathrm{BPP}$ rules out such an approximation.
 
 The proof uses Håstad's NP = ZPP implication and the ZPP ⊆ BPP inclusion
-from lax-666725. It is therefore conditional on the main clique-hardness
-obligation, whose proof is not yet complete.
+from lax-666725. Both dependencies have proofs, so the archive dependency
+closure also proves this consequence.
 -/
 
 namespace Lax253009.BPPConsequence

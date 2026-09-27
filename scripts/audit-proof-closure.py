@@ -40,7 +40,7 @@ def main():
         for concept in local["concepts"] for statement in concept["statements"]
     }
     conclusions = {proof["conclusion"] for proof in local["proofs"]}
-    require(statements - conclusions == {HARDNESS},
+    require(statements <= conclusions,
             f"unexpected statements without proof entries: {statements - conclusions}")
 
     # Read the dependency closure from generated archive metadata. A proof is
@@ -64,22 +64,15 @@ def main():
         closed.update(new)
     require(ZPP_BPP in closed, "the imported ZPP ⊆ BPP proof is not closed")
     unresolved = statements - closed
-    expected_unresolved = {HARDNESS} | {
-        proof["conclusion"] for proof in local["proofs"]
-        if proof["id"] in EXPECTED_CONDITIONAL
-    }
-    require(unresolved == expected_unresolved,
+    require(not unresolved,
             f"unexpected proof closure: {sorted(unresolved)}")
     independent = sum(not proof["assumptions"] for proof in local["proofs"])
     print(f"{len(local['concepts'])} concepts; {len(local['proofs'])} proof entries")
     print(f"{independent} proofs without archive statement assumptions; "
-          f"{len(actual_conditional)} documented conditional deductions")
+          f"{len(actual_conditional)} deductions with closed archive dependencies")
     print("Imported ZPP ⊆ BPP: proved with closed upstream dependencies")
     print(f"{len(statements & closed)} of {len(statements)} local statements proved")
-    print("Open roots:")
-    for statement in sorted({HARDNESS}):
-        print(f"  {statement}")
-    print(f"These roots leave {len(unresolved)} statements unresolved including consequences.")
+    print("No open roots or unresolved consequences.")
 
 
 if __name__ == "__main__":

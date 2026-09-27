@@ -1,4 +1,4 @@
-# Håstad clique inapproximability: preparation status
+# Håstad clique inapproximability
 
 Local submission: `lax-253009`, Lean `v4.33.0`.
 Source: `../hastad.pdf`, Acta Mathematica 182 (1999), 105–142.
@@ -6,14 +6,11 @@ Nothing has been submitted or registered remotely.
 
 ## Current proof status
 
-The submission contains 63 concepts and 165 proof entries. Of the proofs,
-162 use only Lean's background axioms; three are conditional deductions with
-explicit archive statement dependencies. The full inapproximability theorem
-is **not yet proved**.
-
-One statement has no proof entry:
-
-- `Lax253009.CliqueHardness.approximation_implies_np_eq_zpp` — Theorem 5.2.
+The submission contains 63 concepts and 166 proof entries. Of the proofs,
+163 use only Lean's background axioms; three deductions have explicit archive
+statement dependencies whose proofs are also closed. All 166 local statements
+are proved, including `Lax253009.CliqueHardness.approximation_implies_np_eq_zpp`
+(Theorem 5.2).
 
 Theorems 4.17 and 4.2 are proved with no archive statement assumptions.
 Theorem 4.2 follows from the proved Theorem 4.17 by choosing the constant true
@@ -21,9 +18,10 @@ side condition. The finite FAF composition, its free-bit count, and the
 strategy-extraction argument of Section 5 are also proved. The finite
 game-to-clique transfer is proved, including the exact local-view interface,
 repetition, sparsification, approximation exponent, polynomial vertex bound,
-and sampling from a fixed vector of fair bits. The two
-inapproximability formulations and the BPP implication remain conditional
-on Theorem 5.2. A proof entry for a consequence does not close its assumptions.
+and sampling from a fixed vector of fair bits. The registered probabilistic
+compiler preserves the output distribution with a worst-case polynomial
+clock. The two inapproximability formulations and the BPP implication follow
+from Theorem 5.2 and the proved upstream inclusion ZPP ⊆ BPP.
 
 ## Proved components
 
@@ -74,8 +72,9 @@ on Theorem 5.2. A proof entry for a consequence does not close its assumptions.
 | `CenteredProjection` | Symmetrization, reverse square-root bound, complete and uniform transformations, squaring, and regular-CSP interface (10) |
 | `Amplification` | Arbitrarily small value with a sequence fixed before the question spaces, preservation of completeness and uniformity, exact cardinalities and polynomial size (7) |
 | `GameToClique` | Combined finite construction with parameters fixed before the game question spaces, perfect completeness, `1/3` false-positive probability, and polynomial graph size (1) |
+| `CliqueHardness`, `BPPConsequence` | The full NP = ZPP implication, its NP ≠ ZPP contraposition, and both formulations using NP ⊄ BPP (4) |
 
-These results do not assume the open clique-hardness theorem. The three Fourier
+The main proof does not assume the clique-hardness theorem. The three Fourier
 estimates apply to general finite label spaces and coefficient families and
 are now connected to the actual CNA failure event. Their constants are
 explicit and nonoptimal. Conditioning independent signs on balance introduces
@@ -106,8 +105,8 @@ Sampling `N` elements from `r` choices uses exactly
 `N * clog 2 (12*N*r)` fair bits and binary remainder. The finite modulo-bias
 proof adds at most `1/12` to the uniform-sampling error of `1/4`. The
 `GameToClique` conclusion uses this explicit bit sampler. These finite
-constructions and size bounds do not certify a probabilistic Turing
-machine's running time.
+constructions are implemented by the registered machine compiler described
+below, which proves the required polynomial running time.
 
 ## PCP foundation and soundness amplification
 
@@ -146,7 +145,7 @@ All three classes are reused without local substitutes:
 
 They share `Lax434930.PolynomialTime.Language`, the set of binary words.
 ZPP uses the bounded-time definition with an explicit failure answer.
-The final machine construction must establish this exact definition.
+The final machine construction establishes this exact definition.
 
 The concepts and proofs pin randomized-complexity at
 `31864d7e719d388b3d682a807fa2e56c8f9e0ae6` (`lax-666725`); classical-complexity
@@ -186,7 +185,7 @@ registered deterministic class, including input conversion, output extraction,
 cleanup, and a polynomial clock. A finite-coin simulator and an explicit
 certificate-pair decoder prove RP ⊆ NP and ZPP ⊆ NP for the registered classes.
 
-## Remaining proof development
+## Registered randomized implementation
 
 The uniform FAF transcript and compatibility queries, logarithmic repetition,
 fair-bit sampling, and full adjacency-matrix construction are now proved
@@ -194,20 +193,26 @@ polynomial-time. `RegisteredBridge.approximation_random_test` assembles them:
 an assumed clique approximation gives every registered NP language a
 polynomial-time predicate on the input and an explicitly bounded fair-bit
 tape. Members pass on every tape; nonmembers pass with probability at most
-1/3. This algorithm theorem has passed the full Lax kernel replay.
+1/3. Rejection tapes certify the complement language in registered NP.
+Applying the same construction to the complement and combining independent
+tests gives a finite-tape zero-error algorithm with success at least 2/3.
 
-The principal remaining tasks are:
+`FairTestMachine` implements the algorithm using finite stack machines:
+one deterministic subroutine computes the tape length and prepares the input,
+the sampler draws the specified fair bits, and another subroutine evaluates
+the test. A finite register stores the result, including the failure answer.
+`FairTestExecution` proves its complete execution tree and time bound.
 
-1. Compile this fair-bit test into the registered probabilistic model,
-   preserving its probability distribution and worst-case polynomial clock.
-2. Combine complementary one-sided algorithms into ZPP. RP ⊆ NP and
-   ZPP ⊆ NP are proved. The final NP = ZPP implication still needs this
-   construction and its probability-preservation proof.
+`RandomStackTape` implements stacks on one tape with quadratic overhead.
+`RandomSingleTape` compiles compound instructions into elementary moves and
+writes, using a fresh coin for each source instruction and ignoring the coins
+of administrative steps. Both simulations preserve every output-event
+probability. A deterministic initialization write and finite-state restriction
+produce the exact registered procedure. `FairTestCompiler.zeroTest_in_ZPP`
+proves its branchwise correctness and success probability.
 
-The approximation exponent, polynomial graph-size bound, deterministic
-running time, and finite-coin error estimate are proved. The registered
-probabilistic-machine implementation and zero-error combination still
-belong to the final proof obligation.
+The main theorem combines this construction with registered ZPP ⊆ NP.
+No proof obligations remain.
 
 ## Validation
 
@@ -220,6 +225,7 @@ python3 scripts/audit-proof-closure.py
 
 The build compiles both packages, replays their kernel proofs, and checks
 all concept/proof annotations and axiom hygiene. The audit checks that the
-only statement assumptions are the three documented deductions, verifies
-the upstream ZPP ⊆ BPP proof closure, and reports the remaining local roots.
+only statement assumptions are those of the three documented deductions,
+verifies the upstream ZPP ⊆ BPP proof closure, and requires every local
+statement to have a closed proof dependency chain.
 The generated build output and Lake artifacts are ignored by Git.

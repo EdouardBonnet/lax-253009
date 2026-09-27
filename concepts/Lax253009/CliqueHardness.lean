@@ -15,8 +15,9 @@ no such approximation exists. This is Theorem 5.2 of Håstad's paper.
 The approximation convention includes a single uniform algorithm and all
 nonempty finite graphs. NP is the binary-language class from lax-434930;
 ZPP is the bounded-time, failure-allowed class from lax-666725. No complexity
-class is redefined here. Proving the main implication requires implementing
-the paper's reductions in these machine models; it remains an open obligation.
+class is redefined here. The proof implements the reductions in these machine
+models, with an explicit polynomial clock and exact preservation of the
+finite fair-coin output distribution.
 -/
 
 namespace Lax253009.CliqueHardness

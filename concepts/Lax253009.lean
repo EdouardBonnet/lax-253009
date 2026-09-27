@@ -55,3 +55,6 @@ import Lax253009.GapSatisfiability
 import Lax253009.TupleAveraging
 import Lax253009.FortifiedSquaring
 import Lax253009.TupleSampler
+import Lax253009.TupleFortification
+import Lax253009.CenteredProjection
+import Lax253009.Amplification

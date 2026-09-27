@@ -17,8 +17,9 @@ The sampled graph has polynomially many vertices in the proof length, with
 explicit degree and constant. Its base proof length is linear in the game
 question counts for fixed answer widths. This completes the finite
 mathematical transfer from a small-value projection game. Constructing that
-game from NP instances, classical parallel repetition, and machine-level
-polynomial-time implementations are still required for Håstad's theorem.
+game from the registered NP machine model and proving polynomial-time
+implementations are still required for Håstad's theorem. The finite regular
+3-SAT gap and soundness amplification are proved in the companion concepts.
 -/
 
 namespace Lax253009.GameToClique

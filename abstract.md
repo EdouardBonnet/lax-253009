@@ -44,9 +44,11 @@ We convert it to a projection game with perfect completeness and soundness
 at most one minus half the gap, and prove binary answer encoding and padding.
 For soundness amplification we prove dimension-independent tuple-averaging
 and sampler bounds and a squaring theorem for fortified projection tests.
-Their composition into arbitrarily small game soundness remains unfinished.
+We construct the fortified games and iterate squaring to arbitrary positive
+target soundness. The sequence is fixed before the question spaces, with
+constant answer alphabets, polynomial question-space growth, and perfect
+completeness. No parallel-repetition theorem is assumed.
 
-There are 136 proofs with no archive statement assumptions and three explicit
+There are 158 proofs with no archive statement assumptions and three explicit
 conditional deductions. The connection from the registered NP machines to
-3-SAT, completion of soundness amplification, uniform polynomial-time machine
-implementations, and the final NP = ZPP deduction remain unfinished.
+3-SAT, uniform polynomial-time machine implementations, and the final NP = ZPP deduction remain unfinished.

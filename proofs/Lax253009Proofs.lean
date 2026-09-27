@@ -113,3 +113,7 @@ import Lax253009Proofs.GapSatisfiability
 import Lax253009Proofs.TupleAveraging
 import Lax253009Proofs.FortifiedSquaring
 import Lax253009Proofs.TupleSampler
+import Lax253009Proofs.FiniteMixedStrategies
+import Lax253009Proofs.TupleFortification
+import Lax253009Proofs.CenteredProjection
+import Lax253009Proofs.Amplification

@@ -6,8 +6,8 @@ Nothing has been submitted or registered remotely.
 
 ## Current proof status
 
-The submission contains 57 concepts and 139 proof entries. Of the proofs,
-136 use only Lean's background axioms; three are conditional deductions with
+The submission contains 60 concepts and 161 proof entries. Of the proofs,
+158 use only Lean's background axioms; three are conditional deductions with
 explicit archive statement dependencies. The full inapproximability theorem
 is **not yet proved**.
 
@@ -70,6 +70,9 @@ on Theorem 5.2. A proof entry for a consequence does not close its assumptions.
 | `TupleAveraging` | Variance and restriction bounds independent of the alphabet size (2) |
 | `TupleSampler` | Planted-coordinate probabilities, exact mean, and squared mean absolute deviation at most `1/t` (3) |
 | `FortifiedSquaring` | Two-copy soundness from rectangular restriction bounds (1) |
+| `TupleFortification` | Preservation of completeness, soundness and uniform marginals, and rectangular restriction bound `4r` for `1/t ≤ r²` (5) |
+| `CenteredProjection` | Symmetrization, reverse square-root bound, complete and uniform transformations, squaring, and regular-CSP interface (10) |
+| `Amplification` | Arbitrarily small value with a sequence fixed before the question spaces, preservation of completeness and uniformity, exact cardinalities and polynomial size (7) |
 | `GameToClique` | Combined finite construction with parameters fixed before the game question spaces, perfect completeness, `1/3` false-positive probability, and polynomial graph size (1) |
 
 These results do not assume the open clique-hardness theorem. The three Fourier
@@ -123,8 +126,13 @@ variance bound for tuple averages and its restriction estimate, a tuple
 sampler with squared mean absolute deviation at most `1/t`, and the
 squaring theorem for fortified projection tests. The latter bounds two-copy
 soundness by `v*s + |B|*eta`, where `B` is the common projection alphabet.
-Constructing the fortified games from the tuple sampler and iterating this
-bound remain to be done. No parallel-repetition result is assumed as an axiom.
+Tuple fortification is proved, including its `4r` rectangular error when
+`1/t ≤ r²`, preservation of soundness and uniform marginals, and perfect
+completeness. Centered games retain the projection structure through
+fortification and squaring. Iterating gives arbitrary positive target
+soundness with a fixed transformation sequence chosen before all question
+spaces. Exact cardinality formulas prove polynomial question-space growth
+and fixed answer alphabets. No parallel-repetition result is assumed as an axiom.
 
 ## Complexity classes and theorem scope
 
@@ -163,11 +171,9 @@ under NP ≠ P in Theorem 5.3 is outside the agreed scope.
 
 The principal remaining tasks are:
 
-1. Soundness amplification from the proved regular 3-SAT gap construction
-   to projection games of arbitrarily small value. The sampler and fortified
-   squaring estimates are proved; their composition and iteration remain.
-   The connection from the registered machine definition of NP to 3-SAT
-   also requires a computational reduction proof.
+1. The connection from the registered machine definition of NP to 3-SAT
+   and a polynomial-time implementation of the gap and soundness-amplification
+   constructions. Their finite mathematical soundness and size bounds are proved.
 2. A uniform polynomial-time PCP verifier, with logarithmic random bits,
    implementing the proved finite FAF test and its numbered local views.
 3. Uniform polynomial-time machine implementations of the proved graph

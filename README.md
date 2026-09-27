@@ -6,8 +6,8 @@ Nothing has been submitted or registered remotely.
 
 ## Current proof status
 
-The submission contains 60 concepts and 161 proof entries. Of the proofs,
-158 use only Lean's background axioms; three are conditional deductions with
+The submission contains 62 concepts and 163 proof entries. Of the proofs,
+160 use only Lean's background axioms; three are conditional deductions with
 explicit archive statement dependencies. The full inapproximability theorem
 is **not yet proved**.
 
@@ -167,13 +167,24 @@ returns an integer estimate `a(G)` with
 paper's numerical-estimation convention. The separate exponent `1/2−ε`
 under NP ≠ P in Theorem 5.3 is outside the agreed scope.
 
+The registered NP model now connects to the ported Cook–Levin theorem by an
+explicit stack-machine simulation. The simulation encodes finite alphabets,
+compiles every instruction block, bounds all intermediate configurations,
+and handles arbitrary binary-encoded outputs. Finite-alphabet restriction
+is proved without changing the running-time polynomial. The resulting
+integer-estimator comparison is polynomial-time even for large outputs.
+The computational Dinur port supplies a nonempty encoded gap graph for
+every registered NP language. The finite small-value game reduction now
+applies to those languages with answer alphabets fixed before the language.
+
 ## Remaining proof development
 
 The principal remaining tasks are:
 
-1. The connection from the registered machine definition of NP to 3-SAT
-   and a polynomial-time implementation of the gap and soundness-amplification
-   constructions. Their finite mathematical soundness and size bounds are proved.
+1. A polynomial-time implementation of the complete soundness-amplification
+   construction. The registered NP-to-3-SAT machine bridge, the algorithmic
+   Dinur gap construction, and the regularization subroutines are proved.
+   The full finite amplification has proved soundness and polynomial size.
 2. A uniform polynomial-time PCP verifier, with logarithmic random bits,
    implementing the proved finite FAF test and its numbered local views.
 3. Uniform polynomial-time machine implementations of the proved graph

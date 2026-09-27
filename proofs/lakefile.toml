@@ -21,3 +21,9 @@ name = "Lax666725"
 git = "https://github.com/EdouardBonnet/randomized-complexity"
 rev = "31864d7e719d388b3d682a807fa2e56c8f9e0ae6"
 subDir = "concepts"
+
+[[require]]
+name = "Lax434930"
+git = "https://github.com/EdouardBonnet/classical-complexity"
+rev = "0c0840319318215fd7b36a9a822b81ce55cf6941"
+subDir = "concepts"

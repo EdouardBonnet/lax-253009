@@ -6,8 +6,6 @@ $\mathrm{NP}\nsubseteq\mathrm{BPP}$ to bounded-error randomized algorithms,
 using NP from [lax-434930](https://laxarchive.org/lax-434930/)
 and BPP and ZPP from [lax-666725](https://laxarchive.org/lax-666725/).
 
-**Formalizer:** Édouard Bonnet, with assistance from Codex 6.
-
 **Acknowledgments and reused formalizations.** This submission builds substantially
 on Samuel Schlesinger's [complexitylib](https://github.com/SamuelSchlesinger/complexitylib/tree/5a1696fdd3bff26a5e7197f3333e8bef50ea146a).
 We gratefully credit Samuel Schlesinger and the upstream contributors, including

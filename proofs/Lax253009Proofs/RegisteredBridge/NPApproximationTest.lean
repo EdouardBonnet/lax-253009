@@ -1,18 +1,12 @@
-import Lax253009Proofs.RegisteredBridge.ComputableSmallValue
-import Lax253009Proofs.RegisteredBridge.ComputableProjectionEncoding
-import Lax253009Proofs.RegisteredBridge.ComputableFAF
-import Lax253009Proofs.RegisteredBridge.SampledGraphDecision
-import Lax253009Proofs.GameToClique
+import Lax253009Proofs.RegisteredBridge.CliqueGapReduction
 
 set_option backward.isDefEq.respectTransparency false
-set_option maxHeartbeats 2000000
-set_option maxRecDepth 2048
+set_option maxHeartbeats 1000000
 
 namespace Lax253009Proofs.RegisteredBridge
 
-open PCPFoundation.Complexity FiniteEncoding ComputableEncoding ComputableNumbering
-open ComputableAmplification Lax253009 CenteredProjection FAFLocalTests TestSampling FiniteProbability
-open FAFDataAlgorithms FAFPartAlgorithms
+open PCPFoundation.Complexity FiniteEncoding ComputableEncoding
+open Lax253009 FiniteProbability
 open scoped Classical
 
 /-- A clique approximation supplies, for every registered NP language, a
@@ -28,85 +22,39 @@ theorem approximation_random_test (F : FinBase) (hd : 1 < F.deg)
         (∀ x ∉ L, probability (fun coins : Fin (b x) → Bool ↦ D (pair x (List.ofFn coins))) ≤ 1 / 3) := by
   let θ := min ε 1
   have hθ : 0 < θ := lt_min hε zero_lt_one
-  obtain ⟨estimate, ⟨M⟩, hestimate⟩ := SampledGraphDecision.approximation_decision θ hθ
-    (min_le_right _ _) (approximation_weaken (min_le_left _ _) happrox)
-  obtain ⟨l, hl⟩ := exists_nat_gt (1 / θ)
-  have hlpos : 0 < l := by exact_mod_cast (div_pos zero_lt_one hθ).trans hl
-  have hlθ : 1 < (l : ℝ) * θ := (div_lt_iff₀ hθ).mp hl
-  obtain ⟨s₀, hs₀⟩ := Lax253009.FAFLocalTests.soundness l hlpos
-  let s := max s₀ 1
-  have hspos : 0 < s := lt_of_lt_of_le Nat.zero_lt_one (le_max_right _ _)
-  obtain ⟨w₀, hw₀⟩ := hs₀ s (le_max_left _ _)
-  have hmargin : 0 < (20 * l * l * s : ℕ) * θ - (20 * l * s : ℕ) * (1 - θ) := by
-    push_cast
-    have hp : 0 < (20 : ℝ) * l * s := by positivity
-    have hm : 0 < (l : ℝ) * θ - (1 - θ) := by linarith
-    nlinarith [mul_pos hp hm]
-  obtain ⟨c, hc, hcmargin⟩ := Lax253009.SamplingParameters.choose_multiplier θ (20 * l * s) (20 * l * l * s) hmargin
-  let δ := FAFComposition.gameThreshold l s / 2
-  have hδ : 0 < δ := half_pos (Lax253009.FAFComposition.threshold_positive l s)
-  have hδlt : δ < FAFComposition.gameThreshold l s := half_lt_self (Lax253009.FAFComposition.threshold_positive l s)
-  obtain ⟨S, hS⟩ := computable_small_value F hd δ hδ
-  let X := S.centers DinurAlpha
-  let Y := S.questions (DinurAlpha × DinurAlpha)
-  let u := Fintype.card X
-  let w := max w₀ (Fintype.card Y)
-  obtain ⟨ix⟩ := Lax253009.ProjectionEncoding.encoding_exists (A := X) u le_rfl
-  obtain ⟨iy⟩ := Lax253009.ProjectionEncoding.encoding_exists (A := Y) w (le_max_right _ _)
+  obtain ⟨estimate, ⟨M⟩, he⟩ := approximation_weaken (min_le_left ε 1) happrox
   intro L hL
-  obtain ⟨U, O, W, hU, hO, hW, hpos, G, hG, hyes, hno⟩ := hS L hL
-  let H := ComputableProjectionEncoding.encoded ix iy G
-  have hH := ComputableProjectionEncoding.algorithms ix iy
-    (center_code_injective S code code_injective) G hG
-  let pu := fin U hU
-  let po := fin O hO
-  let pw := fin W hW
-  let pr := seedNumbering (unary U) (unary O) pu po u w (10 * l) s (10 * l * s)
-  let pi := indexNumbering pu pw u w
-  obtain ⟨C, E, hE, hCyes, hCno⟩ := computable_faf (10 * l) s (10 * l * s) pu po pw H hH
-  let f := 10 * l * s + 10 * l * s
-  have hf : f = 20 * l * s := by dsimp [f]; ring
-  have hcm : 1 ≤ (c : ℝ) * ((20 * l * l * s : ℕ) * θ - (f : ℝ) * (1 - θ)) := by
-    simpa only [hf] using hcmargin
-  have hr : ∀ x, 0 < pr.size x := by
-    intro x
-    letI : Nonempty (Fin (U x)) := Fin.pos_iff_nonempty.mp (hpos x).1
-    letI : Nonempty (Fin (O x)) := Fin.pos_iff_nonempty.mp (hpos x).2.1
-    exact Fin.pos_iff_nonempty.mpr ⟨pr.equiv x (Classical.arbitrary _)⟩
-  let b := fun x ↦ SampledGraphDecision.coinCount (pr.size x) (pi.size x) (20 * l * l * s) c
-  let D := fun z ↦ SamplingParameters.threshold (pi.size (pairFst z)) <
-    estimate (ComputableSampledGraph.graph E hr (20 * l * l * s) c (pairFst z) (pairSnd z)).encode
+  obtain ⟨R⟩ := clique_gap_reduction F hd θ hθ (min_le_right _ _) L hL
+  let D := fun z ↦ R.threshold (pairFst z) <
+    estimate (R.graph (pairFst z) (pairSnd z)).encode
   have hD (x coins : Word) : D (pair x coins) ↔
-      SamplingParameters.threshold (pi.size x) <
-        estimate (ComputableSampledGraph.graph E hr (20 * l * l * s) c x coins).encode := by
-    change SamplingParameters.threshold (pi.size (pairFst (pair x coins))) <
-      estimate (ComputableSampledGraph.graph E hr (20 * l * l * s) c
-        (pairFst (pair x coins)) (pairSnd (pair x coins))).encode ↔ _
+      R.threshold x < estimate (R.graph x coins).encode := by
+    change R.threshold (pairFst (pair x coins)) <
+      estimate (R.graph (pairFst (pair x coins)) (pairSnd (pair x coins))).encode ↔ _
     rw [pairFst_pair, pairSnd_pair]
-  refine ⟨b, SampledGraphDecision.coinCount_poly pr.size_poly pi.size_poly _ _, D,
-    SampledGraphDecision.decision_mem_FP E hr hE pr.size_poly pi.size_poly _ _ M, ?_, ?_⟩
+  have hpoly : FPPred D := by
+    have henc := mem_FP_comp R.graph_poly (encoded_mem_FP M)
+    have ht := R.threshold_poly.comp pairFst_mem_FP
+    have hv := UnaryFn.fromBitsLE_min henc (ht.add (UnaryFn.const 1))
+    apply (FPPred.lt ht hv).of_iff
+    intro z
+    simp only [D, Function.comp_apply, from_bits_encode_nat, lt_min_iff,
+      Nat.lt_succ_self, and_true]
+  refine ⟨R.bits, R.bits_poly, D, hpoly, ?_, ?_⟩
   · intro x hx coins
-    have hcomplete : Complete (C x) := by
-      apply hCyes
-      obtain ⟨P, Q, hpq⟩ := hyes x hx
-      obtain ⟨hv, hp⟩ := Lax253009.ProjectionEncoding.completeness ix iy (G x).question (G x).valid (G x).project
-        P Q (fun v ω ↦ (hpq v ω).1) (fun v ω ↦ (hpq v ω).2)
-      exact Lax253009.FAFLocalTests.perfect_completeness _ _ _ (fun a ↦ iy (P a)) (fun a ↦ ix (Q a)) hv hp
-    have hh := (hestimate f (20 * l * l * s) c hc hcm E hr x).1
-      hcomplete (List.ofFn coins)
-    exact (hD x (List.ofFn coins)).mpr hh
+    apply (hD x (List.ofFn coins)).mpr
+    have hlarge := R.complete x hx (List.ofFn coins)
+    have hhi := (he _ (R.nonempty x) (R.graph x (List.ofFn coins))).2
+    by_contra hn
+    have hle : (estimate (R.graph x (List.ofFn coins)).encode : ℝ) ≤ R.threshold x := by
+      exact_mod_cast Nat.le_of_not_gt hn
+    have hm := mul_le_mul_of_nonneg_left hle
+      (Real.rpow_nonneg (Nat.cast_nonneg (R.size x)) (1 - θ))
+    exact (not_lt_of_ge (hhi.trans hm)) hlarge
   · intro x hx
-    have hsound : Sound (C x) ((1 / 2 : ℝ) ^ (20 * l * l * s)) := by
-      apply hCno
-      letI : Nonempty (Fin (U x)) := Fin.pos_iff_nonempty.mp (hpos x).1
-      letI : Nonempty (Fin (O x)) := Fin.pos_iff_nonempty.mp (hpos x).2.1
-      apply hw₀ w (le_max_left _ _) u (H x).question (H x).project (H x).valid
-      intro P Q
-      exact (Lax253009.ProjectionEncoding.soundness ix iy (G x).question (G x).valid (G x).project δ
-        (hno x hx) P Q).trans_lt hδlt
-    have hh := (hestimate f (20 * l * l * s) c hc hcm E hr x).2 hsound
-    apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) hh
+    apply le_trans (Lax253009.FiniteProbability.monotone _ _ ?_) (R.sound x hx)
     intro coins hcoin
-    exact (hD x (List.ofFn coins)).mp hcoin
+    exact (Nat.le_of_lt ((hD x (List.ofFn coins)).mp hcoin)).trans
+      (he _ (R.nonempty x) (R.graph x (List.ofFn coins))).1
 
 end Lax253009Proofs.RegisteredBridge

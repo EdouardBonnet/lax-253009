@@ -509,3 +509,8 @@ import Lax253009Proofs.RegisteredBridge.CoinTree
 import Lax253009Proofs.RegisteredBridge.FairTestExecution
 import Lax253009Proofs.RegisteredBridge.FairTestCompiler
 import Lax253009Proofs.CliqueHardness
+import Lax253009Proofs.MajorityAmplification
+import Lax253009Proofs.RegisteredBridge.BoundedErrorTests
+import Lax253009Proofs.RegisteredBridge.CliqueGapReduction
+import Lax253009Proofs.RegisteredBridge.RandomizedApproximationTest
+import Lax253009Proofs.RandomizedCliqueHardness

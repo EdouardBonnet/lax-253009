@@ -6,9 +6,9 @@ Source: [Håstad, Acta Mathematica 182 (1999), 105–142](https://doi.org/10.100
 
 ## Current proof status
 
-The submission contains 63 concepts and 166 proof entries. Proofs use the
+The submission contains 66 concepts and 170 proof entries. Proofs use the
 concept statements for previously established results, exposing these
-dependencies in the archive's proof network. All 166 local statements have
+dependencies in the archive's proof network. All 170 local statements have
 closed proof dependency chains, including
 `Lax253009.CliqueHardness.approximation_implies_np_eq_zpp` (Theorem 5.2).
 
@@ -22,6 +22,9 @@ and sampling from a fixed vector of fair bits. The registered probabilistic
 compiler preserves the output distribution with a worst-case polynomial
 clock. The two inapproximability formulations and the BPP implication follow
 from Theorem 5.2 and the proved upstream inclusion ZPP ⊆ BPP.
+The additional randomized theorem rules out bounded-error randomized
+approximation under NP ⊄ BPP, using the same computational gap reduction
+and an explicit amplification-and-composition argument.
 
 ## Proved components
 
@@ -72,6 +75,8 @@ from Theorem 5.2 and the proved upstream inclusion ZPP ⊆ BPP.
 | `CenteredProjection` | Symmetrization, reverse square-root bound, complete and uniform transformations, squaring, and regular-CSP interface (10) |
 | `Amplification` | Arbitrarily small value with a sequence fixed before the question spaces, preservation of completeness and uniformity, exact cardinalities and polynomial size (7) |
 | `GameToClique` | Combined finite construction with parameters fixed before the game question spaces, perfect completeness, `1/3` false-positive probability, and polynomial graph size (1) |
+| `MajorityAmplification` | Exact majority-error formula and three-round amplification from 1/3 to 1/12 (2) |
+| `RandomizedCliqueHardness` | A bounded-error randomized approximation implies NP ⊆ BPP; its contrapositive rules out these algorithms under NP ⊄ BPP (2) |
 | `CliqueHardness`, `BPPConsequence` | The full NP = ZPP implication, its NP ≠ ZPP contraposition, and both formulations using NP ⊄ BPP (4) |
 
 The main proof does not assume the clique-hardness theorem. The three Fourier
@@ -160,8 +165,15 @@ and its contrapositive under NP ⊈ BPP. The BPP deduction uses the imported
 `Lax666725.ZPPSubsetBPP.ZPP_subset_BPP` theorem, with that dependency
 recorded in the proof network.
 
-The algorithm may depend on ε but is uniform across all input sizes. It
-returns an integer estimate `a(G)` with
+`RandomizedApproximation` allows a polynomial-length fair random tape and a
+uniform polynomial-time integer evaluator. Both approximation inequalities
+must hold with probability at least 2/3 on every nonempty graph; the answer
+on the other tapes is unrestricted. `RandomizedCliqueHardness` proves directly
+that such an algorithm implies NP ⊆ BPP and records the contrapositive.
+This extension uses NP ⊄ BPP, not the weaker assumption NP ≠ ZPP.
+
+Both approximation models allow the algorithm to depend on ε while requiring
+uniformity across all input sizes. The deterministic model returns an integer estimate `a(G)` with
 `a(G) ≤ ω(G) ≤ n^(1−ε) a(G)` on every nonempty graph. This matches the
 paper's numerical-estimation convention. The separate exponent `1/2−ε`
 under NP ≠ P in Theorem 5.3 is outside the agreed scope.
@@ -213,6 +225,28 @@ proves its branchwise correctness and success probability.
 
 The main theorem combines this construction with registered ZPP ⊆ NP.
 No proof obligations remain.
+
+## Bounded-error randomized extension
+
+`CliqueGapReduction` exposes the computational reduction independently of
+any estimator. Every sampled graph from a member input has a clique number
+above the approximation threshold. For nonmembers, the probability of an
+exceptionally large clique is at most 1/3.
+
+`BoundedErrorTests` proves the exact independent-majority error transformation
+`p ↦ 3p² − 2p³`. Three rounds use 27 executions and reduce comparison error
+from at most 1/3 to at most 1/12. The graph's encoding length is independent
+of its random adjacency matrix, so the reduction and estimator coins can be
+allocated as independent blocks of one polynomial-length tape.
+
+The combined test rejects a member with probability at most 1/12 and accepts
+a nonmember with probability at most 1/3 + 1/12 = 5/12. Running two independent
+combined trials and accepting only if both accept gives member acceptance at
+least `(11/12)²` and nonmember acceptance at most `(5/12)²`. These meet BPP's
+2/3 and 1/3 bounds. The existing probability-preserving compiler produces a
+procedure in the registered BPP model, including a worst-case polynomial clock.
+The majority results and final contraposition are referenced through concept
+statements so their dependencies appear in the Lax proof network.
 
 ## Validation
 

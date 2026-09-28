@@ -13,7 +13,15 @@ ZPP_BPP = "Lax666725.ZPPSubsetBPP.ZPP_subset_BPP"
 ZPP_ONE_SIDED = "Lax666725.ZPPSubsetOneSided.ZPP_subset_RP_inter_coRP"
 ZPP_NP = "Lax253009.RandomizedContainments.ZPP_subset_NP"
 BPP_CONSEQUENCE = "Lax253009.BPPConsequence.approximation_implies_np_subset_bpp"
+RANDOMIZED_HARDNESS = "Lax253009.RandomizedCliqueHardness.approximation_implies_np_subset_bpp"
+MAJORITY_STATEMENTS = {
+    "Lax253009.MajorityAmplification.majority_error",
+    "Lax253009.MajorityAmplification.three_rounds",
+}
 EXPECTED_CONDITIONAL = {
+    "Lax253009Proofs.randomized_clique_not_approximable_of_np_not_subset_bpp": {
+        RANDOMIZED_HARDNESS,
+    },
     "Lax253009Proofs.clique_approximation_implies_np_subset_bpp": {HARDNESS, ZPP_BPP},
     "Lax253009Proofs.clique_not_approximable_of_np_ne_zpp": {HARDNESS},
     "Lax253009Proofs.clique_not_approximable_of_np_not_subset_bpp": {BPP_CONSEQUENCE},
@@ -60,6 +68,12 @@ def main():
     require(ZPP_NP in actual_conditional.get(
         "Lax253009Proofs.clique_approximation_implies_np_eq_zpp", set()),
         "the main theorem must expose the ZPP ⊆ NP dependency")
+    randomized_dependencies = actual_conditional.get(
+        "Lax253009Proofs.randomized_clique_approximation_implies_np_subset_bpp", set())
+    require(MAJORITY_STATEMENTS <= randomized_dependencies,
+            "the randomized theorem must expose its majority-amplification dependencies")
+    require(HARDNESS not in randomized_dependencies,
+            "the randomized theorem must prove its own BPP implication")
     for proof in local["proofs"]:
         require(proof["conclusion"] not in proof["assumptions"],
                 f"a proof assumes its own conclusion: {proof['id']}")

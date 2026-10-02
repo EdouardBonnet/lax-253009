@@ -1,5 +1,6 @@
 specVersion: "1"
-id: lax-253009
+id: lax-323828
+supersedes: lax-253009
 leanVersion: "v4.33.0"
 mathlibVersion: "db584cd6d46c92f209a44c0f1c829460d327499d"
 title: "Håstad’s inapproximability of Max Clique"
@@ -21,4 +22,4 @@ bibEntries:
     }
 issue:
   repositoryId: 1320232165
-  number: 143
+  number: 160

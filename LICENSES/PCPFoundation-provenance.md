@@ -1,6 +1,6 @@
 # Dinur gap-theorem source
 
-The 62 modules under `proofs/Lax253009Proofs/PCPFoundation` are adapted from
+The 62 modules under `proofs/Lax323828Proofs/PCPFoundation` are adapted from
 [complexitylib](https://github.com/SamuelSchlesinger/complexitylib), commit
 `5a1696fdd3bff26a5e7197f3333e8bef50ea146a`. They are the dependency closure of
 `Complexitylib.Classes.PCP.Internal.GapTheorem` within that project.
@@ -16,8 +16,8 @@ construction. Lax reports the unused supporting declarations as warnings.
 
 The port targets this submission's Lean 4.33 and pinned mathlib. Changes:
 
-- Relocate imports to `Lax253009Proofs.PCPFoundation` and relocate declarations beneath
-  `Lax253009Proofs.PCPFoundation.Complexity`, as required by Lax.
+- Relocate imports to `Lax323828Proofs.PCPFoundation` and relocate declarations beneath
+  `Lax323828Proofs.PCPFoundation.Complexity`, as required by Lax.
 - Remove newer module visibility directives.
 - Replace the moved real-number import and renamed conditional lemmas.
 - Adapt the nonnegativity argument of the finite product inequality.
@@ -46,7 +46,7 @@ The only additional source dependency is
 <https://github.com/SamuelSchlesinger/cslib> at
 `2a4389ba8d47778cafdd79f522f0b17b623b18b7`, also Apache-2.0. Its copyright
 notice is retained. Its two declarations are namespaced under
-`Lax253009Proofs.PCPFoundation.Cslib`; its initialization import is replaced
+`Lax323828Proofs.PCPFoundation.Cslib`; its initialization import is replaced
 by the required Mathlib finite-index import.
 
 Additional Lean 4.33 adaptations: finite-type imports use `Mathlib.Data.Finite`;
@@ -61,7 +61,7 @@ The computational extension also includes the twelve modules needed for
 `Classes.NP.WitnessConstruction` from the same pinned revision, including
 the nondeterministic composition and polynomial witness construction.
 Binary-number codec extensions are moved from root `Nat`/`Fin` namespaces
-into `Lax253009Proofs.PCPFoundation.BinaryNat` and `BinaryFin`. Direct Aesop
+into `Lax323828Proofs.PCPFoundation.BinaryNat` and `BinaryFin`. Direct Aesop
 imports are replaced by `Mathlib.Data.Set.Operations`, which exposes those
 rules through a permitted dependency.
 

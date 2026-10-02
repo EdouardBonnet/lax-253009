@@ -8,25 +8,25 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATABASE = Path(os.environ.get("LAX_HOME", Path.home() / ".lax")) / "lax-database"
-HARDNESS = "Lax253009.CliqueHardness.approximation_implies_np_eq_zpp"
+HARDNESS = "Lax323828.CliqueHardness.approximation_implies_np_eq_zpp"
 ZPP_BPP = "Lax666725.ZPPSubsetBPP.ZPP_subset_BPP"
 ZPP_ONE_SIDED = "Lax666725.ZPPSubsetOneSided.ZPP_subset_RP_inter_coRP"
-ZPP_NP = "Lax253009.RandomizedContainments.ZPP_subset_NP"
-BPP_CONSEQUENCE = "Lax253009.BPPConsequence.approximation_implies_np_subset_bpp"
-RANDOMIZED_HARDNESS = "Lax253009.RandomizedCliqueHardness.approximation_implies_np_subset_bpp"
+ZPP_NP = "Lax323828.RandomizedContainments.ZPP_subset_NP"
+BPP_CONSEQUENCE = "Lax323828.BPPConsequence.approximation_implies_np_subset_bpp"
+RANDOMIZED_HARDNESS = "Lax323828.RandomizedCliqueHardness.approximation_implies_np_subset_bpp"
 MAJORITY_STATEMENTS = {
-    "Lax253009.MajorityAmplification.majority_error",
-    "Lax253009.MajorityAmplification.three_rounds",
+    "Lax323828.MajorityAmplification.majority_error",
+    "Lax323828.MajorityAmplification.three_rounds",
 }
 EXPECTED_CONDITIONAL = {
-    "Lax253009Proofs.randomized_clique_not_approximable_of_np_not_subset_bpp": {
+    "Lax323828Proofs.randomized_clique_not_approximable_of_np_not_subset_bpp": {
         RANDOMIZED_HARDNESS,
     },
-    "Lax253009Proofs.clique_approximation_implies_np_subset_bpp": {HARDNESS, ZPP_BPP},
-    "Lax253009Proofs.clique_not_approximable_of_np_ne_zpp": {HARDNESS},
-    "Lax253009Proofs.clique_not_approximable_of_np_not_subset_bpp": {BPP_CONSEQUENCE},
-    "Lax253009Proofs.zpp_subset_np": {
-        "Lax253009.RandomizedContainments.RP_subset_NP", ZPP_ONE_SIDED,
+    "Lax323828Proofs.clique_approximation_implies_np_subset_bpp": {HARDNESS, ZPP_BPP},
+    "Lax323828Proofs.clique_not_approximable_of_np_ne_zpp": {HARDNESS},
+    "Lax323828Proofs.clique_not_approximable_of_np_not_subset_bpp": {BPP_CONSEQUENCE},
+    "Lax323828Proofs.zpp_subset_np": {
+        "Lax323828.RandomizedContainments.RP_subset_NP", ZPP_ONE_SIDED,
     },
 }
 
@@ -43,7 +43,7 @@ def read(path):
 def check_concept_references(proofs):
     """Use Lean's resolved references to detect hidden proof-network edges."""
     proof_ids = {proof["id"] for proof in proofs}
-    artifact_root = ROOT / "proofs/.lake/build/lib/lean/Lax253009Proofs"
+    artifact_root = ROOT / "proofs/.lake/build/lib/lean/Lax323828Proofs"
     require(artifact_root.is_dir(), "build the proof package before auditing references")
     inlined = []
     for path in artifact_root.rglob("*.ilean"):
@@ -66,10 +66,10 @@ def main():
         require(actual_conditional.get(proof_id) == expected,
                 f"unexpected consequence dependencies: {proof_id}")
     require(ZPP_NP in actual_conditional.get(
-        "Lax253009Proofs.clique_approximation_implies_np_eq_zpp", set()),
+        "Lax323828Proofs.clique_approximation_implies_np_eq_zpp", set()),
         "the main theorem must expose the ZPP ⊆ NP dependency")
     randomized_dependencies = actual_conditional.get(
-        "Lax253009Proofs.randomized_clique_approximation_implies_np_subset_bpp", set())
+        "Lax323828Proofs.randomized_clique_approximation_implies_np_subset_bpp", set())
     require(MAJORITY_STATEMENTS <= randomized_dependencies,
             "the randomized theorem must expose its majority-amplification dependencies")
     require(HARDNESS not in randomized_dependencies,

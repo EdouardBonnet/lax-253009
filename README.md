@@ -1,6 +1,6 @@
 # Håstad clique inapproximability
 
-Lax submission: `lax-253009`, Lean `v4.33.0`.
+Lax submission: `lax-323828`, Lean `v4.33.0`.
 Archive discussion: [lax-archive/lax#143](https://github.com/lax-archive/lax/issues/143).
 Source: [Håstad, Acta Mathematica 182 (1999), 105–142](https://doi.org/10.1007/BF02392825).
 
@@ -10,7 +10,7 @@ The submission contains 66 concepts and 170 proof entries. Proofs use the
 concept statements for previously established results, exposing these
 dependencies in the archive's proof network. All 170 local statements have
 closed proof dependency chains, including
-`Lax253009.CliqueHardness.approximation_implies_np_eq_zpp` (Theorem 5.2).
+`Lax323828.CliqueHardness.approximation_implies_np_eq_zpp` (Theorem 5.2).
 
 Theorems 4.17 and 4.2 are proved with closed archive dependencies.
 Theorem 4.2 follows from Theorem 4.17 by choosing the constant true side

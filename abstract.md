@@ -13,4 +13,4 @@ Bolton Bailey, credited as the author of the imported Dinur gap-theorem module.
 The PCP foundation, Cook--Levin machinery, and supporting computational results
 were adapted from that library, not newly formalized for this submission.
 The port retains the original copyright and Apache-2.0 notices; its sources and
-adaptations are documented in the [provenance record](https://github.com/EdouardBonnet/lax-253009/blob/680d3c797858ac58240148723ea651bd4fcdc9cd/LICENSES/PCPFoundation-provenance.md).
+adaptations are documented in the [provenance record](https://github.com/EdouardBonnet/lax-323828/blob/680d3c797858ac58240148723ea651bd4fcdc9cd/LICENSES/PCPFoundation-provenance.md).
